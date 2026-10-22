@@ -380,66 +380,75 @@
 	</section>
 
 	<!-- ========================================================================= -->
-	<!-- SEARCH & COMMODITY FILTER BAR (DEDICATED FULL-WIDTH BAR) -->
+	<!-- SEARCH & BOTANICAL CATEGORY CONTROL DECK (PRECISE & PROPORTIONAL) -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1040px] mx-auto bg-[#E6E1D3] rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
+		class="w-full max-w-[1060px] mx-auto bg-[#EAE4D6] rounded-[28px] border-[2.5px] border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] p-4 sm:p-5 flex flex-col gap-3.5 sm:gap-4"
 	>
-		<!-- Live Search Input -->
-		<form onsubmit={handleSearch} class="flex items-center gap-2 flex-1 max-w-md">
-			<div class="relative w-full">
-				<Search class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-800 stroke-[2.5]" />
+		<!-- 1. Top Deck: Live Search Input with Direct Action Button -->
+		<form onsubmit={handleSearch} class="flex items-center gap-2.5 sm:gap-3 w-full">
+			<div class="relative flex-1">
+				<Search class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0D0D0D] stroke-[2.5]" />
 				<input
 					bind:value={searchQuery}
-					placeholder="Cari jahe merah, jagung, nama Latin..."
-					class="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-white border-2 border-[#0D0D0D] rounded-xl shadow-[2px_2px_0px_#0D0D0D] focus:shadow-[3px_3px_0px_#0D0D0D] outline-none font-bold text-[#0D0D0D] placeholder:text-stone-400 placeholder:font-medium"
+					placeholder="Cari jahe merah, jagung, anggrek, nama Latin..."
+					class="w-full pl-11 pr-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-white border-2 border-[#0D0D0D] rounded-full shadow-[2px_2px_0px_#0D0D0D] focus:shadow-[3px_3px_0px_#0D0D0D] outline-none font-bold text-[#0D0D0D] placeholder:text-stone-400 placeholder:font-medium transition-all"
 				/>
 			</div>
 			<button
 				type="submit"
-				class="px-4 py-2.5 bg-[#E2EF46] hover:bg-[#d4e138] text-[#0D0D0D] text-xs sm:text-sm font-black rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all cursor-pointer shrink-0"
+				class="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#E2EF46] hover:bg-[#d8e538] text-[#0D0D0D] text-xs sm:text-sm font-black rounded-full border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all cursor-pointer shrink-0 uppercase tracking-wider select-none"
 			>
 				Cari
 			</button>
 		</form>
 
-		<!-- Category Filter Chips -->
-		<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar shrink-0">
+		<!-- 2. Bottom Deck: Proportional Category Filter Pills -->
+		<div class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 no-scrollbar w-full pt-2.5 border-t border-[#0D0D0D]/10">
+			<span class="text-[10px] font-black uppercase tracking-wider text-[#0D0D0D]/60 shrink-0 mr-1 hidden sm:inline">
+				Kategori:
+			</span>
 			<FilterChip
 				active={selectedCategory === 'semua'}
 				onclick={() => (selectedCategory = 'semua')}
 			>
-				Semua
+				<span class="w-2 h-2 rounded-full {selectedCategory === 'semua' ? 'bg-[#E2EF46]' : 'bg-[#0D0D0D]'}"></span>
+				<span>Semua</span>
 			</FilterChip>
 			<FilterChip
 				active={selectedCategory === 'obat'}
 				onclick={() => (selectedCategory = 'obat')}
 			>
-				🌿 TOGA
+				<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+				<span>Obat (TOGA)</span>
 			</FilterChip>
 			<FilterChip
 				active={selectedCategory === 'pangan'}
 				onclick={() => (selectedCategory = 'pangan')}
 			>
-				🌽 Pangan
+				<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+				<span>Pangan</span>
 			</FilterChip>
 			<FilterChip
 				active={selectedCategory === 'hias'}
 				onclick={() => (selectedCategory = 'hias')}
 			>
-				🌸 Hias
+				<span class="w-2 h-2 rounded-full bg-pink-500"></span>
+				<span>Hias</span>
 			</FilterChip>
 			<FilterChip
 				active={selectedCategory === 'industri'}
 				onclick={() => (selectedCategory = 'industri')}
 			>
-				☕ Perkebunan
+				<span class="w-2 h-2 rounded-full bg-amber-800"></span>
+				<span>Perkebunan</span>
 			</FilterChip>
 			<FilterChip
 				active={selectedCategory === 'kayu'}
 				onclick={() => (selectedCategory = 'kayu')}
 			>
-				🌲 Kayu
+				<span class="w-2 h-2 rounded-full bg-lime-700"></span>
+				<span>Kayu</span>
 			</FilterChip>
 		</div>
 	</section>
@@ -447,7 +456,7 @@
 	<!-- ========================================================================= -->
 	<!-- FEATURED PLANTS GRID -->
 	<!-- ========================================================================= -->
-	<section class="flex flex-col gap-4 max-w-[1040px] mx-auto w-full">
+	<section class="flex flex-col gap-4 max-w-[1060px] mx-auto w-full">
 		<div class="flex items-center justify-between">
 			<div>
 				<h2 class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">Koleksi Tanaman Unggulan</h2>

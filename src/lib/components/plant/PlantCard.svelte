@@ -36,9 +36,9 @@
 		<!-- Category Sticker Badge -->
 		<div class="absolute top-2.5 left-2.5">
 			<span
-				class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black tracking-wider uppercase border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] {colorClass.bg} text-stone-900"
+				class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] {colorClass.bg} text-[#0D0D0D]"
 			>
-				<span class="w-1.5 h-1.5 rounded-full bg-[#18181B]"></span>
+				<span class="w-1.5 h-1.5 rounded-full bg-[#0D0D0D]"></span>
 				{categoryLabel.split(' ')[1] || categoryLabel}
 			</span>
 		</div>
