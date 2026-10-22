@@ -44,7 +44,14 @@
     "src/lib/components/plant/PlantGallery.svelte",
     "src/lib/components/qr/QrScanner.svelte",
     "src/lib/components/qr/QrGenerator.svelte",
-    "src/lib/components/map/SchoolMap.svelte"
+    "src/lib/components/map/SchoolMap.svelte",
+    "src/lib/types/config.types.ts",
+    "src/lib/schemas/config.schema.ts",
+    "src/lib/data/default-config.ts",
+    "src/lib/repositories/config.repository.ts",
+    "src/lib/services/config.service.ts",
+    "src/lib/services/config.service.test.ts",
+    "src/routes/admin/pengaturan/+page.svelte"
   ],
   "active_skills": [
     "sveltekit-frontend",
@@ -79,6 +86,12 @@
       "layer": "engineering",
       "action": "waves_1_to_4_completed",
       "agent_note": "Engineering implementation completed: SvelteKit 5 runes, Tailwind 4, PWA manifest, offline service worker, QR scanner & generator, interactive map, student video section, teacher moderation dashboard, 14 Vitest unit tests passing, production build succeeded."
+    },
+    {
+      "timestamp": "2026-10-23T02:18:00+08:00",
+      "layer": "engineering",
+      "action": "dynamic_cms_system_completed",
+      "agent_note": "Dynamic CMS system implemented: ConfigService, ConfigRepository with offline-first localStorage & Zod schema, real-time reactive event synchronization across tabs, dynamic hero showcase & category loops, and dedicated Admin Settings CMS portal at /admin/pengaturan with factory reset capability. 22 Vitest unit tests passing."
     }
   ]
 }
