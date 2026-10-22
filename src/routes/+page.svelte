@@ -6,6 +6,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import QRCode from 'qrcode';
 	import { PlantService } from '#lib/services/plant.service';
 	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant, PlantCategory } from '#lib/types/plant.types';
@@ -21,7 +22,9 @@
 		ArrowRight,
 		PlusCircle,
 		ArrowUpRight,
-		Camera
+		Camera,
+		X,
+		Smartphone
 	} from '@lucide/svelte';
 
 	let searchQuery = $state('');
@@ -29,7 +32,31 @@
 	let plants = $state<Plant[]>([...INITIAL_PLANTS_DATA]);
 	let isLoading = $state(false);
 
+	// PWA Install & QR Modal State
+	let showInstallModal = $state(false);
+	let installQrDataUrl = $state('');
+	let deferredPrompt = $state<any>(null);
+	let appOrigin = $state('');
+
 	onMount(async () => {
+		if (typeof window !== 'undefined') {
+			appOrigin = window.location.origin;
+			window.addEventListener('beforeinstallprompt', (e) => {
+				e.preventDefault();
+				deferredPrompt = e;
+			});
+
+			try {
+				installQrDataUrl = await QRCode.toDataURL(appOrigin, {
+					width: 240,
+					margin: 1,
+					color: { dark: '#0D0D0D', light: '#FFFFFF' }
+				});
+			} catch (err) {
+				console.warn('Gagal membuat QR install:', err);
+			}
+		}
+
 		try {
 			const updated = await PlantService.getCatalog();
 			if (updated && updated.length > 0) {
@@ -39,6 +66,37 @@
 			console.warn('Gagal memuat tanaman:', err);
 		}
 	});
+
+	async function openInstallModal() {
+		showInstallModal = true;
+		if (!installQrDataUrl && typeof window !== 'undefined') {
+			try {
+				appOrigin = window.location.origin;
+				installQrDataUrl = await QRCode.toDataURL(appOrigin, {
+					width: 240,
+					margin: 1,
+					color: { dark: '#0D0D0D', light: '#FFFFFF' }
+				});
+			} catch (err) {
+				console.warn('Gagal membuat QR install:', err);
+			}
+		}
+	}
+
+	function closeInstallModal() {
+		showInstallModal = false;
+	}
+
+	async function triggerDirectInstall() {
+		if (deferredPrompt) {
+			deferredPrompt.prompt();
+			const { outcome } = await deferredPrompt.userChoice;
+			if (outcome === 'accepted') {
+				deferredPrompt = null;
+				showInstallModal = false;
+			}
+		}
+	}
 
 	function handleSearch(e: SubmitEvent) {
 		e.preventDefault();
@@ -255,7 +313,7 @@
 					</svg>
 				</a>
 
-				<!-- Notched App Card (Immediately below vertical card, tight gap) -->
+				<!-- Notched App Download Card (iOS & Android Logos + Scan QR Install Button) -->
 				<div
 					class="relative w-full h-[140px] sm:h-[150px] bg-white rounded-2xl border-2 border-[#0D0D0D] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs"
 				>
@@ -267,7 +325,7 @@
 					<!-- Notched Header with 3 Dots Tab -->
 					<div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
 						<h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-[#0D0D0D]">
-							APLIKASI PWA LAPANGAN
+							UNDUH APLIKASI LAPANGAN
 						</h3>
 						<!-- Black pill tab with 3 white dots -->
 						<div class="px-2 py-0.5 rounded-full bg-[#0D0D0D] flex items-center gap-1">
@@ -279,43 +337,155 @@
 
 					<!-- Description -->
 					<p class="text-[11px] sm:text-xs text-stone-600 font-medium leading-snug">
-						Katalog botani mandiri SMK Pertanian. Identifikasi taksonomi, video budidaya siswa, dan QR scanner offline.
+						Katalog botani mandiri SMK Pertanian tersedia untuk iOS &amp; Android. PWA offline-ready tanpa koneksi internet di kebun.
 					</p>
 
-					<!-- Bottom Row: Platform icons & Action pill button -->
+					<!-- Bottom Row: iOS & Android Badges + Scan QR Install Pill Button -->
 					<div class="flex items-center justify-between pt-1 border-t border-stone-100">
-						<div class="flex items-center -space-x-1">
-							<span
-								class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px] font-black z-10"
-								title="PWA Offline Supported"
+						<!-- Two overlapping black circles: Apple (iOS) and Android -->
+						<div class="flex items-center -space-x-1.5">
+							<!-- Apple / iOS Logo Circle -->
+							<div
+								class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center z-10 shadow-xs border border-stone-800"
+								title="Tersedia untuk Apple iOS (PWA / Safari Add to Home Screen)"
 							>
-								A
-							</span>
-							<span
-								class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px] font-black"
-								title="Video Player Supported"
+								<svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 170 170" aria-label="Apple iOS Logo">
+									<path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.03-7.61-7.79-11.73-14.28-5.78-9.04-10.37-19.34-13.78-30.9-3.41-11.56-5.12-22.61-5.12-33.16 0-14.82 3.6-27.28 10.81-37.38 7.21-10.1 16.59-15.34 28.14-15.72 4.7 0 10.13 1.34 16.29 4.02 6.16 2.68 10.02 4.09 11.58 4.23 2.12-.27 6.22-1.74 12.31-4.41 6.09-2.68 11.43-3.9 16.03-3.66 11.97.64 21.6 4.72 28.9 12.24-10.51 6.35-15.68 15.15-15.52 26.39.16 8.7 3.48 16.14 9.97 22.31 6.49 6.17 14.28 9.61 23.36 10.32-2.12 6.64-4.8 13.51-8.04 20.61zM119.22 33.64c0-7.39 2.68-14.33 8.04-20.82 5.36-6.49 11.83-10.51 19.41-12.06.33 1.12.51 2.24.51 3.35 0 7.39-2.83 14.5-8.49 21.32-5.67 6.82-12.2 10.8-19.59 11.95-.11-1.23-.23-2.34-.37-3.74z"/>
+								</svg>
+							</div>
+
+							<!-- Android Robot Logo Circle -->
+							<div
+								class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center shadow-xs border border-stone-800"
+								title="Tersedia untuk Android (PWA / Chrome Install)"
 							>
-								▶
-							</span>
+								<svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24" aria-label="Android Logo">
+									<path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.156-.2701.063-.6158-.207-.7719-.2702-.1561-.6159-.063-.772.207l-2.023 3.504c-1.523-.6926-3.232-1.0772-5.064-1.0772-1.832 0-3.541.3846-5.064 1.0772l-2.023-3.504c-.1561-.27-.5018-.3631-.772-.207-.27.1561-.363.5018-.207.7719l1.996 3.4572c-3.144 1.704-5.289 4.8872-5.467 8.6366h21.046c-.178-3.7494-2.323-6.9326-5.467-8.6366"/>
+								</svg>
+							</div>
 						</div>
 
-						<!-- Action Pill Button with Yellow Circle Arrow -->
-						<a
-							href="/scan"
-							class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0D0D0D] bg-white hover:bg-stone-50 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all select-none"
+						<!-- Action Pill Button: Scan QR Install -->
+						<button
+							type="button"
+							onclick={openInstallModal}
+							class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#E2EF46]/30 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
+							title="Pindai QR untuk memasang aplikasi ke smartphone Anda"
 						>
-							<span>Scan QR</span>
+							<span>Scan QR Install</span>
 							<div
 								class="w-4 h-4 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[9px] font-black"
 							>
 								↓
 							</div>
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	<!-- ========================================================================= -->
+	<!-- PWA INSTALL & QR CODE MODAL DIALOG -->
+	<!-- ========================================================================= -->
+	{#if showInstallModal}
+		<div
+			class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+			onclick={(e) => { if (e.target === e.currentTarget) closeInstallModal(); }}
+			onkeydown={(e) => { if (e.key === 'Escape') closeInstallModal(); }}
+			role="dialog"
+			tabindex="-1"
+			aria-modal="true"
+			aria-label="Unduh dan Pasang Aplikasi Flora SMK"
+		>
+			<div
+				class="w-full max-w-md bg-[#F7F2E7] border-[3px] border-[#0D0D0D] rounded-3xl shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-6 relative flex flex-col gap-4 text-[#0D0D0D] animate-in zoom-in-95 duration-200"
+			>
+				<!-- Modal Header -->
+				<div class="flex items-start justify-between border-b-2 border-[#0D0D0D] pb-3">
+					<div class="flex items-center gap-2.5">
+						<div class="w-9 h-9 rounded-xl bg-[#E2EF46] border-2 border-[#0D0D0D] flex items-center justify-center text-base font-black shadow-xs">
+							📲
+						</div>
+						<div>
+							<h3 class="font-black text-base sm:text-lg leading-tight uppercase tracking-tight">
+								Pasang Aplikasi Lapangan
+							</h3>
+							<p class="text-[11px] font-bold text-stone-600">
+								PWA Mandiri untuk Apple iOS &amp; Android
+							</p>
+						</div>
+					</div>
+					<button
+						type="button"
+						onclick={closeInstallModal}
+						class="w-8 h-8 rounded-xl bg-white hover:bg-stone-100 border-2 border-[#0D0D0D] flex items-center justify-center text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer"
+						title="Tutup dialog"
+					>
+						<X class="w-4 h-4 stroke-[3]" />
+					</button>
+				</div>
+
+				<!-- QR Code Card -->
+				<div class="flex flex-col items-center gap-2 bg-white p-4 rounded-2xl border-2 border-[#0D0D0D] shadow-xs w-fit mx-auto text-center">
+					{#if installQrDataUrl}
+						<img
+							src={installQrDataUrl}
+							alt="QR Code Install Flora SMK"
+							class="w-44 h-44 sm:w-48 sm:h-48 rounded-lg"
+						/>
+					{:else}
+						<div class="w-44 h-44 flex items-center justify-center text-xs text-stone-400">
+							Membuat QR Code...
+						</div>
+					{/if}
+					<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-stone-100 border border-stone-300 text-[10px] font-mono font-bold text-stone-700 max-w-[240px] truncate">
+						<span>🔗</span>
+						<span class="truncate">{appOrigin || 'http://localhost:5173'}</span>
+					</div>
+					<p class="text-[11px] font-bold text-stone-700 max-w-[260px] leading-tight">
+						Pindai QR ini langsung dengan kamera HP untuk memasang katalog ke Layar Utama
+					</p>
+				</div>
+
+				<!-- OS Instructions Cards -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-left text-[11px]">
+					<!-- Apple iOS Instructions -->
+					<div class="p-3 bg-white rounded-xl border-2 border-[#0D0D0D] shadow-xs flex flex-col gap-1">
+						<div class="flex items-center gap-1.5 font-black uppercase text-stone-900 border-b border-stone-200 pb-1">
+							<span class="w-4 h-4 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px]">🍎</span>
+							<span>Apple iOS</span>
+						</div>
+						<p class="text-stone-600 leading-relaxed pt-0.5">
+							Buka di <b>Safari</b> → Ketuk tombol <b>Bagikan (Share) 📤</b> → Pilih <b>"Tambah ke Layar Utama" ➕</b>.
+						</p>
+					</div>
+
+					<!-- Android Instructions -->
+					<div class="p-3 bg-white rounded-xl border-2 border-[#0D0D0D] shadow-xs flex flex-col gap-1">
+						<div class="flex items-center gap-1.5 font-black uppercase text-stone-900 border-b border-stone-200 pb-1">
+							<span class="w-4 h-4 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px]">🤖</span>
+							<span>Android</span>
+						</div>
+						<p class="text-stone-600 leading-relaxed pt-0.5">
+							Buka di <b>Chrome</b> → Ketuk menu <b>titik tiga (⋮)</b> → Pilih <b>"Instal Aplikasi" 📥</b>.
+						</p>
+					</div>
+				</div>
+
+				<!-- Direct Install Button (If supported on current device) -->
+				{#if deferredPrompt}
+					<button
+						type="button"
+						onclick={triggerDirectInstall}
+						class="w-full py-2.5 rounded-xl bg-[#E2EF46] hover:bg-[#d8e538] border-2 border-[#0D0D0D] text-xs font-black uppercase tracking-wider text-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+					>
+						<span>⚡ Pasang di Perangkat Ini Sekarang</span>
+					</button>
+				{/if}
+			</div>
+		</div>
+	{/if}
 
 	<!-- ========================================================================= -->
 	<!-- SEARCH & COMMODITY FILTER BAR (DEDICATED FULL-WIDTH BAR) -->
