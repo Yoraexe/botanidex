@@ -76,35 +76,7 @@
 	<section
 		class="relative w-full max-w-6xl mx-auto rounded-[32px] sm:rounded-[40px] border-2 border-[#18181B] bg-[#F2EFE9] shadow-[6px_6px_0px_#18181B] p-6 sm:p-10 lg:p-12 overflow-hidden flex flex-col justify-between"
 	>
-		<!-- 1. TOP MICRO NAVIGATION STRIP (Crypko-style) -->
-		<div class="flex items-center justify-between w-full mb-8 sm:mb-12">
-			<!-- Brand Logo -->
-			<div class="flex items-center gap-1.5 font-black text-2xl sm:text-3xl tracking-tight text-stone-900 select-none">
-				<span>flora smk</span>
-				<span class="text-sm text-[#E07A5F]">♥</span>
-			</div>
-
-			<!-- Center Black Notched Cutout Bar (Desktop) -->
-			<div
-				class="hidden md:flex items-center gap-6 px-7 py-2.5 bg-[#18181B] text-[#F2EFE9] rounded-b-2xl -mt-6 sm:-mt-12 text-xs font-bold tracking-wide shadow-xs select-none"
-			>
-				<a href="/katalog" class="hover:text-[#F6BD60] transition-colors">Katalog</a>
-				<a href="/katalog?cat=obat" class="hover:text-[#F6BD60] transition-colors">TOGA</a>
-				<a href="/katalog?cat=pangan" class="hover:text-[#F6BD60] transition-colors">Pangan</a>
-				<a href="/peta" class="hover:text-[#F6BD60] transition-colors">Peta Kebun</a>
-				<a href="/scan" class="hover:text-[#F6BD60] transition-colors">Scan QR</a>
-			</div>
-
-			<!-- Right Action Pill Button -->
-			<a
-				href="/katalog"
-				class="px-5 py-2 rounded-full border-2 border-[#18181B] bg-white text-stone-900 font-black text-xs hover:bg-[#F6BD60] transition-colors shadow-[2px_2px_0px_#18181B] active:translate-y-0.5 select-none"
-			>
-				Eksplorasi
-			</a>
-		</div>
-
-		<!-- 2. MAIN 2-ROW BENTO COMPOSITION -->
+		<!-- MAIN 2-ROW BENTO COMPOSITION -->
 		<div class="relative flex flex-col gap-8 sm:gap-10">
 			<!-- ROW 1: Giant Headline (Left) & Vertical Portrait Card (Right) -->
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -153,38 +125,6 @@
 							</span>
 							<span class="text-sm font-black group-hover:-translate-y-0.5 transition-transform">↑</span>
 						</div>
-					</a>
-				</div>
-			</div>
-
-			<!-- CENTER ROTATING MEMPHIS STAMP (Floating in the open whitespace) -->
-			<div
-				class="hidden sm:block absolute left-[48%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-auto"
-			>
-				<div class="relative w-30 h-30 flex items-center justify-center">
-					<!-- Rotating SVG Text -->
-					<svg class="absolute inset-0 w-full h-full animate-spin-slow pointer-events-none" viewBox="0 0 100 100">
-						<path
-							id="stampPath"
-							d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-							fill="none"
-						/>
-						<text class="text-[8.5px] font-black uppercase tracking-[0.24em] fill-[#18181B]">
-							<textPath href="#stampPath" startOffset="0%">
-								★ FLORA SMK OFFICIAL ★ BOTANICAL PLATFORM ★
-							</textPath>
-						</text>
-					</svg>
-
-					<!-- Center Starburst Badge Button -->
-					<a
-						href="/katalog"
-						class="w-18 h-18 rounded-full bg-[#18181B] text-[#F6BD60] hover:bg-[#F6BD60] hover:text-[#18181B] border-2 border-[#18181B] flex flex-col items-center justify-center text-center p-1 cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#18181B]"
-						aria-label="Mulai jelajah katalog"
-					>
-						<span class="text-[8px] font-black leading-none">★</span>
-						<span class="text-[9px] font-black uppercase tracking-tight leading-tight">START<br />JELAJAH</span>
-						<span class="text-[8px] font-black leading-none">★</span>
 					</a>
 				</div>
 			</div>
