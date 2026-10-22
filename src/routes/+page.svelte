@@ -35,7 +35,52 @@
 	let deferredPrompt = $state<any>(null);
 	let isInstalled = $state(false);
 
-	onMount(async () => {
+	// School & Garden Photos Showcase (bawah tulisan hero: foto-foto sekolah/kebun)
+	const schoolGardenPhotos = [
+		{
+			url: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80',
+			title: 'Greenhouse Florikultura & Pembibitan Modern',
+			badge: 'FASILITAS KEBUN SEKOLAH'
+		},
+		{
+			url: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=1200&q=80',
+			title: 'Kebun Tanaman Pangan & Hidroponik Agribisnis',
+			badge: 'LAHAN OBSERVASI AGRONOMI'
+		},
+		{
+			url: 'https://images.unsplash.com/photo-1592417817098-8f3d69102a49?auto=format&fit=crop&w=1200&q=80',
+			title: 'Taman Koleksi Tanaman Obat Tradisional (TOGA)',
+			badge: 'LABORATORIUM BOTANI ALAMI'
+		}
+	];
+	let currentGardenIndex = $state(0);
+	const currentGarden = $derived(schoolGardenPhotos[currentGardenIndex]);
+
+	// Plant Specimens Showcase (kanan tulisan hero: menampilkan tanaman-tanamannya)
+	const specimenPhotos = [
+		{
+			url: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80',
+			commonName: 'Mawar Floribunda',
+			latinName: 'Rosa floribunda'
+		},
+		{
+			url: 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=800&q=80',
+			commonName: 'Anggrek Bulan',
+			latinName: 'Phalaenopsis amabilis'
+		},
+		{
+			url: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
+			commonName: 'Monstera Deliciosa',
+			latinName: 'Monstera deliciosa'
+		}
+	];
+	let currentSpecimenIndex = $state(0);
+	const currentSpecimen = $derived(specimenPhotos[currentSpecimenIndex]);
+
+	onMount(() => {
+		let gardenInterval: ReturnType<typeof setInterval> | undefined;
+		let specimenInterval: ReturnType<typeof setInterval> | undefined;
+
 		if (typeof window !== 'undefined') {
 			if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
 				isInstalled = true;
@@ -51,16 +96,32 @@
 				deferredPrompt = null;
 				toast.success('Pemasangan Berhasil!', 'Flora SMK berhasil ditambahkan ke perangkat Anda.');
 			});
+
+			// Auto-cycling interval for showcases
+			gardenInterval = setInterval(() => {
+				currentGardenIndex = (currentGardenIndex + 1) % schoolGardenPhotos.length;
+			}, 6000);
+
+			specimenInterval = setInterval(() => {
+				currentSpecimenIndex = (currentSpecimenIndex + 1) % specimenPhotos.length;
+			}, 7000);
 		}
 
-		try {
-			const updated = await PlantService.getCatalog();
-			if (updated && updated.length > 0) {
-				plants = updated;
+		(async () => {
+			try {
+				const updated = await PlantService.getCatalog();
+				if (updated && updated.length > 0) {
+					plants = updated;
+				}
+			} catch (err) {
+				console.warn('Gagal memuat tanaman:', err);
 			}
-		} catch (err) {
-			console.warn('Gagal memuat tanaman:', err);
-		}
+		})();
+
+		return () => {
+			if (gardenInterval) clearInterval(gardenInterval);
+			if (specimenInterval) clearInterval(specimenInterval);
+		};
 	});
 
 	async function handleDirectInstall() {
@@ -179,49 +240,51 @@
 					</h1>
 				</div>
 
-				<!-- Landscape Botanical Card (Asymmetric Leaf Shape: Rounded-TR + Rounded-BL) -->
+				<!-- Landscape Botanical Card: School & Garden Photo Showcase (Pure Display, NOT an active button) -->
 				<div class="relative w-full h-[235px] sm:h-[250px] lg:h-[260px]">
 					<!-- Card Container with Diagonally-Opposed Giant Curves -->
 					<div
-						class="w-full h-full rounded-tl-2xl rounded-br-2xl rounded-tr-[4.5rem] rounded-bl-[4.5rem] border-2 border-[#0D0D0D] bg-stone-900 overflow-hidden relative group shadow-xs"
+						class="w-full h-full rounded-tl-2xl rounded-br-2xl rounded-tr-[4.5rem] rounded-bl-[4.5rem] border-2 border-[#0D0D0D] bg-stone-900 overflow-hidden relative shadow-xs"
 					>
 						<!-- Double contour line on top-right (Crypko signature motif) -->
 						<div
 							class="absolute top-2 right-2 w-16 h-16 rounded-tr-[4rem] border-t-2 border-r-2 border-white/50 pointer-events-none z-20"
 						></div>
 
-						<!-- Image Area -->
+						<!-- Photo Display: School Gardens & Facilities -->
 						<img
-							src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
-							alt="Greenhouse Pembibitan Tanaman SMK"
-							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95"
+							src={currentGarden.url}
+							alt={currentGarden.title}
+							class="w-full h-full object-cover transition-all duration-700 opacity-95"
 						/>
 
-						<!-- Bottom Gradient Overlay (Padded to clear the bottom-left curve) -->
+						<!-- Bottom Gradient Overlay with Garden Title & Slide Indicator Dots -->
 						<div
-							class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-4 sm:p-5 pl-12 sm:pl-14 pr-16 flex flex-col justify-end text-white z-10"
+							class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-4 sm:p-5 pl-12 sm:pl-14 pr-5 flex items-end justify-between text-white z-10"
 						>
-							<span
-								class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
-							>
-								Greenhouse Florikultura &amp; Bibit
-							</span>
-							<h4 class="text-sm sm:text-base font-bold leading-tight">
-								Budidaya &amp; Observasi Praktikum Agronomi
-							</h4>
-						</div>
+							<div class="flex flex-col pr-4">
+								<span
+									class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
+								>
+									{currentGarden.badge}
+								</span>
+								<h4 class="text-sm sm:text-base font-bold leading-tight">
+									{currentGarden.title}
+								</h4>
+							</div>
 
-						<!-- Crypko-style Compact Floating Yellow Capsule Tab -->
-						<a
-							href="/katalog?cat=pangan"
-							class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-12 py-3 px-1.5 bg-[#E2EF46] border-2 border-[#0D0D0D] rounded-full flex flex-col items-center justify-center gap-1 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#d8e538] hover:scale-105 active:scale-95 transition-all select-none group/tab"
-							title="Eksplorasi tanaman budidaya"
-						>
-							<span class="text-lg group-hover/tab:scale-110 transition-transform">🌱</span>
-							<span class="text-[8px] font-black uppercase text-center leading-[1.1] text-[#0D0D0D]">
-								JELAJAH<br />BOTANI
-							</span>
-						</a>
+							<!-- Slide Dots Indicator for School Garden Photos -->
+							<div class="flex items-center gap-1.5 shrink-0 pb-1">
+								{#each schoolGardenPhotos as _, idx}
+									<button
+										type="button"
+										onclick={() => (currentGardenIndex = idx)}
+										class="h-1.5 rounded-full transition-all cursor-pointer {idx === currentGardenIndex ? 'w-5 bg-[#E2EF46]' : 'w-1.5 bg-white/60 hover:bg-white'}"
+										aria-label="Pilih foto kebun {idx + 1}"
+									></button>
+								{/each}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -237,25 +300,30 @@
 					</defs>
 				</svg>
 
-				<!-- Vertical Specimen Card (Faithful Crypko 45-degree Chamfer Top-Left + Star Strip) -->
-				<a
-					href="/katalog/anggrek-bulan"
+				<!-- Vertical Specimen Card: Plant Collection Showcase (Pure Display, NOT an active button) -->
+				<div
 					bind:clientWidth={rightCardW}
 					bind:clientHeight={rightCardH}
-					class="relative w-full h-[260px] sm:h-[280px] block group hover:-translate-y-1 transition-all shadow-xs"
+					class="relative w-full h-[260px] sm:h-[280px] block shadow-xs"
 				>
-					<!-- Clipped Content (Photo + Clean Yellow Strip) -->
+					<!-- Clipped Content (Plant Photo + Clean Yellow Strip) -->
 					<div
 						class="w-full h-full flex flex-row bg-[#EAE4D6] overflow-hidden"
 						style="clip-path: url(#right-card-chamfer-clip);"
 					>
-						<!-- Image Area (Vibrant Close-Up Botanical Bloom) -->
+						<!-- Image Area: Plant Specimens Showcase -->
 						<div class="flex-1 h-full relative overflow-hidden bg-[#EAE4D6] flex items-center justify-center">
 							<img
-								src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80"
-								alt="Spesimen Botani Puspa Pesona"
-								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+								src={currentSpecimen.url}
+								alt={currentSpecimen.commonName}
+								class="w-full h-full object-cover transition-all duration-700"
 							/>
+							<!-- Plant Identity Tag at Bottom-Left of Photo -->
+							<div class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-2.5 py-1 rounded-md text-[10px] font-bold z-10 flex items-center gap-1.5 shadow-xs">
+								<span>{currentSpecimen.commonName}</span>
+								<span class="text-stone-400">•</span>
+								<span class="font-latin italic text-[#E2EF46]">{currentSpecimen.latinName}</span>
+							</div>
 						</div>
 
 						<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Empty Middle, Up Arrow at Bottom) -->
@@ -272,7 +340,7 @@
 							<div class="flex-1"></div>
 
 							<!-- Upward Arrow at Bottom -->
-							<span class="text-base font-black leading-none group-hover:-translate-y-1 transition-transform">↑</span>
+							<span class="text-base font-black leading-none">↑</span>
 						</div>
 					</div>
 
@@ -297,7 +365,7 @@
 							stroke-width="2.5"
 						/>
 					</svg>
-				</a>
+				</div>
 
 				<!-- Notched App Download Card (iOS & Android Logos + Scan QR Install Button) -->
 				<div
