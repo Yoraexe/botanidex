@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Landing Page / Beranda (Svelte 5 Runes)
-  Visual Style: Exact 1:1 Replica of Crypko Editorial Poster Aesthetic
+  Visual Style: Tight, Interlocking, Proportional Replica of Crypko Poster Aesthetic
   Caller: Route '/'
 -->
 <script lang="ts">
@@ -67,15 +67,15 @@
 	<title>Flora SMK — Katalog Botani Digital SMK Pertanian</title>
 </svelte:head>
 
-<div class="flex flex-col gap-10 sm:gap-14">
+<div class="flex flex-col gap-10 sm:gap-12">
 	<!-- ========================================================================= -->
-	<!-- EXACT CRYPKO-STYLE EDITORIAL HERO ARTBOARD -->
+	<!-- EXACT PROPORTIONAL CRYPKO ARTBOARD (TIGHT, COMPACT & DENSE) -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1140px] mx-auto rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#E6E1D3] shadow-[8px_8px_0px_#0D0D0D] p-6 sm:p-9 lg:p-11 relative overflow-hidden flex flex-col justify-between min-h-[580px] lg:min-h-[640px]"
+		class="w-full max-w-[1080px] mx-auto rounded-[32px] border-[3px] border-[#0D0D0D] bg-[#E6E1D3] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col gap-5 sm:gap-6"
 	>
-		<!-- 1. TOP BAR (Logo + Inverted Black Center Tab + Pill Action) -->
-		<div class="flex items-center justify-between w-full mb-8 sm:mb-10">
+		<!-- 1. TOP BAR (Logo + Inverted Center Black Tab + Pill Action) -->
+		<div class="flex items-center justify-between w-full pb-1">
 			<!-- Brand Logo -->
 			<a href="/" class="flex items-center gap-1 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity">
 				<span>flora smk</span>
@@ -84,7 +84,7 @@
 
 			<!-- Center Black Notched Cutout Bar (Exact Crypko style) -->
 			<div
-				class="hidden md:flex items-center gap-7 px-8 py-2.5 bg-[#0D0D0D] text-[#E6E1D3] rounded-b-2xl -mt-6 sm:-mt-11 text-xs font-semibold tracking-wider select-none shadow-xs"
+				class="hidden md:flex items-center gap-7 px-8 py-2.5 bg-[#0D0D0D] text-[#E6E1D3] rounded-b-2xl -mt-5 sm:-mt-8 text-xs font-semibold tracking-wider select-none shadow-xs"
 			>
 				<a href="/katalog" class="hover:text-[#E2EF46] transition-colors">Katalog</a>
 				<a href="/katalog?cat=obat" class="hover:text-[#E2EF46] transition-colors">TOGA</a>
@@ -102,61 +102,164 @@
 			</a>
 		</div>
 
-		<!-- 2. MAIN 2-ROW BENTO LAYOUT -->
-		<div class="relative flex flex-col gap-6 sm:gap-8">
-			<!-- ROW 1: Giant Headline (Left) & Vertical Card with Yellow Strip (Right) -->
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-				<!-- Top-Left: Giant Display Typography (NO subtitle, exact like Crypko) -->
-				<div class="lg:col-span-7 flex flex-col justify-center pt-2">
-					<h1
-						class="font-display text-5xl sm:text-7xl lg:text-[6.2rem] font-black uppercase tracking-tight leading-[0.85] text-[#0D0D0D]"
-					>
-						KATALOG BOTANI<br />
-						SMK PERTANIAN
-					</h1>
-				</div>
+		<!-- 2. INTERLOCKING 2-ROW CONTENT AREA -->
+		<div class="relative grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+			<!-- ROW 1 LEFT: Giant Condensed Headline (Takes full left column) -->
+			<div class="lg:col-span-8 flex flex-col justify-center">
+				<h1
+					class="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[6.8rem] xl:text-[7.2rem] font-black uppercase tracking-tight leading-[0.82] text-[#0D0D0D]"
+				>
+					KATALOG BOTANI<br />
+					SMK PERTANIAN
+				</h1>
+			</div>
 
-				<!-- Top-Right: Vertical Card (Exact shape & proportion) -->
-				<div class="lg:col-span-5 flex justify-center lg:justify-end">
-					<a
-						href="/katalog/anggrek-bulan"
-						class="relative w-[260px] sm:w-[285px] h-[330px] sm:h-[355px] rounded-2xl rounded-tl-[3.5rem] border-2 border-[#0D0D0D] bg-[#D5D0C3] overflow-hidden flex flex-row group hover:-translate-y-1 hover:shadow-[5px_5px_0px_#0D0D0D] transition-all"
-					>
-						<!-- Image area with subtle contour line -->
-						<div class="flex-1 h-full relative overflow-hidden bg-[#D5D0C3] flex items-center justify-center p-2">
-							<img
-								src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=800&q=80"
-								alt="Anggrek Bulan Puspa Pesona"
-								class="w-full h-full object-cover rounded-tl-[3rem] group-hover:scale-105 transition-transform duration-500"
-							/>
-							<div
-								class="absolute bottom-2.5 left-2.5 bg-[#0D0D0D]/85 text-white px-2 py-0.5 rounded text-[9px] font-bold"
-							>
-								<p class="font-latin italic">Phalaenopsis amabilis</p>
-							</div>
-						</div>
+			<!-- ROW 1 RIGHT: Vertical Card with Yellow Strip -->
+			<div class="lg:col-span-4 flex justify-center lg:justify-end">
+				<a
+					href="/katalog/anggrek-bulan"
+					class="relative w-[280px] sm:w-[310px] h-[370px] sm:h-[400px] rounded-2xl rounded-tl-[3.5rem] border-2 border-[#0D0D0D] bg-[#D5D0C3] overflow-hidden flex flex-row group hover:-translate-y-1 hover:shadow-[5px_5px_0px_#0D0D0D] transition-all shadow-xs"
+				>
+					<!-- Double contour line on top-left notch (Crypko detail) -->
+					<div
+						class="absolute top-2 left-2 w-16 h-16 rounded-tl-[2.8rem] border-t-2 border-l-2 border-[#0D0D0D]/40 pointer-events-none z-10"
+					></div>
 
-						<!-- Vertical Neon Chartreuse Strip (Exact Crypko styling) -->
+					<!-- Image Area -->
+					<div class="flex-1 h-full relative overflow-hidden bg-[#D5D0C3] flex items-center justify-center p-2">
+						<img
+							src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=800&q=80"
+							alt="Anggrek Bulan Puspa Pesona"
+							class="w-full h-full object-cover rounded-tl-[3rem] group-hover:scale-105 transition-transform duration-500"
+						/>
 						<div
-							class="w-9 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-4 text-[#0D0D0D] select-none shrink-0"
+							class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-2.5 py-1 rounded-md text-[10px] font-bold z-10"
 						>
-							<span class="text-xs font-black tracking-tighter">✦ ✦</span>
-							<span
-								class="writing-mode-vertical text-[9px] font-black uppercase tracking-widest rotate-180 text-center"
-							>
-								PUSPA PESONA
-							</span>
-							<span class="text-sm font-black group-hover:-translate-y-0.5 transition-transform">↑</span>
+							<p class="font-latin italic">Phalaenopsis amabilis</p>
 						</div>
+					</div>
+
+					<!-- Vertical Neon Chartreuse Strip -->
+					<div
+						class="w-9 sm:w-10 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-4 text-[#0D0D0D] select-none shrink-0"
+					>
+						<span class="text-xs font-black tracking-tighter">✦ ✦</span>
+						<span
+							class="writing-mode-vertical text-[10px] font-black uppercase tracking-widest rotate-180 text-center"
+						>
+							PUSPA PESONA
+						</span>
+						<span class="text-sm font-black group-hover:-translate-y-0.5 transition-transform">↑</span>
+					</div>
+				</a>
+			</div>
+
+			<!-- ROW 2 LEFT: Landscape Botanical Card with Attached Pill Button -->
+			<div class="lg:col-span-8 flex justify-start">
+				<div
+					class="relative w-full max-w-[560px] h-[240px] sm:h-[260px] rounded-2xl rounded-bl-[3.5rem] border-2 border-[#0D0D0D] bg-white overflow-hidden flex flex-row group shadow-xs"
+				>
+					<!-- Photo of Botanical Greenhouse / Crops -->
+					<div class="flex-1 h-full relative overflow-hidden bg-stone-900">
+						<img
+							src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+							alt="Greenhouse Pembibitan Tanaman SMK"
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95"
+						/>
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-4 flex flex-col justify-end text-white"
+						>
+							<span
+								class="text-[9px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/60 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
+							>
+								Greenhouse Florikultura &amp; Bibit
+							</span>
+							<h4 class="text-sm sm:text-base font-bold leading-tight">
+								Budidaya &amp; Observasi Praktikum Agronomi
+							</h4>
+						</div>
+					</div>
+
+					<!-- Attached Yellow Pill on Right Edge (Exact Crypko styling) -->
+					<a
+						href="/katalog?cat=pangan"
+						class="w-14 sm:w-16 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-center gap-1.5 p-2 text-[#0D0D0D] hover:bg-[#d4e138] transition-colors shrink-0 group/tab select-none"
+						title="Eksplorasi tanaman"
+					>
+						<span class="text-2xl group-hover/tab:scale-110 transition-transform">🌱</span>
+						<span class="text-[9px] sm:text-[10px] font-black uppercase text-center leading-tight">
+							JELAJAH<br />BOTANI
+						</span>
 					</a>
 				</div>
 			</div>
 
-			<!-- CENTER ROTATING MEMPHIS STAMP (Floating in the open intersection) -->
+			<!-- ROW 2 RIGHT: Notched App Card (Aligned with Vertical Card above) -->
+			<div class="lg:col-span-4 flex justify-center lg:justify-end">
+				<div
+					class="relative w-[280px] sm:w-[310px] h-[240px] sm:h-[260px] bg-white rounded-2xl border-2 border-[#0D0D0D] p-5 flex flex-col justify-between shadow-xs"
+				>
+					<!-- Top Chamfer Notch Contour (Crypko detail) -->
+					<div
+						class="absolute top-0 left-0 w-8 h-8 rounded-tl-xl border-t-2 border-l-2 border-[#0D0D0D] pointer-events-none"
+					></div>
+
+					<!-- Notched Header with 3 Dots Tab -->
+					<div class="flex items-center justify-between border-b border-stone-200 pb-2.5">
+						<h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-[#0D0D0D]">
+							APLIKASI PWA LAPANGAN
+						</h3>
+						<!-- Black pill tab with 3 white dots -->
+						<div class="px-2.5 py-0.5 rounded-full bg-[#0D0D0D] flex items-center gap-1">
+							<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+							<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+							<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+						</div>
+					</div>
+
+					<!-- Description -->
+					<p class="text-xs text-stone-600 font-medium leading-relaxed">
+						Aplikasi katalog botani mandiri untuk siswa dan guru SMK Pertanian. Dilengkapi taksonomi ilmiah, video budidaya, dan QR scanner offline.
+					</p>
+
+					<!-- Bottom Row: Interconnected circular icons & Action pill button -->
+					<div class="flex items-center justify-between pt-2 border-t border-stone-100">
+						<div class="flex items-center -space-x-1">
+							<span
+								class="w-7 h-7 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[10px] font-black z-10"
+								title="PWA Offline Supported"
+							>
+								A
+							</span>
+							<span
+								class="w-7 h-7 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[10px] font-black"
+								title="Video Player Supported"
+							>
+								▶
+							</span>
+						</div>
+
+						<!-- Action Pill Button with Yellow Circle Arrow -->
+						<a
+							href="/scan"
+							class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-stone-50 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all select-none"
+						>
+							<span>Scan QR</span>
+							<div
+								class="w-5 h-5 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[10px] font-black"
+							>
+								↓
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- 3. CENTER ROTATING MEMPHIS STAMP (Tightly Bridging the 4 Quadrants) -->
 			<div
-				class="hidden sm:block absolute left-[45%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-auto"
+				class="hidden lg:block absolute left-[54%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-auto"
 			>
-				<div class="relative w-28 h-28 flex items-center justify-center">
+				<div class="relative w-32 h-32 flex items-center justify-center">
 					<!-- Rotating SVG Text -->
 					<svg class="absolute inset-0 w-full h-full animate-spin-slow pointer-events-none" viewBox="0 0 100 100">
 						<path
@@ -174,112 +277,13 @@
 					<!-- Center Starburst Badge Button -->
 					<a
 						href="/katalog"
-						class="w-16 h-16 rounded-full bg-[#0D0D0D] text-[#E2EF46] hover:bg-[#E2EF46] hover:text-[#0D0D0D] border-2 border-[#0D0D0D] flex flex-col items-center justify-center text-center p-1 cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#0D0D0D]"
+						class="w-18 h-18 rounded-full bg-[#0D0D0D] text-[#E2EF46] hover:bg-[#E2EF46] hover:text-[#0D0D0D] border-2 border-[#0D0D0D] flex flex-col items-center justify-center text-center p-1 cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#0D0D0D]"
 						aria-label="Mulai jelajah katalog"
 					>
-						<span class="text-[7px] font-black leading-none">★</span>
-						<span class="text-[8.5px] font-black uppercase tracking-tight leading-tight">START<br />JELAJAH</span>
-						<span class="text-[7px] font-black leading-none">★</span>
+						<span class="text-[8px] font-black leading-none">★</span>
+						<span class="text-[9px] font-black uppercase tracking-tight leading-tight">START<br />JELAJAH</span>
+						<span class="text-[8px] font-black leading-none">★</span>
 					</a>
-				</div>
-			</div>
-
-			<!-- ROW 2: Landscape Card (Left) & Notched Feature Card (Right) -->
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
-				<!-- Bottom-Left: Landscape Card with attached yellow tab -->
-				<div class="lg:col-span-7">
-					<div
-						class="relative w-full max-w-[450px] h-[210px] sm:h-[230px] rounded-2xl rounded-bl-[3.5rem] border-2 border-[#0D0D0D] bg-white overflow-hidden flex flex-row group shadow-xs"
-					>
-						<!-- Image Area -->
-						<div class="flex-1 h-full relative overflow-hidden bg-stone-900">
-							<img
-								src="https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=1000&q=80"
-								alt="Lahan Praktikum Pertanian"
-								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-							/>
-							<div
-								class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-4 flex flex-col justify-end text-white"
-							>
-								<span
-									class="text-[9px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/60 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
-								>
-									Lahan Praktikum Bedeng C-4
-								</span>
-								<h4 class="text-sm font-bold leading-tight">
-									Polinasi Jagung &amp; Budidaya Tanaman Pangan
-								</h4>
-							</div>
-						</div>
-
-						<!-- Attached Yellow Pill Badge on Right Edge (Exact Crypko styling) -->
-						<a
-							href="/katalog?cat=pangan"
-							class="w-13 sm:w-15 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-center gap-1.5 p-2 text-[#0D0D0D] hover:bg-[#d4e138] transition-colors shrink-0 group/tab select-none"
-							title="Lihat tanaman pangan"
-						>
-							<span class="text-xl group-hover/tab:scale-110 transition-transform">🌱</span>
-							<span class="text-[9px] font-black uppercase text-center leading-tight">
-								JELAJAH<br />BOTANI
-							</span>
-						</a>
-					</div>
-				</div>
-
-				<!-- Bottom-Right: Notched Feature Card with 3-dot Black Tab (Exact Crypko styling) -->
-				<div class="lg:col-span-5 flex flex-col justify-end">
-					<div
-						class="relative w-full max-w-[390px] h-[190px] sm:h-[210px] bg-white rounded-2xl border-2 border-[#0D0D0D] p-4 sm:p-5 flex flex-col justify-between shadow-xs ml-auto"
-					>
-						<!-- Notched Header with 3 Dots Tab -->
-						<div class="flex items-center justify-between border-b border-stone-200 pb-2">
-							<h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-[#0D0D0D]">
-								APLIKASI PWA LAPANGAN
-							</h3>
-							<!-- Black pill tab with 3 white dots -->
-							<div class="px-2.5 py-0.5 rounded-full bg-[#0D0D0D] flex items-center gap-1">
-								<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-								<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-								<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-							</div>
-						</div>
-
-						<!-- Description (2 lines of clean text) -->
-						<p class="text-xs text-stone-600 font-medium leading-relaxed">
-							Aplikasi katalog botani mandiri untuk siswa dan guru SMK Pertanian. Dilengkapi identifikasi taksonomi, video budidaya, dan QR scanner offline.
-						</p>
-
-						<!-- Bottom Row: Interconnected circular icons & Action pill button -->
-						<div class="flex items-center justify-between pt-2 border-t border-stone-100">
-							<div class="flex items-center -space-x-1">
-								<span
-									class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px] font-black z-10"
-									title="PWA Offline Supported"
-								>
-									A
-								</span>
-								<span
-									class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px] font-black"
-									title="Video Player Supported"
-								>
-									▶
-								</span>
-							</div>
-
-							<!-- Action Pill Button with Yellow Download/Arrow Circle -->
-							<a
-								href="/scan"
-								class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-stone-50 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all select-none"
-							>
-								<span>Scan QR</span>
-								<div
-									class="w-5 h-5 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[10px] font-black"
-								>
-									↓
-								</div>
-							</a>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -289,7 +293,7 @@
 	<!-- SEARCH & COMMODITY FILTER BAR (DEDICATED FULL-WIDTH BAR) -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1140px] mx-auto bg-[#E6E1D3] rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
+		class="w-full max-w-[1080px] mx-auto bg-[#E6E1D3] rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
 	>
 		<!-- Live Search Input -->
 		<form onsubmit={handleSearch} class="flex items-center gap-2 flex-1 max-w-md">
@@ -353,7 +357,7 @@
 	<!-- ========================================================================= -->
 	<!-- FEATURED PLANTS GRID -->
 	<!-- ========================================================================= -->
-	<section class="flex flex-col gap-4 max-w-[1140px] mx-auto w-full">
+	<section class="flex flex-col gap-4 max-w-[1080px] mx-auto w-full">
 		<div class="flex items-center justify-between">
 			<div>
 				<h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Koleksi Tanaman Unggulan</h2>
@@ -387,7 +391,7 @@
 	<!-- STUDENT VIDEO CALLOUT -->
 	<!-- ========================================================================= -->
 	<section
-		class="max-w-[1140px] mx-auto w-full bg-[#E2EF46] rounded-3xl p-6 sm:p-8 border-2 border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] flex flex-col sm:flex-row items-center justify-between gap-6"
+		class="max-w-[1080px] mx-auto w-full bg-[#E2EF46] rounded-3xl p-6 sm:p-8 border-2 border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] flex flex-col sm:flex-row items-center justify-between gap-6"
 	>
 		<div class="flex items-start gap-4">
 			<div
