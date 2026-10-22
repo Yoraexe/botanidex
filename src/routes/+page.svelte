@@ -99,40 +99,43 @@
 					</h1>
 				</div>
 
-				<!-- Landscape Botanical Card (Immediately below headline, no void) -->
-				<div
-					class="relative w-full h-[270px] sm:h-[285px] rounded-2xl rounded-tl-[3.5rem] border-2 border-[#0D0D0D] bg-stone-900 overflow-hidden group shadow-xs"
-				>
-					<!-- Double contour line on top-left (Crypko motif) -->
+				<!-- Landscape Botanical Card (Faithful Crypko Asymmetric Leaf Shape: Rounded-TR + Rounded-BL) -->
+				<div class="relative w-full h-[270px] sm:h-[285px]">
+					<!-- Card Container with Diagonally-Opposed Giant Curves -->
 					<div
-						class="absolute top-2 left-2 w-16 h-16 rounded-tl-[2.8rem] border-t-2 border-l-2 border-white/40 pointer-events-none z-20"
-					></div>
-
-					<!-- Image Area -->
-					<img
-						src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
-						alt="Greenhouse Pembibitan Tanaman SMK"
-						class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-					/>
-
-					<!-- Bottom Gradient Overlay -->
-					<div
-						class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 sm:p-5 flex flex-col justify-end text-white z-10 pr-24"
+						class="w-full h-full rounded-tl-2xl rounded-br-2xl rounded-tr-[5rem] sm:rounded-tr-[5.5rem] rounded-bl-[5rem] sm:rounded-bl-[5.5rem] border-2 border-[#0D0D0D] bg-stone-900 overflow-hidden relative group shadow-xs"
 					>
-						<span
-							class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1.5 border border-white/20"
+						<!-- Double contour line on top-right (Crypko signature motif) -->
+						<div
+							class="absolute top-2 right-2 w-20 h-20 rounded-tr-[4.6rem] border-t-2 border-r-2 border-white/45 pointer-events-none z-20"
+						></div>
+
+						<!-- Image Area -->
+						<img
+							src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
+							alt="Greenhouse Pembibitan Tanaman SMK"
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+						/>
+
+						<!-- Bottom Gradient Overlay (Padded to clear the bottom-left curve) -->
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-4 sm:p-5 pl-14 sm:pl-16 pr-16 flex flex-col justify-end text-white z-10"
 						>
-							Greenhouse Florikultura &amp; Bibit
-						</span>
-						<h4 class="text-sm sm:text-base font-bold leading-tight">
-							Budidaya &amp; Observasi Praktikum Agronomi
-						</h4>
+							<span
+								class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1.5 border border-white/20"
+							>
+								Greenhouse Florikultura &amp; Bibit
+							</span>
+							<h4 class="text-sm sm:text-base font-bold leading-tight">
+								Budidaya &amp; Observasi Praktikum Agronomi
+							</h4>
+						</div>
 					</div>
 
-					<!-- Crypko-style Floating Yellow Capsule Tab on Right Edge -->
+					<!-- Crypko-style Floating Yellow Capsule Tab Protruding on Right Edge -->
 					<a
 						href="/katalog?cat=pangan"
-						class="absolute right-3.5 top-1/2 -translate-y-1/2 z-20 bg-[#E2EF46] border-2 border-[#0D0D0D] rounded-full px-2.5 py-4 flex flex-col items-center justify-center gap-1 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#d8e538] hover:scale-105 active:scale-95 transition-all select-none group/tab"
+						class="absolute -right-3 sm:-right-4 top-1/2 -translate-y-1/2 z-30 bg-[#E2EF46] border-2 border-[#0D0D0D] rounded-full px-2.5 sm:px-3 py-3.5 sm:py-4 flex flex-col items-center justify-center gap-1 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#d8e538] hover:scale-105 active:scale-95 transition-all select-none group/tab"
 						title="Eksplorasi tanaman budidaya"
 					>
 						<span class="text-xl group-hover/tab:scale-110 transition-transform">🌱</span>
