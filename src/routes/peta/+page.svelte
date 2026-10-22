@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — School Botanical Map Page (Svelte 5 Runes)
+  Botanidex — School Botanical Map Page (Svelte 5 Runes)
   Tujuan: Menampilkan denah interaktif area SMK Pertanian dengan lokasi seluruh tanaman gaya Neo-Brutalist (Option A)
   Caller: Route '/peta'
   BRD Ref: F4 (Peta Lokasi Tanaman)
@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-	<title>Peta Kebun &amp; Lokasi Tanaman — Flora SMK</title>
+	<title>Peta Kebun &amp; Lokasi Tanaman — Botanidex</title>
 </svelte:head>
 
 <div class="flex flex-col gap-5">

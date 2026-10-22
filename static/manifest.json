@@ -1,6 +1,6 @@
 {
-  "name": "Flora SMK — Katalog Tanaman Digital",
-  "short_name": "Flora SMK",
+  "name": "Botanidex — Katalog Tanaman Digital SMK PPN Gorontalo",
+  "short_name": "Botanidex",
   "description": "Katalog digital tanaman dan tumbuhan di SMK PPN Gorontalo dengan QR scanner, peta lokasi, dan video edukasi siswa.",
   "start_url": "/",
   "scope": "/",

@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Root Layout (Svelte 5 Runes)
+  Botanidex — Root Layout (Svelte 5 Runes)
   Tujuan: Membungkus seluruh halaman dengan tema Neo-Brutalist Fresh Modern Agronomy, Navbar, Banner status offline, Toast, dan BottomNav
   Caller: SvelteKit router
 -->
@@ -46,7 +46,7 @@
 						class="w-full h-full object-contain"
 					/>
 				</div>
-				<p class="font-extrabold text-[#0D0D0D]">Flora SMK — Katalog Botani SMK PPN Gorontalo</p>
+				<p class="font-extrabold text-[#0D0D0D]">Botanidex — Katalog Botani SMK PPN Gorontalo</p>
 			</div>
 			<div class="flex items-center gap-3">
 				<p class="font-medium text-stone-600">© 2026 SMK PPN Gorontalo. Seluruh hak cipta dilindungi.</p>

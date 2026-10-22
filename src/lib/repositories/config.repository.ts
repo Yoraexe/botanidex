@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — App Configuration Repository
+// Botanidex — App Configuration Repository
 // Tujuan: Data access layer untuk persistensi konfigurasi dinamis aplikasi (SSR & LocalStorage)
 // Caller: src/lib/services/config.service.ts
 // Dependensi: default-config.ts, config.types.ts, config.schema.ts
@@ -11,7 +11,7 @@ import { DEFAULT_APP_CONFIG } from '../data/default-config';
 import { appConfigSchema } from '../schemas/config.schema';
 import type { AppConfig } from '../types/config.types';
 
-const CONFIG_STORAGE_KEY = 'flora_smk_app_config_v3';
+const CONFIG_STORAGE_KEY = 'botanidex_app_config_v1';
 
 // In-memory cache for SSR & client synchronization
 let memoryConfig: AppConfig = { ...DEFAULT_APP_CONFIG };

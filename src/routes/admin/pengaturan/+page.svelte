@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Admin CMS & Content Management Portal (Svelte 5 Runes)
+  Botanidex — Admin CMS & Content Management Portal (Svelte 5 Runes)
   Tujuan: Mengatur seluruh konten, identitas sekolah, galeri showcase, dan kategori secara dinamis
   Caller: Route '/admin/pengaturan'
 -->
@@ -177,7 +177,7 @@
 </script>
 
 <svelte:head>
-	<title>Pengaturan CMS Aplikasi — Flora SMK</title>
+	<title>Pengaturan CMS Aplikasi — Botanidex</title>
 </svelte:head>
 
 <div class="flex flex-col gap-6 max-w-5xl mx-auto w-full">
@@ -276,7 +276,7 @@
 						id="appName"
 						bind:value={config.identity.appName}
 						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none"
-						placeholder="Contoh: Flora SMK"
+						placeholder="Contoh: Botanidex"
 					/>
 				</div>
 
@@ -613,7 +613,7 @@
 					<div>
 						<h4 class="text-xs font-black uppercase text-amber-900">Pulihkan Seluruh Pengaturan Bawaan</h4>
 						<p class="text-[11px] text-amber-800">
-							Kembalikan seluruh teks, galeri foto, spesimen, dan kategori ke preset resmi Flora SMK.
+							Kembalikan seluruh teks, galeri foto, spesimen, dan kategori ke preset resmi Botanidex.
 						</p>
 					</div>
 				</div>

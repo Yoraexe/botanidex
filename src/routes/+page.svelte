@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Landing Page / Beranda (Svelte 5 Runes)
+  Botanidex — Landing Page / Beranda (Svelte 5 Runes)
   Visual Style: Option A - Fresh Modern Agronomy (Crypko Poster Aesthetic)
   Caller: Route '/'
 -->
@@ -82,7 +82,7 @@
 			window.addEventListener('appinstalled', () => {
 				isInstalled = true;
 				deferredPrompt = null;
-				toast.success('Pemasangan Berhasil!', 'Flora SMK berhasil ditambahkan ke perangkat Anda.');
+				toast.success('Pemasangan Berhasil!', 'Botanidex berhasil ditambahkan ke perangkat Anda.');
 			});
 
 			// Auto-cycling interval for showcases
@@ -124,12 +124,12 @@
 			deferredPrompt.prompt();
 			const { outcome } = await deferredPrompt.userChoice;
 			if (outcome === 'accepted') {
-				toast.success('Pemasangan Berhasil!', 'Flora SMK berhasil ditambahkan ke perangkat Anda.');
+				toast.success('Pemasangan Berhasil!', 'Botanidex berhasil ditambahkan ke perangkat Anda.');
 				deferredPrompt = null;
 				isInstalled = true;
 			}
 		} else if (isInstalled) {
-			toast.info('Aplikasi Sudah Terpasang', 'Flora SMK sudah terpasang di perangkat ini dan siap digunakan offline.');
+			toast.info('Aplikasi Sudah Terpasang', 'Botanidex sudah terpasang di perangkat ini dan siap digunakan offline.');
 		} else {
 			const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 			if (isIOS) {
@@ -164,7 +164,7 @@
 </script>
 
 <svelte:head>
-	<title>Flora SMK — Katalog Botani Digital SMK PPN Gorontalo</title>
+	<title>Botanidex — Katalog Botani Digital SMK PPN Gorontalo</title>
 </svelte:head>
 
 <div class="flex flex-col gap-8 sm:gap-10">
@@ -326,7 +326,7 @@
 							type="button"
 							onclick={handleDirectInstall}
 							class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#D4F469]/40 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
-							title="Pasang aplikasi Flora SMK langsung ke perangkat Anda"
+							title="Pasang aplikasi Botanidex langsung ke perangkat Anda"
 						>
 							<Smartphone class="w-3.5 h-3.5 stroke-[2.2]" />
 							<span>{appDownload.buttonLabel}</span>

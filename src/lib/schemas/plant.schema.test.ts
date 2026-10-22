@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Unit Tests for PlantForm Schema Validation
+// Botanidex — Unit Tests for PlantForm Schema Validation
 // Tujuan: Memvalidasi boundary input data formulir tanaman dengan Zod
 // Caller: npm run test (Vitest)
 // Dependensi: vitest, plantFormSchema

@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Interactive School Map Component (Svelte 5 Runes)
+  Botanidex — Interactive School Map Component (Svelte 5 Runes)
   Tujuan: Peta interaktif denah sekolah gaya Neo-Brutalist untuk visualisasi zonasi lahan & lokasi tanaman (Option A - Fresh Modern Agronomy)
   Caller: Halaman /peta
   BRD Ref: F4 (Peta Lokasi Tanaman)

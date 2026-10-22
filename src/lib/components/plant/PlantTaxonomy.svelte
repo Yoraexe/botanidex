@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Plant Taxonomy Component (Svelte 5 Runes)
+  Botanidex — Plant Taxonomy Component (Svelte 5 Runes)
   Tujuan: Menampilkan hierarki klasifikasi ilmiah botani secara terstruktur gaya Neo-Brutalist (Option A)
   Caller: Plant detail page
 -->

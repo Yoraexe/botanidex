@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Button UI Primitive (Svelte 5 Runes)
+  Botanidex — Button UI Primitive (Svelte 5 Runes)
   Tujuan: Komponen tombol standar Neo-Brutalist dengan varian Fresh Modern Agronomy
   Caller: Seluruh form, navbar, card, dan modal
 -->

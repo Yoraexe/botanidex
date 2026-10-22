@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Plant Domain Types
+// Botanidex — Plant Domain Types
 // Tujuan: Mendefinisikan tipe data botani, taksonomi, foto, video, dan status katalog
 // Caller: Plant repositories, services, schemas, and UI components
 // Dependensi: none

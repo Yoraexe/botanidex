@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Supabase Client & Connection Manager
+// Botanidex — Supabase Client & Connection Manager
 // Tujuan: Inisialisasi klien Supabase dengan fallback offline-safe
 // Caller: Repositories (plant, contribution, user, storage)
 // Dependensi: @supabase/supabase-js

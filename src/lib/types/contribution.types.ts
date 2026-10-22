@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Student Contribution & Moderation Domain Types
+// Botanidex — Student Contribution & Moderation Domain Types
 // Tujuan: Mendefinisikan tipe formulir pengajuan tanaman dan antrean moderasi guru
 // Caller: Contribution form, moderation dashboard, and services
 // Dependensi: Plant, PlantCategory, ContributionStatus

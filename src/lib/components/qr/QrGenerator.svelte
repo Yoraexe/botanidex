@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Printable QR Plant Tag Generator (Svelte 5 Runes)
+  Botanidex — Printable QR Plant Tag Generator (Svelte 5 Runes)
   Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah gaya Neo-Brutalist (Option A)
   Caller: Halaman detail tanaman, panel admin
   BRD Ref: F3 (QR Code Generator)
@@ -38,7 +38,7 @@
 		if (!qrDataUrl) return;
 		const a = document.createElement('a');
 		a.href = qrDataUrl;
-		a.download = `QR-FloraSMK-${plant.slug}.png`;
+		a.download = `QR-Botanidex-${plant.slug}.png`;
 		a.click();
 	}
 </script>

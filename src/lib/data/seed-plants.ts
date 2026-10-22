@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Seed & Offline Fallback Plant Dataset
+// Botanidex — Seed & Offline Fallback Plant Dataset
 // Tujuan: Data botani referensi SMK PPN Gorontalo untuk offline-first dan inisialisasi awal
 // Caller: Plant repository, database seeding
 // Dependensi: Plant type

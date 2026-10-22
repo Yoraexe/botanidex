@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Config Service Unit Tests (Vitest)
+// Botanidex — Config Service Unit Tests (Vitest)
 // Tujuan: Memastikan validasi dan logika bisnis pengelolaan konfigurasi CMS bekerja 100%
 // Caller: npm run test
 // ==============================================================================
@@ -14,7 +14,7 @@ describe('ConfigService', () => {
 
 	it('harus memuat konfigurasi default dengan benar', () => {
 		const config = ConfigService.getConfig();
-		expect(config.identity.appName).toBe('Flora SMK');
+		expect(config.identity.appName).toBe('Botanidex');
 		expect(config.hero.headlineLine1).toBe('KATALOG BOTANI');
 		expect(config.hero.gardenPhotos.length).toBeGreaterThanOrEqual(1);
 		expect(config.hero.specimens.length).toBeGreaterThanOrEqual(1);

@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Input UI Primitive (Svelte 5 Runes)
+  Botanidex — Input UI Primitive (Svelte 5 Runes)
   Tujuan: Form input gaya Neo-Brutalist dengan border tegas dan shadow taktil
   Caller: Form kontribusi tanaman, pencarian, dan login
 -->

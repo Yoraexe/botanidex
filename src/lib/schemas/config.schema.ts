@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — App Configuration Zod Schema
+// Botanidex — App Configuration Zod Schema
 // Tujuan: Validasi integritas data pengaturan dinamis CMS aplikasi
 // Caller: config.service.ts, admin/pengaturan
 // Dependensi: zod

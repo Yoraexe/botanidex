@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Toast Notification Store
+// Botanidex — Toast Notification Store
 // Tujuan: State manager untuk menampilkan alert toast melayang (sukses, error, info)
 // Caller: UI components, form submitters, error catchers
 // Dependensi: svelte/store

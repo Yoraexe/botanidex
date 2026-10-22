@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Plant Photo Gallery Component (Svelte 5 Runes)
+  Botanidex — Plant Photo Gallery Component (Svelte 5 Runes)
   Tujuan: Menampilkan galeri foto multi-sudut tanaman gaya Neo-Brutalist (habitus, daun, bunga, buah)
   Caller: Plant detail page
 -->

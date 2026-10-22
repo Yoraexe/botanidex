@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Plant Catalog List Page (Svelte 5 Runes)
+  Botanidex — Plant Catalog List Page (Svelte 5 Runes)
   Tujuan: Menampilkan katalog botani lengkap dengan filter kategori dan pencarian instan gaya Neo-Brutalist (Option A)
   Caller: Route '/katalog'
   BRD Ref: F1 (Katalog Tanaman)
@@ -89,7 +89,7 @@
 </script>
 
 <svelte:head>
-	<title>Katalog Tanaman — Flora SMK</title>
+	<title>Katalog Tanaman — Botanidex</title>
 </svelte:head>
 
 <div class="flex flex-col gap-6">

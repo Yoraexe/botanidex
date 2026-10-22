@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — App Configuration Service
+// Botanidex — App Configuration Service
 // Tujuan: Business logic layer untuk pengelolaan pengaturan dinamis aplikasi
 // Caller: +page.svelte, admin/pengaturan, layout components
 // Dependensi: config.repository.ts, config.types.ts

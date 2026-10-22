@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Toast Alert Container (Svelte 5 Runes)
+  Botanidex — Toast Alert Container (Svelte 5 Runes)
   Tujuan: Menampilkan notifikasi popup aksi gaya Neo-Brutalist di sudut layar (Fresh Modern Agronomy)
   Caller: src/routes/+layout.svelte
 -->

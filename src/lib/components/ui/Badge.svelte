@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Badge UI Primitive (Svelte 5 Runes)
+  Botanidex — Badge UI Primitive (Svelte 5 Runes)
   Tujuan: Menampilkan label status kategori botani atau status moderasi gaya retro sticker (Fresh Modern Agronomy)
   Caller: PlantCard, PlantDetail, Moderation Table
 -->

@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Formatting & Localization Utilities (Neo-Brutalist Theme)
+// Botanidex — Formatting & Localization Utilities (Neo-Brutalist Theme)
 // Tujuan: Format teks kategori, tanggal Indonesia, durasi, dan token warna botani
 // Caller: PlantCard, PlantDetail, Moderation Dashboard
 // Dependensi: PlantCategory

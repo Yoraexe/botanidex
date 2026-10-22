@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Plant Detail Page (Svelte 5 Runes)
+  Botanidex — Plant Detail Page (Svelte 5 Runes)
   Tujuan: Profil lengkap tanaman gaya Neo-Brutalist, galeri foto, taksonomi, video edukasi siswa, lokasi peta, dan QR generator (Option A)
   Caller: Route '/katalog/[slug]'
   BRD Ref: F2 (Detail Tanaman & Video Siswa)
@@ -64,8 +64,8 @@
 		if (typeof window === 'undefined' || !plant) return;
 
 		const shareData = {
-			title: `${plant.name_local} (${plant.name_latin}) — Flora SMK`,
-			text: `Pelajari tanaman ${plant.name_local} di katalog botani digital SMK PPN Gorontalo`,
+			title: `${plant.name_local} (${plant.name_latin}) — Botanidex`,
+			text: `Pelajari tanaman ${plant.name_local} di katalog botani digital Botanidex SMK PPN Gorontalo`,
 			url: window.location.href
 		};
 
@@ -89,10 +89,10 @@
 
 <svelte:head>
 	{#if plant}
-		<title>{plant.name_local} ({plant.name_latin}) — Flora SMK</title>
+		<title>{plant.name_local} ({plant.name_latin}) — Botanidex</title>
 		<meta name="description" content={plant.description.substring(0, 150)} />
 	{:else}
-		<title>Detail Tanaman — Flora SMK</title>
+		<title>Detail Tanaman — Botanidex</title>
 	{/if}
 </svelte:head>
 

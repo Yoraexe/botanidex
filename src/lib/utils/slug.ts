@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Slug Generator Utility
+// Botanidex — Slug Generator Utility
 // Tujuan: Menghasilkan slug URL yang bersih, ramah SEO, dan bebas karakter khusus
 // Caller: Plant form submission, plant repositories
 // Dependensi: none

@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Scan QR Code Page (Svelte 5 Runes)
+  Botanidex — Scan QR Code Page (Svelte 5 Runes)
   Tujuan: Memindai QR Code tanaman langsung dari browser menggunakan kamera atau upload foto gaya Neo-Brutalist (Option A)
   Caller: Route '/scan'
   BRD Ref: F3 (QR Code Scanner)
@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>Scan QR Code Tanaman — Flora SMK</title>
+	<title>Scan QR Code Tanaman — Botanidex</title>
 </svelte:head>
 
 <div class="max-w-xl mx-auto flex flex-col gap-6">

@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Authentication Store
+// Botanidex — Authentication Store
 // Tujuan: Reaktif global store untuk status autentikasi dan peran (viewer, contributor, admin)
 // Caller: Navbar, Route guards, Form submission
 // Dependensi: svelte/store, src/lib/types/user.types.ts

@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Filter Chip UI Primitive (Svelte 5 Runes)
+  Botanidex — Filter Chip UI Primitive (Svelte 5 Runes)
   Tujuan: Pill tombol filter horizontal gaya Neo-Brutalist untuk kategori botani (Fresh Modern Agronomy)
   Caller: Halaman Katalog & Peta
 -->

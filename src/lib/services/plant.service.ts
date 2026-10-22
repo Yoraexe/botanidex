@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Plant Service
+// Botanidex — Plant Service
 // Tujuan: Business logic untuk katalog botani, pencarian, QR code generation, dan moderasi
 // Caller: Route handlers, UI pages, forms
 // Dependensi: src/lib/repositories/plant.repository.ts, src/lib/utils/slug.ts, qrcode
@@ -35,7 +35,7 @@ export class PlantService {
 	static async generateQrDataUrl(slugOrUrl: string): Promise<string> {
 		const targetUrl = slugOrUrl.startsWith('http')
 			? slugOrUrl
-			: `${typeof window !== 'undefined' ? window.location.origin : 'https://flora-smk.app'}/katalog/${slugOrUrl}`;
+			: `${typeof window !== 'undefined' ? window.location.origin : 'https://botanidex.app'}/katalog/${slugOrUrl}`;
 
 		return QRCode.toDataURL(targetUrl, {
 			width: 320,

@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Offline Status Banner (Svelte 5 Runes)
+  Botanidex — Offline Status Banner (Svelte 5 Runes)
   Tujuan: Menampilkan banner informatif gaya Neo-Brutalist saat pengguna sedang luring (offline)
   Caller: src/routes/+layout.svelte
 -->

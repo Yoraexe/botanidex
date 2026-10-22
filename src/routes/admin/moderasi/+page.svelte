@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Teacher / Admin Moderation Dashboard (Svelte 5 Runes)
+  Botanidex — Teacher / Admin Moderation Dashboard (Svelte 5 Runes)
   Tujuan: Menyetujui atau menolak data tanaman dan video edukasi yang diajukan oleh siswa gaya Neo-Brutalist (Option A - Fresh Modern Agronomy)
   Caller: Route '/admin/moderasi'
   BRD Ref: F5 (Moderasi Guru)
@@ -94,7 +94,7 @@
 </script>
 
 <svelte:head>
-	<title>Moderasi Guru — Flora SMK</title>
+	<title>Moderasi Guru — Botanidex</title>
 </svelte:head>
 
 <div class="max-w-4xl mx-auto flex flex-col gap-6">

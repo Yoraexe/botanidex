@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Mobile Bottom Navigation Bar (Svelte 5 Runes)
+  Botanidex — Mobile Bottom Navigation Bar (Svelte 5 Runes)
   Tujuan: Floating Neo-Brutalist bottom dock untuk navigasi HP yang ramah jempol (Fresh Modern Agronomy)
   Caller: src/routes/+layout.svelte
 -->

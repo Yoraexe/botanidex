@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — QR Code Scanner Component (Svelte 5 Runes)
+  Botanidex — QR Code Scanner Component (Svelte 5 Runes)
   Tujuan: Memindai QR Code tanaman gaya Neo-Brutalist dari kamera HP atau unggahan foto QR (Option A)
   Caller: Halaman /scan
   BRD Ref: F3 (QR Code Scanner)

@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — User & Auth Domain Types
+// Botanidex — User & Auth Domain Types
 // Tujuan: Mendefinisikan tipe profil pengguna, role otorisasi, dan sesi
 // Caller: Auth services, repositories, middleware hooks, and stores
 // Dependensi: none

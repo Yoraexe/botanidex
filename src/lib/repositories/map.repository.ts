@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — School Map Repository
+// Botanidex — School Map Repository
 // Tujuan: Data access layer untuk denah sekolah dan koordinat lokasi tanaman
 // Caller: src/lib/services/map.service.ts
 // Dependensi: src/lib/repositories/plant.repository.ts, src/lib/types/map.types.ts

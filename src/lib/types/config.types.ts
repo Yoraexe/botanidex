@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — App Configuration Types (TypeScript)
+// Botanidex — App Configuration Types (TypeScript)
 // Tujuan: Mendefinisikan tipe data kontrak untuk CMS Pengaturan Dinamis Aplikasi
 // Caller: config.schema.ts, config.service.ts, +page.svelte, admin/pengaturan
 // Dependensi: none

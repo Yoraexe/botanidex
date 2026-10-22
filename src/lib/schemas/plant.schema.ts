@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Plant Zod Validation Schema
+// Botanidex — Plant Zod Validation Schema
 // Tujuan: Validasi input data botani, taksonomi, dan sanitasi batasan teks
 // Caller: Plant forms, API endpoints, server load functions
 // Dependensi: zod

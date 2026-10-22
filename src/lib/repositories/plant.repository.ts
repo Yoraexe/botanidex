@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Plant Data Repository
+// Botanidex — Plant Data Repository
 // Tujuan: Data access layer untuk entitas tanaman (Supabase query dengan offline fallback)
 // Caller: src/lib/services/plant.service.ts
 // Dependensi: src/lib/supabase.ts, src/lib/data/seed-plants.ts, src/lib/types/plant.types.ts

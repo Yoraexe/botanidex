@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Plant Card Component (Svelte 5 Runes)
+  Botanidex — Plant Card Component (Svelte 5 Runes)
   Tujuan: Menampilkan ringkasan tanaman dalam format card grid Neo-Brutalist (Option A - Fresh Modern Agronomy)
   Caller: Halaman Katalog, Landing Page, Search Results
   Dependensi: Plant type, format utils

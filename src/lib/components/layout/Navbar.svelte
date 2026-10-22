@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Global Header / Navbar (Svelte 5 Runes)
+  Botanidex — Global Header / Navbar (Svelte 5 Runes)
   Tujuan: Navigasi utama atas gaya Neo-Brutalist Fresh Modern Agronomy dengan profil peran pengguna
   Caller: src/routes/+layout.svelte
 -->

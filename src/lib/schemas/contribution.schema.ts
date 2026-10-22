@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Contribution Moderation Zod Schema
+// Botanidex — Contribution Moderation Zod Schema
 // Tujuan: Validasi payload moderasi guru (approval/rejection dengan alasan)
 // Caller: Moderation dashboard, server actions
 // Dependensi: zod

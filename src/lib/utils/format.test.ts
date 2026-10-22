@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Unit Tests for Formatting Utilities
+// Botanidex — Unit Tests for Formatting Utilities
 // Tujuan: Memvalidasi pemformatan label kategori, durasi, dan tanggal
 // Caller: npm run test (Vitest)
 // Dependensi: vitest, format utils

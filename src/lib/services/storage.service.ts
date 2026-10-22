@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Storage Service
+// Botanidex — Storage Service
 // Tujuan: Menangani upload foto dan video tanaman ke Supabase Storage dengan fallback
 // Caller: Form kontribusi tanaman, editor admin
 // Dependensi: src/lib/supabase.ts, src/lib/utils/image-compress.ts

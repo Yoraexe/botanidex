@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — School Map Domain Types
+// Botanidex — School Map Domain Types
 // Tujuan: Mendefinisikan tipe koordinat denah sekolah dan marker lokasi tanaman
 // Caller: Map components, map services, and repositories
 // Dependensi: PlantCategory

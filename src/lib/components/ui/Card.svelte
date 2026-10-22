@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Card UI Primitive (Svelte 5 Runes)
+  Botanidex — Card UI Primitive (Svelte 5 Runes)
   Tujuan: Kontainer kartu modular dengan gaya Neo-Brutalist (solid border & tactile shadow)
   Caller: PlantCard, Detail sections, Form wrappers
 -->

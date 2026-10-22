@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Student Plant Contribution Form (Svelte 5 Runes)
+  Botanidex — Student Plant Contribution Form (Svelte 5 Runes)
   Tujuan: Formulir pengajuan data tanaman baru gaya Neo-Brutalist lengkap dengan foto dan video penjelasan siswa (Option A - Fresh Modern Agronomy)
   Caller: Route '/kontribusi/tambah'
   BRD Ref: F5 (Kontribusi Siswa & Moderasi)
@@ -183,7 +183,7 @@
 </script>
 
 <svelte:head>
-	<title>Tambah Data Tanaman — Flora SMK</title>
+	<title>Tambah Data Tanaman — Botanidex</title>
 </svelte:head>
 
 <div class="max-w-3xl mx-auto flex flex-col gap-6">

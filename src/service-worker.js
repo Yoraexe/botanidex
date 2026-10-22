@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — PWA Service Worker (SvelteKit 3)
+// Botanidex — PWA Service Worker (SvelteKit 3)
 // Tujuan: Menyediakan kapabilitas offline-first untuk caching aset statis dan katalog
 // Caller: Browser Service Worker runtime
 // Dependensi: $app/manifest, $app/env (SvelteKit 3)
@@ -10,7 +10,7 @@
 import { immutable, assets, prerendered } from '$app/manifest';
 import { version } from '$app/env';
 
-const CACHE_NAME = `flora-smk-cache-${version}`;
+const CACHE_NAME = `botanidex-cache-${version}`;
 const ASSETS_TO_CACHE = [
 	'/',
 	...Array.from(immutable || []),

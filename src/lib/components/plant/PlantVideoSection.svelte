@@ -1,5 +1,5 @@
 <!--
-  Flora SMK — Student Plant Video Section (Svelte 5 Runes)
+  Botanidex — Student Plant Video Section (Svelte 5 Runes)
   Tujuan: Memutar video penjelasan dan identifikasi tanaman karya siswa SMK dengan gaya Retro Player Neo-Brutalist (Option A - Fresh Modern Agronomy)
   Caller: Plant detail page
   BRD Ref: F2 Amendment (Video Penjelasan Siswa)

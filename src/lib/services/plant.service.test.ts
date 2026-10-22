@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Unit Tests for PlantService
+// Botanidex — Unit Tests for PlantService
 // Tujuan: Memvalidasi fungsi pencarian, filter kategori, detail, dan QR generator
 // Caller: npm run test (Vitest)
 // Dependensi: vitest, PlantService

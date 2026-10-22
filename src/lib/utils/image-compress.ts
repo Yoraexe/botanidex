@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Client-Side Image Compression Utility
+// Botanidex — Client-Side Image Compression Utility
 // Tujuan: Mengompresi resolusi dan ukuran file foto sebelum upload ke Supabase Storage
 // Caller: PlantForm (kontribusi siswa), Admin tanaman editor
 // Dependensi: HTMLCanvasElement browser API

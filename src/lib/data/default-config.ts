@@ -1,5 +1,5 @@
 // ==============================================================================
-// Flora SMK — Factory Default App Configuration
+// Botanidex — Factory Default App Configuration
 // Tujuan: Preset bawaan resmi saat aplikasi pertama kali dijalankan atau di-reset
 // Caller: config.repository.ts, config.service.ts
 // Dependensi: config.types.ts
@@ -11,7 +11,7 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
 	version: 1,
 	updatedAt: '2026-10-23T00:00:00.000Z',
 	identity: {
-		appName: 'Flora SMK',
+		appName: 'Botanidex',
 		schoolName: 'SMK PPN Gorontalo',
 		tagline: 'Katalog Botani Digital SMK PPN Gorontalo',
 		headerBadge: 'SMK PPN GORONTALO'
