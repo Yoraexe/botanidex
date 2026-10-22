@@ -135,7 +135,7 @@
 			if (isIOS) {
 				toast.info('Pasang di iOS Safari', 'Ketuk tombol Bagikan (Share) 📤 di Safari, lalu pilih "Tambah ke Layar Utama" ➕.');
 			} else {
-				toast.info('Pasang Aplikasi PWA', 'Ketuk ikon pasang (⊕) di bilah alamat browser atau menu titik tiga (⋮) → "Instal Aplikasi".');
+				toast.info('Pasang Aplikasi', 'Ketuk ikon pasang (⊕) di bilah alamat browser atau menu titik tiga (⋮) → "Instal Aplikasi".');
 			}
 		}
 	}
@@ -181,10 +181,9 @@
 				class="flex items-center gap-1.5 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity"
 			>
 				<span>{appConfig.identity.appName.toLowerCase()}</span>
-				<span class="text-sm text-[#0D0D0D]">♥</span>
 			</a>
 			<div class="hidden sm:flex items-center gap-2">
-				<span class="text-[10px] font-black uppercase tracking-widest text-[#0D0D0D]/60 border border-[#0D0D0D]/20 px-2.5 py-0.5 rounded-full">
+				<span class="text-[10px] font-black uppercase tracking-widest text-[#0D0D0D]/70 border border-[#0D0D0D]/20 px-3 py-1 rounded-full">
 					{appConfig.identity.headerBadge}
 				</span>
 			</div>
@@ -277,18 +276,11 @@
 						</div>
 					</div>
 
-					<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Latin Name in Middle, Up Arrow at Bottom) -->
+					<!-- Vertical Neon Chartreuse Strip (Scientific Latin Botanical Name) -->
 					<div
-						class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-3.5 text-[#0D0D0D] select-none shrink-0"
+						class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-center py-4 text-[#0D0D0D] select-none shrink-0"
 					>
-						<!-- Two Black Stars Stacked Vertically (Crypko signature) -->
-						<div class="flex flex-col items-center gap-1 pt-0.5">
-							<span class="text-xs sm:text-sm font-black leading-none">★</span>
-							<span class="text-xs sm:text-sm font-black leading-none">★</span>
-						</div>
-
-						<!-- Middle: Scientific Botanical Name (Nama Ilmiah Latin) -->
-						<div class="flex-1 flex items-center justify-center py-2 overflow-hidden my-1">
+						<div class="flex-1 flex items-center justify-center overflow-hidden my-1">
 							<span
 								class="font-latin italic font-black text-xs sm:text-[13px] tracking-wide text-[#0D0D0D] select-none whitespace-nowrap"
 								style="writing-mode: vertical-rl;"
@@ -296,32 +288,18 @@
 								{currentSpecimen.latinName}
 							</span>
 						</div>
-
-						<!-- Upward Arrow at Bottom -->
-						<span class="text-base font-black leading-none">↑</span>
 					</div>
 				</div>
 
-				<!-- Notched App Download Card (iOS & Android Logos + Scan QR Install Button) -->
+				<!-- App Download Card (Direct Install without AI Slop Gimmicks) -->
 				<div
 					class="relative w-full h-[140px] sm:h-[150px] bg-white rounded-2xl border-2 border-[#0D0D0D] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs"
 				>
-					<!-- Top Chamfer Notch Contour -->
-					<div
-						class="absolute top-0 left-0 w-7 h-7 rounded-tl-xl border-t-2 border-l-2 border-[#0D0D0D]/30 pointer-events-none"
-					></div>
-
-					<!-- Notched Header with 3 Dots Tab -->
+					<!-- Header -->
 					<div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
 						<h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-[#0D0D0D]">
 							{appDownload.title}
 						</h3>
-						<!-- Black pill tab with 3 white dots -->
-						<div class="px-2 py-0.5 rounded-full bg-[#0D0D0D] flex items-center gap-1">
-							<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-							<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-							<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-						</div>
 					</div>
 
 					<!-- Description -->
@@ -329,7 +307,7 @@
 						{appDownload.description}
 					</p>
 
-					<!-- Bottom Row: iOS & Android Badges + Scan QR Install Pill Button -->
+					<!-- Bottom Row: iOS & Android Badges + Direct Install Pill Button -->
 					<div class="flex items-center justify-between pt-1 border-t border-stone-100">
 						<!-- Two overlapping black circles: Apple (iOS) and Android -->
 						<div class="flex items-center -space-x-1.5">
@@ -337,7 +315,7 @@
 								<!-- Apple / iOS Logo Circle -->
 								<div
 									class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center z-10 shadow-xs border border-stone-800"
-									title="Tersedia untuk Apple iOS (PWA / Safari Add to Home Screen)"
+									title="Tersedia untuk Apple iOS"
 								>
 									<svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 170 170" aria-label="Apple iOS Logo">
 										<path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.03-7.61-7.79-11.73-14.28-5.78-9.04-10.37-19.34-13.78-30.9-3.41-11.56-5.12-22.61-5.12-33.16 0-14.82 3.6-27.28 10.81-37.38 7.21-10.1 16.59-15.34 28.14-15.72 4.7 0 10.13 1.34 16.29 4.02 6.16 2.68 10.02 4.09 11.58 4.23 2.12-.27 6.22-1.74 12.31-4.41 6.09-2.68 11.43-3.9 16.03-3.66 11.97.64 21.6 4.72 28.9 12.24-10.51 6.35-15.68 15.15-15.52 26.39.16 8.7 3.48 16.14 9.97 22.31 6.49 6.17 14.28 9.61 23.36 10.32-2.12 6.64-4.8 13.51-8.04 20.61zM119.22 33.64c0-7.39 2.68-14.33 8.04-20.82 5.36-6.49 11.83-10.51 19.41-12.06.33 1.12.51 2.24.51 3.35 0 7.39-2.83 14.5-8.49 21.32-5.67 6.82-12.2 10.8-19.59 11.95-.11-1.23-.23-2.34-.37-3.74z"/>
@@ -349,7 +327,7 @@
 								<!-- Android Robot Logo Circle -->
 								<div
 									class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center shadow-xs border border-stone-800"
-									title="Tersedia untuk Android (PWA / Chrome Install)"
+									title="Tersedia untuk Android"
 								>
 									<svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24" aria-label="Android Logo">
 										<path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.156-.2701.063-.6158-.207-.7719-.2702-.1561-.6159-.063-.772.207l-2.023 3.504c-1.523-.6926-3.232-1.0772-5.064-1.0772-1.832 0-3.541.3846-5.064 1.0772l-2.023-3.504c-.1561-.27-.5018-.3631-.772-.207-.27.1561-.363.5018-.207.7719l1.996 3.4572c-3.144 1.704-5.289 4.8872-5.467 8.6366h21.046c-.178-3.7494-2.323-6.9326-5.467-8.6366"/>
@@ -362,15 +340,11 @@
 						<button
 							type="button"
 							onclick={handleDirectInstall}
-							class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#E2EF46]/30 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
+							class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#E2EF46]/30 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
 							title="Pasang aplikasi Flora SMK langsung ke perangkat Anda"
 						>
+							<Smartphone class="w-3.5 h-3.5 stroke-[2.2]" />
 							<span>{appDownload.buttonLabel}</span>
-							<div
-								class="w-4 h-4 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[9px] font-black"
-							>
-								↓
-							</div>
 						</button>
 					</div>
 				</div>

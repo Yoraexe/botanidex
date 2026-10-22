@@ -36,19 +36,16 @@
 	</main>
 
 	<!-- Footer Desktop -->
-	<footer class="hidden md:block bg-[#FFFEF9] border-t-2 border-[#18181B] mt-auto py-8 text-stone-700 text-xs">
+	<footer class="hidden md:block bg-[#FFFEF9] border-t-2 border-[#0D0D0D] mt-auto py-6 text-stone-700 text-xs">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
 			<div class="flex items-center gap-2.5">
-				<div class="w-7 h-7 rounded-lg bg-[#6BB092] border-2 border-[#18181B] shadow-[1.5px_1.5px_0px_#18181B] flex items-center justify-center text-stone-900 text-xs font-black">
+				<div class="w-7 h-7 rounded-lg bg-[#6BB092] border-2 border-[#0D0D0D] shadow-[1.5px_1.5px_0px_#0D0D0D] flex items-center justify-center text-stone-900 text-xs font-black">
 					FS
 				</div>
-				<p class="font-extrabold text-stone-900">Flora SMK — Inovasi Botani Digital untuk SMK Pertanian</p>
+				<p class="font-extrabold text-stone-900">Flora SMK — Katalog Botani SMK Pertanian</p>
 			</div>
 			<div class="flex items-center gap-3">
-				<span class="px-2 py-0.5 rounded-md bg-[#E2EF46] text-stone-900 border border-[#18181B] font-black text-[10px] uppercase">
-					PWA Offline-Ready
-				</span>
-				<p class="font-medium text-stone-600">© 2026 SMK Pertanian Indonesia. Progressive Web App.</p>
+				<p class="font-medium text-stone-600">© 2026 SMK Pertanian. Seluruh hak cipta dilindungi.</p>
 			</div>
 		</div>
 	</footer>

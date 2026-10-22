@@ -13,8 +13,8 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
 	identity: {
 		appName: 'Flora SMK',
 		schoolName: 'SMK Pertanian Terpadu',
-		tagline: 'Katalog Botani Digital & Edukasi Agronomi Mandiri',
-		headerBadge: 'Katalog Botani Digital • SMK Pertanian'
+		tagline: 'Katalog Botani Digital & Edukasi Agronomi',
+		headerBadge: 'SMK Pertanian Terpadu'
 	},
 	hero: {
 		headlineLine1: 'KATALOG BOTANI',
@@ -60,11 +60,11 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
 			}
 		],
 		appDownload: {
-			title: 'UNDUH APLIKASI LAPANGAN',
-			description: 'Katalog botani mandiri SMK Pertanian tersedia untuk iOS & Android. PWA offline-ready tanpa koneksi internet di kebun.',
+			title: 'Aplikasi Lapangan',
+			description: 'Akses katalog botani sekolah langsung dari perangkat Android atau iOS Anda.',
 			showIosBadge: true,
 			showAndroidBadge: true,
-			buttonLabel: 'Pasang App'
+			buttonLabel: 'Pasang Aplikasi'
 		}
 	},
 	categories: [
