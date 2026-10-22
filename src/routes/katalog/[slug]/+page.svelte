@@ -65,7 +65,7 @@
 
 		const shareData = {
 			title: `${plant.name_local} (${plant.name_latin}) — Flora SMK`,
-			text: `Pelajari tanaman ${plant.name_local} di katalog botani digital SMK Pertanian`,
+			text: `Pelajari tanaman ${plant.name_local} di katalog botani digital SMK PPN Gorontalo`,
 			url: window.location.href
 		};
 
@@ -231,7 +231,7 @@
 	{:else}
 		<div class="p-12 text-center bg-[#FFFEF9] rounded-3xl border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B]">
 			<h2 class="text-xl font-black text-stone-900">Tanaman Tidak Ditemukan</h2>
-			<p class="text-xs sm:text-sm text-stone-600 font-medium mt-1">Slug URL tidak cocok dengan spesies terdaftar di SMK Pertanian.</p>
+			<p class="text-xs sm:text-sm text-stone-600 font-medium mt-1">Slug URL tidak cocok dengan spesies terdaftar di SMK PPN Gorontalo.</p>
 			<a href="/katalog" class="mt-4 inline-block text-xs font-black px-4 py-2.5 bg-[#6BB092] text-stone-900 rounded-xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B]">
 				Lihat Semua Tanaman
 			</a>

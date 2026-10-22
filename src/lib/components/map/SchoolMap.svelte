@@ -186,7 +186,7 @@
 		onmouseup={handleMouseUp}
 		onmouseleave={handleMouseUp}
 		role="region"
-		aria-label="Peta Interaktif Lahan SMK Pertanian"
+		aria-label="Peta Interaktif Lahan Praktikum SMK PPN Gorontalo"
 		class="relative w-full overflow-auto bg-[#F7F2E7] retro-grid-bg p-4 sm:p-6 select-none {isDragging ? 'cursor-grabbing' : 'cursor-grab'}"
 		style="min-height: 480px; max-height: 75vh;"
 	>

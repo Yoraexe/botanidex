@@ -1,6 +1,6 @@
 // ==============================================================================
 // Flora SMK — Seed & Offline Fallback Plant Dataset
-// Tujuan: Data botani referensi SMK Pertanian untuk offline-first dan inisialisasi awal
+// Tujuan: Data botani referensi SMK PPN Gorontalo untuk offline-first dan inisialisasi awal
 // Caller: Plant repository, database seeding
 // Dependensi: Plant type
 // Main Functions: INITIAL_PLANTS_DATA
@@ -28,7 +28,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 			species: 'Zingiber officinale'
 		},
 		description:
-			'Jahe merah (Zingiber officinale var. rubrum) merupakan tanaman rimpang terna semusim dengan tinggi 40–100 cm. Kulit rimpang berwarna merah jingga hingga merah tua dengan serat lebih kasar dan rasa pedas yang jauh lebih tajam dibanding jahe gajah atau jahe emprit karena kandungan gingerol dan shogaol yang tinggi. Biasa dibudidayakan di kebun toga SMK Pertanian sebagai bahan fitofarmaka dan minuman herbal penghangat tubuh.',
+			'Jahe merah (Zingiber officinale var. rubrum) merupakan tanaman rimpang terna semusim dengan tinggi 40–100 cm. Kulit rimpang berwarna merah jingga hingga merah tua dengan serat lebih kasar dan rasa pedas yang jauh lebih tajam dibanding jahe gajah atau jahe emprit karena kandungan gingerol dan shogaol yang tinggi. Biasa dibudidayakan di kebun toga SMK PPN Gorontalo sebagai bahan fitofarmaka dan minuman herbal penghangat tubuh.',
 		location_x: 38.0,
 		location_y: 25.0,
 		location_label: 'Kebun Tanaman Obat (TOGA) Blok A-1',
@@ -84,7 +84,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 			species: 'Zea mays'
 		},
 		description:
-			'Jagung hibrida merupakan tanaman pangan serealia semusim berakar serabut dengan batang tegak beruas-ruas. Tanaman ini adalah salah satu komoditas praktikum agronomi utama di lahan terbuka SMK Pertanian, dengan fokus pembelajaran teknik penyerbukan silang, pemupukan berimbang NPK, dan penanganan pascapanen tongkol jagung.',
+			'Jagung hibrida merupakan tanaman pangan serealia semusim berakar serabut dengan batang tegak beruas-ruas. Tanaman ini adalah salah satu komoditas praktikum agronomi utama di lahan terbuka SMK PPN Gorontalo, dengan fokus pembelajaran teknik penyerbukan silang, pemupukan berimbang NPK, dan penanganan pascapanen tongkol jagung.',
 		location_x: 82.0,
 		location_y: 22.0,
 		location_label: 'Lahan Praktikum Pangan Bedeng C-4',
@@ -140,7 +140,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 			species: 'Phalaenopsis amabilis'
 		},
 		description:
-			'Anggrek bulan merupakan salah satu bunga nasional Indonesia bergelar Puspa Pesona. Merupakan tumbuhan epifit dengan daun tebal berdaging dan bunga berwarna putih bersih dengan lidah bercak kekuningan. Di SMK Pertanian, anggrek bulan dibudidayakan di dalam Greenhouse Florikultura dengan naungan paranet 65% dan sistem kabut otomatis untuk kontrol kelembaban.',
+			'Anggrek bulan merupakan salah satu bunga nasional Indonesia bergelar Puspa Pesona. Merupakan tumbuhan epifit dengan daun tebal berdaging dan bunga berwarna putih bersih dengan lidah bercak kekuningan. Di SMK PPN Gorontalo, anggrek bulan dibudidayakan di dalam Greenhouse Florikultura dengan naungan paranet 65% dan sistem kabut otomatis untuk kontrol kelembaban.',
 		location_x: 46.0,
 		location_y: 52.0,
 		location_label: 'Greenhouse Florikultura & Kultur Jaringan',
@@ -270,7 +270,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 			species: 'Theobroma cacao'
 		},
 		description:
-			'Kakao merupakan pohon berdaun rindang asal Amerika Selatan dengan sifat kauliflori unik, di mana bunga dan buah muncul langsung dari batang pokok atau cabang tua. Buah kakao diolah siswa SMK Pertanian dari proses fermentasi biji, penjemuran, pemanggangan (roasting), hingga menjadi bubuk cokelat dan pasta cokelat bernilai jual.',
+			'Kakao merupakan pohon berdaun rindang asal Amerika Selatan dengan sifat kauliflori unik, di mana bunga dan buah muncul langsung dari batang pokok atau cabang tua. Buah kakao diolah siswa SMK PPN Gorontalo dari proses fermentasi biji, penjemuran, pemanggangan (roasting), hingga menjadi bubuk cokelat dan pasta cokelat bernilai jual.',
 		location_x: 89.0,
 		location_y: 43.0,
 		location_label: 'Kebun Kakao Pembibitan Terpadu',
@@ -307,7 +307,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 			species: 'Elaeis guineensis'
 		},
 		description:
-			'Kelapa sawit adalah tanaman penghasil minyak nabati paling efisien per hektar di dunia. Di area demonstrasi plot SMK Pertanian, tanaman sawit difungsikan untuk pengenalan anatomi tandan buah segar (TBS), pemupukan kalium, kastrasi bunga muda, serta pengenalan kumbang penyerbuk Elaeidobius kamerunicus.',
+			'Kelapa sawit adalah tanaman penghasil minyak nabati paling efisien per hektar di dunia. Di area demonstrasi plot SMK PPN Gorontalo, tanaman sawit difungsikan untuk pengenalan anatomi tandan buah segar (TBS), pemupukan kalium, kastrasi bunga muda, serta pengenalan kumbang penyerbuk Elaeidobius kamerunicus.',
 		location_x: 82.0,
 		location_y: 57.0,
 		location_label: 'Demplot Perkebunan Sawit Percobaan',
@@ -344,7 +344,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 			species: 'Tectona grandis'
 		},
 		description:
-			'Jati emas merupakan klon unggul jati dengan laju pertumbuhan vegetatif lebih cepat dan batang lurus silindris. Ditanam di batas terluar lahan SMK Pertanian sebagai sabuk hijau (windbreak) sekaligus media praktikum silvikultur, pengukuran diameter setinggi dada (DBH), dan taksasi volume kayu berdiri.',
+			'Jati emas merupakan klon unggul jati dengan laju pertumbuhan vegetatif lebih cepat dan batang lurus silindris. Ditanam di batas terluar lahan SMK PPN Gorontalo sebagai sabuk hijau (windbreak) sekaligus media praktikum silvikultur, pengukuran diameter setinggi dada (DBH), dan taksasi volume kayu berdiri.',
 		location_x: 13.0,
 		location_y: 50.0,
 		location_label: 'Hutan Sekolah & Pembatas Angin Barat',

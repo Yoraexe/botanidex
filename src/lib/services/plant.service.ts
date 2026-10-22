@@ -89,7 +89,7 @@ export class PlantService {
 						plant_id: plantId,
 						storage_path: options.uploadedVideoUrl,
 						title: formData.video_title || `Penjelasan Edukasi: ${formData.name_local}`,
-						uploaded_by_name: options.contributorName || 'Siswa SMK Pertanian',
+						uploaded_by_name: options.contributorName || 'Siswa SMK PPN Gorontalo',
 						uploaded_by: options.contributorId,
 						status: options.isAdmin ? ('approved' as ContributionStatus) : ('pending' as ContributionStatus),
 						created_at: now

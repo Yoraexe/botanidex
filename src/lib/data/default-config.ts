@@ -12,13 +12,13 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
 	updatedAt: '2026-10-23T00:00:00.000Z',
 	identity: {
 		appName: 'Flora SMK',
-		schoolName: 'SMK Pertanian Terpadu',
-		tagline: 'Katalog Botani Digital & Edukasi Agronomi',
-		headerBadge: 'SMK Pertanian Terpadu'
+		schoolName: 'SMK PPN Gorontalo',
+		tagline: 'Katalog Botani Digital SMK PPN Gorontalo',
+		headerBadge: 'SMK PPN GORONTALO'
 	},
 	hero: {
 		headlineLine1: 'KATALOG BOTANI',
-		headlineLine2: 'SMK PERTANIAN',
+		headlineLine2: 'SMK PPN GORONTALO',
 		gardenPhotos: [
 			{
 				id: 'garden-1',
@@ -61,7 +61,7 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
 		],
 		appDownload: {
 			title: 'Aplikasi Lapangan',
-			description: 'Akses katalog botani sekolah langsung dari perangkat Android atau iOS Anda.',
+			description: 'Akses katalog botani SMK PPN Gorontalo langsung dari perangkat Android atau iOS Anda.',
 			showIosBadge: true,
 			showAndroidBadge: true,
 			buttonLabel: 'Pasang Aplikasi'

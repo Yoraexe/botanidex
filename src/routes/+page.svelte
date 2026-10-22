@@ -164,7 +164,7 @@
 </script>
 
 <svelte:head>
-	<title>Flora SMK — Katalog Botani Digital SMK Pertanian</title>
+	<title>Flora SMK — Katalog Botani Digital SMK PPN Gorontalo</title>
 </svelte:head>
 
 <div class="flex flex-col gap-8 sm:gap-10">

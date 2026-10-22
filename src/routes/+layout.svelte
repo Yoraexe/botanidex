@@ -42,10 +42,10 @@
 				<div class="w-7 h-7 rounded-lg bg-[#6BB092] border-2 border-[#0D0D0D] shadow-[1.5px_1.5px_0px_#0D0D0D] flex items-center justify-center text-stone-900 text-xs font-black">
 					FS
 				</div>
-				<p class="font-extrabold text-stone-900">Flora SMK — Katalog Botani SMK Pertanian</p>
+				<p class="font-extrabold text-stone-900">Flora SMK — Katalog Botani SMK PPN Gorontalo</p>
 			</div>
 			<div class="flex items-center gap-3">
-				<p class="font-medium text-stone-600">© 2026 SMK Pertanian. Seluruh hak cipta dilindungi.</p>
+				<p class="font-medium text-stone-600">© 2026 SMK PPN Gorontalo. Seluruh hak cipta dilindungi.</p>
 			</div>
 		</div>
 	</footer>

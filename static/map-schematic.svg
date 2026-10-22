@@ -12,7 +12,7 @@
 
   <!-- Perimeter Fence & Boundary -->
   <rect x="20" y="20" width="960" height="660" rx="16" fill="none" stroke="#166534" stroke-width="4" stroke-dasharray="10 5" />
-  <text x="40" y="50" fill="#166534" font-family="sans-serif" font-weight="bold" font-size="14">SMK PERTANIAN — ZONASI LAHAN PRAKTIKUM &amp; KOLEKSI BOTANI</text>
+  <text x="40" y="50" fill="#166534" font-family="sans-serif" font-weight="bold" font-size="14">SMK PPN GORONTALO — ZONASI LAHAN PRAKTIKUM &amp; KOLEKSI BOTANI</text>
 
   <!-- Zone 1: Hutan Sekolah & Sabuk Angin (West - Jati) -->
   <rect x="50" y="80" width="160" height="560" rx="12" fill="#E7E5E4" stroke="#78716C" stroke-width="2" />

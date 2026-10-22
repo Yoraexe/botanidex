@@ -1,7 +1,7 @@
 {
   "name": "Flora SMK — Katalog Tanaman Digital",
   "short_name": "Flora SMK",
-  "description": "Katalog digital tanaman dan tumbuhan di SMK Pertanian dengan QR scanner, peta lokasi, dan video edukasi siswa.",
+  "description": "Katalog digital tanaman dan tumbuhan di SMK PPN Gorontalo dengan QR scanner, peta lokasi, dan video edukasi siswa.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

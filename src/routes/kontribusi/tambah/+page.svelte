@@ -152,7 +152,7 @@
 			}
 
 			const isAdmin = $authUser?.role === 'admin';
-			const contributorName = $authUser?.display_name || 'Siswa SMK Pertanian';
+			const contributorName = $authUser?.display_name || 'Siswa SMK PPN Gorontalo';
 			const contributorId = $authUser?.id;
 
 			const createdPlant = await PlantService.submitPlant(validationResult.data, {
@@ -197,7 +197,7 @@
 					Tambah Tanaman Baru ke Katalog
 				</h1>
 				<p class="text-xs sm:text-sm text-stone-600 font-semibold mt-0.5">
-					Dokumentasikan koleksi tanaman di lingkungan SMK Pertanian beserta taksonomi dan video penjelasan.
+					Dokumentasikan koleksi tanaman di lingkungan SMK PPN Gorontalo beserta taksonomi dan video penjelasan.
 				</p>
 			</div>
 		</div>

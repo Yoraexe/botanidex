@@ -33,7 +33,7 @@ export class MapRepository {
 
 		return {
 			id: 'default-map',
-			title: 'Denah Terpadu Lahan Praktikum SMK Pertanian',
+			title: 'Denah Terpadu Lahan Praktikum SMK PPN Gorontalo',
 			version: 1,
 			image_url: '/map-schematic.svg',
 			markers

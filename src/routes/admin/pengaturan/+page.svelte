@@ -275,7 +275,7 @@
 						id="schoolName"
 						bind:value={config.identity.schoolName}
 						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none"
-						placeholder="Contoh: SMK Pertanian Terpadu"
+						placeholder="Contoh: SMK PPN Gorontalo"
 					/>
 				</div>
 
@@ -285,7 +285,7 @@
 						id="headerBadge"
 						bind:value={config.identity.headerBadge}
 						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none"
-						placeholder="Contoh: Katalog Botani Digital • SMK Pertanian"
+						placeholder="Contoh: Katalog Botani Digital SMK PPN Gorontalo"
 					/>
 				</div>
 
@@ -305,7 +305,7 @@
 						id="headlineLine2"
 						bind:value={config.hero.headlineLine2}
 						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none uppercase"
-						placeholder="SMK PERTANIAN"
+						placeholder="SMK PPN GORONTALO"
 					/>
 				</div>
 			</div>

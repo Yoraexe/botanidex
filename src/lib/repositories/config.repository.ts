@@ -11,7 +11,7 @@ import { DEFAULT_APP_CONFIG } from '../data/default-config';
 import { appConfigSchema } from '../schemas/config.schema';
 import type { AppConfig } from '../types/config.types';
 
-const CONFIG_STORAGE_KEY = 'flora_smk_app_config_v2';
+const CONFIG_STORAGE_KEY = 'flora_smk_app_config_v3';
 
 // In-memory cache for SSR & client synchronization
 let memoryConfig: AppConfig = { ...DEFAULT_APP_CONFIG };

@@ -43,7 +43,7 @@
 	}
 </script>
 
-<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 sm:p-6 shadow-[5px_5px_0px_#18181B] flex flex-col items-center text-center">
+<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#0D0D0D] p-5 sm:p-6 shadow-[5px_5px_0px_#18181B] flex flex-col items-center text-center">
 	<div class="flex items-center gap-2 mb-3 text-stone-900 font-black text-sm uppercase tracking-wide">
 		<QrCode class="w-4 h-4 stroke-[2.5]" />
 		<span>Label QR Botani Fisik</span>
@@ -52,14 +52,14 @@
 	<!-- Printable Physical Tag Preview Box -->
 	<div
 		id="printable-tag"
-		class="w-68 p-4 rounded-xl border-2 border-[#18181B] bg-white shadow-[3px_3px_0px_#18181B] flex flex-col items-center text-stone-900 my-2"
+		class="w-68 p-4 rounded-xl border-2 border-[#0D0D0D] bg-white shadow-[3px_3px_0px_#0D0D0D] flex flex-col items-center text-stone-900 my-2"
 	>
-		<p class="text-[10px] font-black uppercase tracking-widest text-stone-900 border-b-2 border-[#18181B] pb-1 w-full text-center bg-[#F6BD60] py-1 rounded-md">
-			SMK PERTANIAN • FLORA DIGITAL
+		<p class="text-[10px] font-black uppercase tracking-widest text-stone-900 border-b-2 border-[#0D0D0D] pb-1 w-full text-center bg-[#F6BD60] py-1 rounded-md">
+			SMK PPN GORONTALO • KOLEKSI BOTANI
 		</p>
 
 		{#if qrDataUrl}
-			<div class="p-2.5 my-3 bg-white rounded-xl border-2 border-[#18181B]">
+			<div class="p-2.5 my-3 bg-white rounded-xl border-2 border-[#0D0D0D]">
 				<img src={qrDataUrl} alt="QR Code {plant.name_local}" class="w-36 h-36 mx-auto object-contain" />
 			</div>
 		{:else if isLoading}
@@ -79,7 +79,7 @@
 				Famili: {plant.taxonomy.familia}
 			</p>
 		{/if}
-		<p class="text-[9px] text-stone-500 font-bold mt-2.5 border-t border-[#18181B]/30 pt-1.5 w-full">
+		<p class="text-[9px] text-stone-500 font-bold mt-2.5 border-t border-[#0D0D0D]/30 pt-1.5 w-full">
 			Scan menggunakan kamera HP untuk video &amp; profil botani
 		</p>
 	</div>
