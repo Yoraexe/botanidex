@@ -74,31 +74,11 @@
 	<section
 		class="w-full max-w-[1080px] mx-auto rounded-[32px] border-[3px] border-[#0D0D0D] bg-[#E6E1D3] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col gap-5 sm:gap-6"
 	>
-		<!-- 1. TOP BAR (Logo + Inverted Center Black Tab + Pill Action) -->
+		<!-- 1. BRAND LOGO (Top-Left) -->
 		<div class="flex items-center justify-between w-full pb-1">
-			<!-- Brand Logo -->
 			<a href="/" class="flex items-center gap-1 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity">
 				<span>flora smk</span>
 				<span class="text-sm text-[#0D0D0D]">♥</span>
-			</a>
-
-			<!-- Center Black Notched Cutout Bar (Exact Crypko style) -->
-			<div
-				class="hidden md:flex items-center gap-7 px-8 py-2.5 bg-[#0D0D0D] text-[#E6E1D3] rounded-b-2xl -mt-5 sm:-mt-8 text-xs font-semibold tracking-wider select-none shadow-xs"
-			>
-				<a href="/katalog" class="hover:text-[#E2EF46] transition-colors">Katalog</a>
-				<a href="/katalog?cat=obat" class="hover:text-[#E2EF46] transition-colors">TOGA</a>
-				<a href="/katalog?cat=pangan" class="hover:text-[#E2EF46] transition-colors">Pangan</a>
-				<a href="/peta" class="hover:text-[#E2EF46] transition-colors">Peta Kebun</a>
-				<a href="/scan" class="hover:text-[#E2EF46] transition-colors">Scan QR</a>
-			</div>
-
-			<!-- Right Pill Action Button -->
-			<a
-				href="/katalog"
-				class="px-6 py-2 rounded-full border-2 border-[#0D0D0D] bg-white text-[#0D0D0D] font-bold text-xs hover:bg-[#E2EF46] transition-colors shadow-xs select-none active:translate-y-0.5"
-			>
-				Eksplorasi
 			</a>
 		</div>
 
@@ -252,38 +232,6 @@
 							</div>
 						</a>
 					</div>
-				</div>
-			</div>
-
-			<!-- 3. CENTER ROTATING MEMPHIS STAMP (Tightly Bridging the 4 Quadrants) -->
-			<div
-				class="hidden lg:block absolute left-[54%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-auto"
-			>
-				<div class="relative w-32 h-32 flex items-center justify-center">
-					<!-- Rotating SVG Text -->
-					<svg class="absolute inset-0 w-full h-full animate-spin-slow pointer-events-none" viewBox="0 0 100 100">
-						<path
-							id="stampPath"
-							d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-							fill="none"
-						/>
-						<text class="text-[8.5px] font-black uppercase tracking-[0.24em] fill-[#0D0D0D]">
-							<textPath href="#stampPath" startOffset="0%">
-								★ OFFICIAL RELEASE • FLORA SMK BOTANICAL PLATFORM V1.0 • ★
-							</textPath>
-						</text>
-					</svg>
-
-					<!-- Center Starburst Badge Button -->
-					<a
-						href="/katalog"
-						class="w-18 h-18 rounded-full bg-[#0D0D0D] text-[#E2EF46] hover:bg-[#E2EF46] hover:text-[#0D0D0D] border-2 border-[#0D0D0D] flex flex-col items-center justify-center text-center p-1 cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#0D0D0D]"
-						aria-label="Mulai jelajah katalog"
-					>
-						<span class="text-[8px] font-black leading-none">★</span>
-						<span class="text-[9px] font-black uppercase tracking-tight leading-tight">START<br />JELAJAH</span>
-						<span class="text-[8px] font-black leading-none">★</span>
-					</a>
 				</div>
 			</div>
 		</div>

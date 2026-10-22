@@ -6,7 +6,6 @@
 <script lang="ts">
 	import './layout.css';
 	import type { Snippet } from 'svelte';
-	import { page } from '$app/state';
 	import Navbar from '#lib/components/layout/Navbar.svelte';
 	import BottomNav from '#lib/components/layout/BottomNav.svelte';
 	import OfflineBanner from '#lib/components/layout/OfflineBanner.svelte';
@@ -17,28 +16,20 @@
 	}
 
 	let { children }: Props = $props();
-
-	const isHome = $derived(page.url.pathname === '/');
 </script>
 
-<div
-	class="min-h-screen flex flex-col {isHome
-		? 'bg-[#828282] text-[#18181B]'
-		: 'bg-[#F7F2E7] retro-grid-bg text-[#18181B]'} pb-24 md:pb-0 transition-colors duration-200"
->
+<div class="min-h-screen flex flex-col bg-[#F7F2E7] retro-grid-bg text-[#18181B] pb-24 md:pb-0">
 	<!-- Offline status alert -->
 	<OfflineBanner />
 
 	<!-- Toast alert overlay -->
 	<Toast />
 
-	<!-- Main navigation header (only on non-home routes; homepage uses the iconic Crypko artboard header) -->
-	{#if !isHome}
-		<Navbar />
-	{/if}
+	<!-- Main navigation header -->
+	<Navbar />
 
 	<!-- Dynamic Page Content -->
-	<main class="flex-1 w-full {isHome ? 'max-w-[1240px] px-3 sm:px-6 py-6 sm:py-8' : 'max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8'} mx-auto">
+	<main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 		{#if children}
 			{@render children()}
 		{/if}
