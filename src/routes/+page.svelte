@@ -178,8 +178,13 @@
 		<div class="flex items-center justify-between w-full pb-2.5 border-b-2 border-[#0D0D0D]/10">
 			<a
 				href="/"
-				class="flex items-center gap-1.5 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity"
+				class="flex items-center gap-2.5 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity"
 			>
+				<img
+					src="/SMK-Pertanian-Gorontalo.png"
+					alt="Logo SMK PPN Gorontalo"
+					class="w-7 h-7 sm:w-8 sm:h-8 object-contain"
+				/>
 				<span>{appConfig.identity.appName.toLowerCase()}</span>
 			</a>
 			<div class="hidden sm:flex items-center gap-2">

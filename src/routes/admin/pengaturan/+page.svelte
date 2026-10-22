@@ -258,6 +258,17 @@
 				Identitas Sekolah &amp; Teks Headline Utama
 			</h2>
 
+			<!-- Official School Logo Preview Card -->
+			<div class="p-3.5 bg-[#FDFBF7] rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center gap-3.5">
+				<div class="w-12 h-12 rounded-lg border-2 border-[#0D0D0D] p-1 bg-white flex items-center justify-center shrink-0 shadow-[1px_1px_0px_#0D0D0D]">
+					<img src="/SMK-Pertanian-Gorontalo.png" alt="Logo SMK PPN Gorontalo" class="w-full h-full object-contain" />
+				</div>
+				<div>
+					<p class="font-black text-xs text-stone-900">Logo Resmi Sekolah Aktif</p>
+					<p class="text-[11px] text-stone-600 font-bold">SMK-Pertanian-Gorontalo.png (Ditampilkan pada Header, Footer, &amp; Kartu Beranda)</p>
+				</div>
+			</div>
+
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div class="flex flex-col gap-1.5">
 					<label for="appName" class="text-xs font-black text-[#0D0D0D]">Nama Brand / Aplikasi</label>

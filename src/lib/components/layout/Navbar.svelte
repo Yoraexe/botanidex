@@ -43,12 +43,16 @@
 	}
 </script>
 
-<header class="bg-[#FFFEF9] border-b-2 border-[#18181B] sticky top-0 z-40">
+<header class="bg-[#FFFEF9] border-b-2 border-[#0D0D0D] sticky top-0 z-40">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
 		<!-- Brand & Logo -->
 		<a href="/" class="flex items-center gap-3 group">
-			<div class="w-11 h-11 rounded-xl bg-[#6BB092] border-2 border-[#18181B] shadow-[2.5px_2.5px_0px_#18181B] flex items-center justify-center text-stone-900 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
-				<Sprout class="w-6 h-6 stroke-[2.5]" />
+			<div class="w-11 h-11 rounded-xl bg-white border-2 border-[#0D0D0D] shadow-[2.5px_2.5px_0px_#0D0D0D] p-1 flex items-center justify-center shrink-0 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+				<img
+					src="/SMK-Pertanian-Gorontalo.png"
+					alt="Logo SMK PPN Gorontalo"
+					class="w-full h-full object-contain"
+				/>
 			</div>
 			<div>
 				<div class="font-black text-xl leading-none tracking-tight text-stone-900">
