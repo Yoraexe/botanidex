@@ -318,26 +318,31 @@
 								alt={currentSpecimen.commonName}
 								class="w-full h-full object-cover transition-all duration-700"
 							/>
-							<!-- Plant Identity Tag at Bottom-Left of Photo -->
-							<div class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-2.5 py-1 rounded-md text-[10px] font-bold z-10 flex items-center gap-1.5 shadow-xs">
+							<!-- Plant Identity Tag at Bottom-Left of Photo (Indonesian Common Name) -->
+							<div class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-3 py-1.5 rounded-lg text-xs font-bold z-10 shadow-xs border border-white/10 backdrop-blur-xs">
 								<span>{currentSpecimen.commonName}</span>
-								<span class="text-stone-400">•</span>
-								<span class="font-latin italic text-[#E2EF46]">{currentSpecimen.latinName}</span>
 							</div>
 						</div>
 
-						<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Empty Middle, Up Arrow at Bottom) -->
+						<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Latin Name in Middle, Up Arrow at Bottom) -->
 						<div
-							class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-4 text-[#0D0D0D] select-none shrink-0"
+							class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-3.5 text-[#0D0D0D] select-none shrink-0"
 						>
 							<!-- Two Black Stars Stacked Vertically (Crypko signature) -->
-							<div class="flex flex-col items-center gap-1.5 pt-0.5">
-								<span class="text-sm font-black leading-none">★</span>
-								<span class="text-sm font-black leading-none">★</span>
+							<div class="flex flex-col items-center gap-1 pt-0.5">
+								<span class="text-xs sm:text-sm font-black leading-none">★</span>
+								<span class="text-xs sm:text-sm font-black leading-none">★</span>
 							</div>
 
-							<!-- Middle: Empty clean yellow space per reference -->
-							<div class="flex-1"></div>
+							<!-- Middle: Scientific Botanical Name (Nama Ilmiah Latin) -->
+							<div class="flex-1 flex items-center justify-center py-2 overflow-hidden my-1">
+								<span
+									class="font-latin italic font-black text-xs sm:text-[13px] tracking-wide text-[#0D0D0D] select-none whitespace-nowrap"
+									style="writing-mode: vertical-rl;"
+								>
+									{currentSpecimen.latinName}
+								</span>
+							</div>
 
 							<!-- Upward Arrow at Bottom -->
 							<span class="text-base font-black leading-none">↑</span>
