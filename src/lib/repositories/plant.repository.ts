@@ -11,7 +11,7 @@ import { supabase, isSupabaseConfigured } from '../supabase';
 import { INITIAL_PLANTS_DATA } from '../data/seed-plants';
 import type { Plant, PlantFilterOptions, ContributionStatus } from '../types/plant.types';
 
-const LOCAL_STORAGE_KEY = 'flora_smk_plants_store_v2';
+const LOCAL_STORAGE_KEY = 'flora_smk_plants_store_v3';
 
 // In-memory cache for SSR & offline synchronization
 let memoryPlants: Plant[] = [...INITIAL_PLANTS_DATA];

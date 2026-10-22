@@ -235,7 +235,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		description:
 			'Kopi Robusta tumbuh optimal di dataran rendah hingga sedang (200–800 mdpl). Memiliki kadar kafein lebih tinggi dibanding Arabika dengan daya tahan lebih kokoh terhadap serangan karat daun (Hemileia vastatrix). Pohon kopi di kebun sekolah digunakan untuk melatih siswa teknik pemangkasan bentuk, okulasi sambung pucuk, dan petik merah ceri.',
 		location_x: 75.0,
-		location_y: 45.0,
+		location_y: 43.0,
 		location_label: 'Kebun Praktikum Perkebunan Blok Selatan',
 		status: 'approved',
 		contributor_name: 'Rian Hidayat (Siswa XII Agribisnis Perkebunan)',
@@ -271,8 +271,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Kakao merupakan pohon berdaun rindang asal Amerika Selatan dengan sifat kauliflori unik, di mana bunga dan buah muncul langsung dari batang pokok atau cabang tua. Buah kakao diolah siswa SMK Pertanian dari proses fermentasi biji, penjemuran, pemanggangan (roasting), hingga menjadi bubuk cokelat dan pasta cokelat bernilai jual.',
-		location_x: 82.0,
-		location_y: 52.0,
+		location_x: 89.0,
+		location_y: 43.0,
 		location_label: 'Kebun Kakao Pembibitan Terpadu',
 		status: 'approved',
 		contributor_name: 'Faisal Basri (Siswa XI ATPH 1)',
@@ -308,8 +308,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Kelapa sawit adalah tanaman penghasil minyak nabati paling efisien per hektar di dunia. Di area demonstrasi plot SMK Pertanian, tanaman sawit difungsikan untuk pengenalan anatomi tandan buah segar (TBS), pemupukan kalium, kastrasi bunga muda, serta pengenalan kumbang penyerbuk Elaeidobius kamerunicus.',
-		location_x: 89.0,
-		location_y: 60.0,
+		location_x: 82.0,
+		location_y: 57.0,
 		location_label: 'Demplot Perkebunan Sawit Percobaan',
 		status: 'approved',
 		contributor_name: 'Hendra Gunawan (Siswa XII Agribisnis)',
