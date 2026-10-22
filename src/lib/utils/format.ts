@@ -1,6 +1,6 @@
 // ==============================================================================
 // Flora SMK — Formatting & Localization Utilities (Neo-Brutalist Theme)
-// Tujuan: Format teks kategori, tanggal Indonesia, durasi, dan token warna pop
+// Tujuan: Format teks kategori, tanggal Indonesia, durasi, dan token warna botani
 // Caller: PlantCard, PlantDetail, Moderation Dashboard
 // Dependensi: PlantCategory
 // ==============================================================================
@@ -29,50 +29,50 @@ export function getCategoryColorClass(category: PlantCategory): {
 	switch (category) {
 		case 'obat':
 			return {
-				bg: 'bg-[#6BB092]',
-				text: 'text-stone-900',
-				border: 'border-2 border-stone-900',
-				dot: '#18181B',
-				accentHex: '#6BB092'
+				bg: 'bg-[#A7D7C5]',
+				text: 'text-[#0D0D0D]',
+				border: 'border-2 border-[#0D0D0D]',
+				dot: '#0D0D0D',
+				accentHex: '#A7D7C5'
 			};
 		case 'pangan':
 			return {
-				bg: 'bg-[#F6BD60]',
-				text: 'text-stone-900',
-				border: 'border-2 border-stone-900',
-				dot: '#18181B',
-				accentHex: '#F6BD60'
+				bg: 'bg-[#FBBF24]',
+				text: 'text-[#0D0D0D]',
+				border: 'border-2 border-[#0D0D0D]',
+				dot: '#0D0D0D',
+				accentHex: '#FBBF24'
 			};
 		case 'hias':
 			return {
-				bg: 'bg-[#CDB4DB]',
-				text: 'text-stone-900',
-				border: 'border-2 border-stone-900',
-				dot: '#18181B',
-				accentHex: '#CDB4DB'
+				bg: 'bg-[#E9D5FF]',
+				text: 'text-[#0D0D0D]',
+				border: 'border-2 border-[#0D0D0D]',
+				dot: '#0D0D0D',
+				accentHex: '#E9D5FF'
 			};
 		case 'kayu':
 			return {
-				bg: 'bg-[#E07A5F]',
-				text: 'text-stone-900',
-				border: 'border-2 border-stone-900',
-				dot: '#18181B',
-				accentHex: '#E07A5F'
+				bg: 'bg-[#FED7AA]',
+				text: 'text-[#0D0D0D]',
+				border: 'border-2 border-[#0D0D0D]',
+				dot: '#0D0D0D',
+				accentHex: '#FED7AA'
 			};
 		case 'industri':
 			return {
-				bg: 'bg-[#93C5FD]',
-				text: 'text-stone-900',
-				border: 'border-2 border-stone-900',
-				dot: '#18181B',
-				accentHex: '#93C5FD'
+				bg: 'bg-[#BAE6FD]',
+				text: 'text-[#0D0D0D]',
+				border: 'border-2 border-[#0D0D0D]',
+				dot: '#0D0D0D',
+				accentHex: '#BAE6FD'
 			};
 		default:
 			return {
 				bg: 'bg-[#E5E7EB]',
-				text: 'text-stone-900',
-				border: 'border-2 border-stone-900',
-				dot: '#18181B',
+				text: 'text-[#0D0D0D]',
+				border: 'border-2 border-[#0D0D0D]',
+				dot: '#0D0D0D',
 				accentHex: '#E5E7EB'
 			};
 	}

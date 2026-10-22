@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Printable QR Plant Tag Generator (Svelte 5 Runes)
-  Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah gaya Neo-Brutalist
+  Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah gaya Neo-Brutalist (Option A)
   Caller: Halaman detail tanaman, panel admin
   BRD Ref: F3 (QR Code Generator)
 -->
@@ -43,8 +43,8 @@
 	}
 </script>
 
-<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#0D0D0D] p-5 sm:p-6 shadow-[5px_5px_0px_#18181B] flex flex-col items-center text-center">
-	<div class="flex items-center gap-2 mb-3 text-stone-900 font-black text-sm uppercase tracking-wide">
+<div class="bg-white rounded-2xl border-2 border-[#0D0D0D] p-5 sm:p-6 shadow-[5px_5px_0px_#0D0D0D] flex flex-col items-center text-center">
+	<div class="flex items-center gap-2 mb-3 text-[#0D0D0D] font-black text-sm uppercase tracking-wide">
 		<QrCode class="w-4 h-4 stroke-[2.5]" />
 		<span>Label QR Botani Fisik</span>
 	</div>
@@ -52,9 +52,9 @@
 	<!-- Printable Physical Tag Preview Box -->
 	<div
 		id="printable-tag"
-		class="w-68 p-4 rounded-xl border-2 border-[#0D0D0D] bg-white shadow-[3px_3px_0px_#0D0D0D] flex flex-col items-center text-stone-900 my-2"
+		class="w-68 p-4 rounded-xl border-2 border-[#0D0D0D] bg-white shadow-[3px_3px_0px_#0D0D0D] flex flex-col items-center text-[#0D0D0D] my-2"
 	>
-		<p class="text-[10px] font-black uppercase tracking-widest text-stone-900 border-b-2 border-[#0D0D0D] pb-1 w-full text-center bg-[#F6BD60] py-1 rounded-md">
+		<p class="text-[10px] font-black uppercase tracking-widest text-[#0D0D0D] border-b-2 border-[#0D0D0D] pb-1 w-full text-center bg-[#D4F469] py-1 rounded-md">
 			SMK PPN GORONTALO • KOLEKSI BOTANI
 		</p>
 
@@ -68,7 +68,7 @@
 			</div>
 		{/if}
 
-		<h4 class="font-black text-base text-stone-900 leading-tight">
+		<h4 class="font-black text-base text-[#0D0D0D] leading-tight">
 			{plant.name_local}
 		</h4>
 		<p class="font-latin italic text-xs text-stone-700 font-bold mt-0.5">
@@ -109,8 +109,8 @@
 		#printable-tag {
 			position: absolute;
 			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
+			top: 20%;
+			transform: translateX(-50%);
 			box-shadow: none;
 			border: 2px solid #000;
 		}

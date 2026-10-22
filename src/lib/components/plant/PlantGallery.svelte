@@ -24,7 +24,7 @@
 
 <div class="flex flex-col gap-3">
 	<!-- Active Photo Frame -->
-	<div class="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-stone-900 border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B]">
+	<div class="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-stone-900 border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D]">
 		<img
 			src={activePhoto.storage_path}
 			alt="{plantName} - {activePhoto.label || 'Koleksi Botani'}"
@@ -32,7 +32,7 @@
 		/>
 
 		{#if activePhoto.label}
-			<div class="absolute bottom-3 left-3 bg-[#FFFEF9] border-2 border-[#18181B] text-stone-900 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-[2px_2px_0px_#18181B] font-black">
+			<div class="absolute bottom-3 left-3 bg-white border-2 border-[#0D0D0D] text-[#0D0D0D] text-xs px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-[2px_2px_0px_#0D0D0D] font-black">
 				<ImageIcon class="w-3.5 h-3.5 stroke-[2.5]" />
 				<span>{activePhoto.label}</span>
 			</div>
@@ -47,8 +47,8 @@
 					type="button"
 					onclick={() => (selectedIndex = i)}
 					class="relative aspect-4/3 w-20 sm:w-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer {selectedIndex === i
-						? 'border-[#18181B] shadow-[3px_3px_0px_#18181B] -translate-y-0.5'
-						: 'border-[#18181B]/40 opacity-70 hover:opacity-100 hover:border-[#18181B]'}"
+						? 'border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5'
+						: 'border-[#0D0D0D]/40 opacity-70 hover:opacity-100 hover:border-[#0D0D0D]'}"
 				>
 					<img src={photo.storage_path} alt={photo.label || `Foto ${i + 1}`} class="w-full h-full object-cover" />
 				</button>

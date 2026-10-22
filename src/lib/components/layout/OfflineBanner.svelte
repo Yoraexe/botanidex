@@ -30,8 +30,8 @@
 </script>
 
 {#if !isOnline}
-	<div class="bg-[#F6BD60] text-stone-900 text-xs font-black py-2 px-4 text-center flex items-center justify-center gap-2 border-b-2 border-[#18181B] shadow-[0_2px_0px_#18181B] z-50 sticky top-0">
-		<WifiOff class="w-4 h-4 text-stone-900" />
+	<div class="bg-[#D4F469] text-[#0D0D0D] text-xs font-black py-2 px-4 text-center flex items-center justify-center gap-2 border-b-2 border-[#0D0D0D] shadow-[0_2px_0px_#0D0D0D] z-50 sticky top-0">
+		<WifiOff class="w-4 h-4 text-[#0D0D0D]" />
 		<span>MODE OFFLINE AKTIF — Anda tetap dapat membuka katalog tanaman yang telah tersimpan di cache!</span>
 	</div>
 {/if}

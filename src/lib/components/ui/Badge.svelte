@@ -1,13 +1,13 @@
 <!--
   Flora SMK — Badge UI Primitive (Svelte 5 Runes)
-  Tujuan: Menampilkan label status kategori botani atau status moderasi gaya retro sticker
+  Tujuan: Menampilkan label status kategori botani atau status moderasi gaya retro sticker (Fresh Modern Agronomy)
   Caller: PlantCard, PlantDetail, Moderation Table
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
 	interface Props {
-		variant?: 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'mint' | 'yellow' | 'purple' | 'coral';
+		variant?: 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'mint' | 'yellow' | 'purple' | 'coral' | 'forest';
 		size?: 'sm' | 'md';
 		children?: Snippet;
 		class?: string;
@@ -21,15 +21,16 @@
 	}: Props = $props();
 
 	const variantStyles = {
-		success: 'bg-[#6BB092] text-stone-900 border-[#18181B]',
-		mint: 'bg-[#6BB092] text-stone-900 border-[#18181B]',
-		warning: 'bg-[#F6BD60] text-stone-900 border-[#18181B]',
-		yellow: 'bg-[#F6BD60] text-stone-900 border-[#18181B]',
-		error: 'bg-[#E07A5F] text-white border-[#18181B]',
-		coral: 'bg-[#E07A5F] text-white border-[#18181B]',
-		info: 'bg-[#93C5FD] text-stone-900 border-[#18181B]',
-		purple: 'bg-[#CDB4DB] text-stone-900 border-[#18181B]',
-		neutral: 'bg-white text-stone-900 border-[#18181B]'
+		success: 'bg-[#D4F469] text-[#0D0D0D] border-[#0D0D0D]',
+		mint: 'bg-[#D4F469] text-[#0D0D0D] border-[#0D0D0D]',
+		forest: 'bg-[#0F3E2E] text-white border-[#0D0D0D]',
+		warning: 'bg-[#FBBF24] text-[#0D0D0D] border-[#0D0D0D]',
+		yellow: 'bg-[#FBBF24] text-[#0D0D0D] border-[#0D0D0D]',
+		error: 'bg-[#E07A5F] text-white border-[#0D0D0D]',
+		coral: 'bg-[#E07A5F] text-white border-[#0D0D0D]',
+		info: 'bg-[#93C5FD] text-[#0D0D0D] border-[#0D0D0D]',
+		purple: 'bg-[#CDB4DB] text-[#0D0D0D] border-[#0D0D0D]',
+		neutral: 'bg-white text-[#0D0D0D] border-[#0D0D0D]'
 	};
 
 	const sizeStyles = {
@@ -39,7 +40,7 @@
 </script>
 
 <span
-	class="inline-flex items-center gap-1.5 uppercase rounded-lg border-2 shadow-[2px_2px_0px_#18181B] select-none {variantStyles[variant]} {sizeStyles[size]} {className}"
+	class="inline-flex items-center gap-1.5 uppercase rounded-lg border-2 shadow-[2px_2px_0px_#0D0D0D] select-none {variantStyles[variant]} {sizeStyles[size]} {className}"
 >
 	{#if children}
 		{@render children()}

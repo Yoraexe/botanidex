@@ -26,7 +26,7 @@
 
 <div class="flex flex-col gap-1.5 w-full">
 	{#if label}
-		<label for={id} class="text-xs font-extrabold text-stone-900 tracking-wider uppercase">
+		<label for={id} class="text-xs font-extrabold text-[#0D0D0D] tracking-wider uppercase">
 			{label}
 		</label>
 	{/if}
@@ -34,9 +34,9 @@
 	<input
 		{id}
 		bind:value
-		class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#18181B] rounded-xl shadow-[2px_2px_0px_#18181B] focus:shadow-[4px_4px_0px_#18181B] focus:-translate-x-0.5 focus:-translate-y-0.5 transition-all outline-none text-stone-900 placeholder:text-stone-400 disabled:bg-stone-100 disabled:cursor-not-allowed {error
+		class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#0D0D0D] rounded-xl shadow-[2px_2px_0px_#0D0D0D] focus:shadow-[4px_4px_0px_#0D0D0D] focus:-translate-x-0.5 focus:-translate-y-0.5 transition-all outline-none text-[#0D0D0D] placeholder:text-stone-400 disabled:bg-stone-100 disabled:cursor-not-allowed {error
 			? 'border-[#E07A5F] bg-red-50/30'
-			: 'focus:border-[#18181B]'} {className}"
+			: 'focus:border-[#0D0D0D]'} {className}"
 		{...restProps}
 	/>
 

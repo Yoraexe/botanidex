@@ -1,21 +1,24 @@
 /* ==============================================================================
  * Flora SMK — Neo-Brutalist Botanical Theme (Tailwind CSS v4)
- * Visual Style: Retro Pop / Neo-Brutalist / Memphis Aesthetic
- * Inpirasi: Thick borders, bold solid shadows, warm cream paper, pastel pop accents
+ * Visual Style: Option A - Fresh Modern Agronomy / Neo-Brutalist
+ * Inpirasi: Crisp borders, tactile drop shadows, clean ivory paper, sprout green accents
  * Caller: src/routes/+layout.svelte
  * ============================================================================== */
 
 @import 'tailwindcss';
 
 @theme {
-  --color-neo-bg: #F7F2E7;
-  --color-neo-card: #FFFEF9;
-  --color-neo-ink: #18181B;
+  --color-neo-bg: #F8F9F5;
+  --color-neo-card: #FFFFFF;
+  --color-neo-surface: #F3F6ED;
+  --color-neo-ink: #0D0D0D;
   
-  --color-neo-green: #6BB092;
-  --color-neo-green-dark: #4D8B71;
+  --color-neo-sprout: #D4F469;
+  --color-neo-forest: #0F3E2E;
+  --color-neo-forest-light: #166534;
+  --color-neo-green: #D4F469;
   --color-neo-coral: #E07A5F;
-  --color-neo-yellow: #F6BD60;
+  --color-neo-yellow: #FBBF24;
   --color-neo-purple: #CDB4DB;
   --color-neo-blue: #93C5FD;
 
@@ -25,8 +28,8 @@
 }
 
 :root {
-  --bg-page: #F7F2E7;
-  --color-text-primary: #18181B;
+  --bg-page: #F8F9F5;
+  --color-text-primary: #0D0D0D;
 }
 
 body {
@@ -40,30 +43,30 @@ body {
 
 /* Neo-brutalist tactile shadows */
 .neo-box {
-  background-color: #FFFEF9;
-  border: 2px solid #18181B;
-  box-shadow: 4px 4px 0px #18181B;
+  background-color: #FFFFFF;
+  border: 2px solid #0D0D0D;
+  box-shadow: 4px 4px 0px #0D0D0D;
   border-radius: 1rem;
 }
 
 .neo-box-sm {
-  background-color: #FFFEF9;
-  border: 2px solid #18181B;
-  box-shadow: 2.5px 2.5px 0px #18181B;
+  background-color: #FFFFFF;
+  border: 2px solid #0D0D0D;
+  box-shadow: 2.5px 2.5px 0px #0D0D0D;
   border-radius: 0.75rem;
 }
 
 .neo-box-lg {
-  background-color: #FFFEF9;
-  border: 2.5px solid #18181B;
-  box-shadow: 6px 6px 0px #18181B;
+  background-color: #FFFFFF;
+  border: 2.5px solid #0D0D0D;
+  box-shadow: 6px 6px 0px #0D0D0D;
   border-radius: 1.25rem;
 }
 
 /* Neo-brutalist interactive button */
 .neo-btn {
-  border: 2px solid #18181B;
-  box-shadow: 3px 3px 0px #18181B;
+  border: 2px solid #0D0D0D;
+  box-shadow: 3px 3px 0px #0D0D0D;
   transition: transform 100ms ease, box-shadow 100ms ease;
   cursor: pointer;
   font-weight: 700;
@@ -71,18 +74,18 @@ body {
 
 .neo-btn:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px #18181B;
+  box-shadow: 4px 4px 0px #0D0D0D;
 }
 
 .neo-btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #18181B;
+  box-shadow: 1px 1px 0px #0D0D0D;
 }
 
 /* Sticker badge effect */
 .neo-badge {
-  border: 1.5px solid #18181B;
-  box-shadow: 2px 2px 0px #18181B;
+  border: 1.5px solid #0D0D0D;
+  box-shadow: 2px 2px 0px #0D0D0D;
   font-weight: 800;
 }
 
@@ -114,10 +117,10 @@ body {
 
 /* Grid background texture */
 .retro-grid-bg {
-  background-color: #F7F2E7;
+  background-color: #F8F9F5;
   background-image: 
-    linear-gradient(to right, rgba(24, 24, 27, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(24, 24, 27, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(13, 13, 13, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13, 13, 13, 0.04) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 

@@ -185,7 +185,7 @@
 	<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D]">
 		<div>
 			<div class="flex items-center gap-2">
-				<div class="w-8 h-8 rounded-lg bg-[#E2EF46] border-2 border-[#0D0D0D] flex items-center justify-center text-[#0D0D0D]">
+				<div class="w-8 h-8 rounded-lg bg-[#D4F469] border-2 border-[#0D0D0D] flex items-center justify-center text-[#0D0D0D]">
 					<Sliders class="w-4 h-4 stroke-[2.5]" />
 				</div>
 				<h1 class="text-xl sm:text-2xl font-black text-[#0D0D0D] uppercase tracking-tight">
@@ -205,7 +205,7 @@
 			>
 				Moderasi Siswa
 			</a>
-			<span class="px-3.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-[#0D0D0D] text-[#E2EF46] text-xs font-black shadow-[2px_2px_0px_#0D0D0D] select-none">
+			<span class="px-3.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-[#0D0D0D] text-[#D4F469] text-xs font-black shadow-[2px_2px_0px_#0D0D0D] select-none">
 				Pengaturan CMS
 			</span>
 		</div>
@@ -216,35 +216,35 @@
 		<button
 			type="button"
 			onclick={() => (activeTab = 'identity')}
-			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'identity' ? 'bg-[#0D0D0D] text-[#E2EF46] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
+			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'identity' ? 'bg-[#0D0D0D] text-[#D4F469] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
 		>
 			1. Identitas &amp; Headline
 		</button>
 		<button
 			type="button"
 			onclick={() => (activeTab = 'garden')}
-			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'garden' ? 'bg-[#0D0D0D] text-[#E2EF46] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
+			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'garden' ? 'bg-[#0D0D0D] text-[#D4F469] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
 		>
 			2. Foto Kebun Sekolah ({config.hero.gardenPhotos.length})
 		</button>
 		<button
 			type="button"
 			onclick={() => (activeTab = 'specimen')}
-			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'specimen' ? 'bg-[#0D0D0D] text-[#E2EF46] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
+			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'specimen' ? 'bg-[#0D0D0D] text-[#D4F469] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
 		>
 			3. Etalase Spesimen Kanan ({config.hero.specimens.length})
 		</button>
 		<button
 			type="button"
 			onclick={() => (activeTab = 'categories')}
-			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'categories' ? 'bg-[#0D0D0D] text-[#E2EF46] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
+			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'categories' ? 'bg-[#0D0D0D] text-[#D4F469] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
 		>
 			4. Kategori Botani ({config.categories.length})
 		</button>
 		<button
 			type="button"
 			onclick={() => (activeTab = 'download')}
-			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'download' ? 'bg-[#0D0D0D] text-[#E2EF46] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
+			class="px-4 py-2 rounded-xl text-xs font-black border-2 border-[#0D0D0D] transition-all cursor-pointer shrink-0 select-none {activeTab === 'download' ? 'bg-[#0D0D0D] text-[#D4F469] shadow-[3px_3px_0px_#0D0D0D] -translate-y-0.5' : 'bg-white text-[#0D0D0D] hover:bg-stone-50'}"
 		>
 			5. Info Unduh Aplikasi
 		</button>
@@ -259,7 +259,7 @@
 			</h2>
 
 			<!-- Official School Logo Preview Card -->
-			<div class="p-3.5 bg-[#FDFBF7] rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center gap-3.5">
+			<div class="p-3.5 bg-[#F8F9F5] rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center gap-3.5">
 				<div class="w-12 h-12 rounded-lg border-2 border-[#0D0D0D] p-1 bg-white flex items-center justify-center shrink-0 shadow-[1px_1px_0px_#0D0D0D]">
 					<img src="/SMK-Pertanian-Gorontalo.png" alt="Logo SMK PPN Gorontalo" class="w-full h-full object-contain" />
 				</div>
@@ -275,7 +275,7 @@
 					<input
 						id="appName"
 						bind:value={config.identity.appName}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none"
 						placeholder="Contoh: Flora SMK"
 					/>
 				</div>
@@ -285,7 +285,7 @@
 					<input
 						id="schoolName"
 						bind:value={config.identity.schoolName}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none"
 						placeholder="Contoh: SMK PPN Gorontalo"
 					/>
 				</div>
@@ -295,7 +295,7 @@
 					<input
 						id="headerBadge"
 						bind:value={config.identity.headerBadge}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none"
 						placeholder="Contoh: Katalog Botani Digital SMK PPN Gorontalo"
 					/>
 				</div>
@@ -305,7 +305,7 @@
 					<input
 						id="headlineLine1"
 						bind:value={config.hero.headlineLine1}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none uppercase"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none uppercase"
 						placeholder="KATALOG BOTANI"
 					/>
 				</div>
@@ -315,7 +315,7 @@
 					<input
 						id="headlineLine2"
 						bind:value={config.hero.headlineLine2}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7] outline-none uppercase"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none uppercase"
 						placeholder="SMK PPN GORONTALO"
 					/>
 				</div>
@@ -347,7 +347,7 @@
 					<div class="rounded-xl border-2 border-[#0D0D0D] overflow-hidden bg-stone-50 flex flex-col justify-between shadow-xs">
 						<div class="relative aspect-16/9 w-full bg-stone-200">
 							<img src={photo.url} alt={photo.title} class="w-full h-full object-cover" />
-							<span class="absolute top-2 left-2 bg-black/80 text-[#E2EF46] px-2 py-0.5 rounded text-[9px] font-bold border border-white/20 uppercase">
+							<span class="absolute top-2 left-2 bg-black/80 text-[#D4F469] px-2 py-0.5 rounded text-[9px] font-bold border border-white/20 uppercase">
 								{photo.badge}
 							</span>
 						</div>
@@ -369,7 +369,7 @@
 			</div>
 
 			<!-- Add New Photo Form -->
-			<div class="bg-[#F7F2E7] p-4 rounded-xl border-2 border-[#0D0D0D] flex flex-col gap-3 mt-2">
+			<div class="bg-[#F3F6ED] p-4 rounded-xl border-2 border-[#0D0D0D] flex flex-col gap-3 mt-2">
 				<h3 class="text-xs font-black uppercase tracking-wider text-[#0D0D0D]">Tambah Foto Kebun Baru</h3>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 					<input
@@ -392,7 +392,7 @@
 					<button
 						type="button"
 						onclick={handleAddGardenPhoto}
-						class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E2EF46] hover:bg-[#d8e538] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer"
+						class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer"
 					>
 						<Plus class="w-4 h-4" />
 						Tambahkan Foto
@@ -441,7 +441,7 @@
 			</div>
 
 			<!-- Add New Specimen Form -->
-			<div class="bg-[#F7F2E7] p-4 rounded-xl border-2 border-[#0D0D0D] flex flex-col gap-3 mt-2">
+			<div class="bg-[#F3F6ED] p-4 rounded-xl border-2 border-[#0D0D0D] flex flex-col gap-3 mt-2">
 				<h3 class="text-xs font-black uppercase tracking-wider text-[#0D0D0D]">Tambah Spesimen Baru</h3>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 					<input
@@ -464,7 +464,7 @@
 					<button
 						type="button"
 						onclick={handleAddSpecimen}
-						class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E2EF46] hover:bg-[#d8e538] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer"
+						class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer"
 					>
 						<Plus class="w-4 h-4" />
 						Tambahkan Spesimen
@@ -510,7 +510,7 @@
 			</div>
 
 			<!-- Add New Category Form -->
-			<div class="bg-[#F7F2E7] p-4 rounded-xl border-2 border-[#0D0D0D] flex flex-col gap-3 mt-2">
+			<div class="bg-[#F3F6ED] p-4 rounded-xl border-2 border-[#0D0D0D] flex flex-col gap-3 mt-2">
 				<h3 class="text-xs font-black uppercase tracking-wider text-[#0D0D0D]">Tambah Kategori Baru</h3>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 					<input
@@ -540,7 +540,7 @@
 					<button
 						type="button"
 						onclick={handleAddCategory}
-						class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E2EF46] hover:bg-[#d8e538] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer"
+						class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer"
 					>
 						<Plus class="w-4 h-4" />
 						Tambahkan Kategori
@@ -564,7 +564,7 @@
 					<input
 						id="downloadTitle"
 						bind:value={config.hero.appDownload.title}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7]"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5]"
 					/>
 				</div>
 
@@ -573,7 +573,7 @@
 					<input
 						id="btnLabel"
 						bind:value={config.hero.appDownload.buttonLabel}
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7]"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5]"
 					/>
 				</div>
 
@@ -583,7 +583,7 @@
 						id="downloadDesc"
 						bind:value={config.hero.appDownload.description}
 						rows="2"
-						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#FDFBF7]"
+						class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5]"
 					></textarea>
 				</div>
 

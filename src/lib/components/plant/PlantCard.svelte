@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Plant Card Component (Svelte 5 Runes)
-  Tujuan: Menampilkan ringkasan tanaman dalam format card grid Neo-Brutalist
+  Tujuan: Menampilkan ringkasan tanaman dalam format card grid Neo-Brutalist (Option A - Fresh Modern Agronomy)
   Caller: Halaman Katalog, Landing Page, Search Results
   Dependensi: Plant type, format utils
 -->
@@ -22,7 +22,7 @@
 
 <a
 	href="/katalog/{plant.slug}"
-	class="group block bg-[#FFFEF9] rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] hover:shadow-[6px_6px_0px_#0D0D0D] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-150 flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-[#0D0D0D] overflow-hidden"
+	class="group block bg-white rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] hover:shadow-[6px_6px_0px_#0D0D0D] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-150 flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-[#0D0D0D] overflow-hidden"
 >
 	<!-- Card Image Banner with Neo-Brutalist Divider -->
 	<div class="relative aspect-4/3 w-full bg-stone-100 border-b-2 border-[#0D0D0D] overflow-hidden">
@@ -47,7 +47,7 @@
 		<div class="absolute bottom-2.5 right-2.5 flex items-center gap-1.5">
 			{#if plant.videos && plant.videos.length > 0}
 				<span
-					class="px-2 py-0.5 rounded-lg bg-[#E2EF46] text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D] text-[10px] font-black flex items-center gap-1"
+					class="px-2 py-0.5 rounded-lg bg-[#D4F469] text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D] text-[10px] font-black flex items-center gap-1"
 					title="Ada video edukasi siswa"
 				>
 					<Video class="w-3 h-3 stroke-[2.5]" />
@@ -65,7 +65,7 @@
 	<!-- Card Content -->
 	<div class="p-4 flex-1 flex flex-col justify-between">
 		<div>
-			<h3 class="text-base sm:text-lg font-black text-stone-900 group-hover:text-emerald-800 transition-colors line-clamp-1 leading-snug">
+			<h3 class="text-base sm:text-lg font-black text-[#0D0D0D] group-hover:text-emerald-800 transition-colors line-clamp-1 leading-snug">
 				{plant.name_local}
 			</h3>
 			<p class="text-xs text-stone-700 font-latin italic font-semibold line-clamp-1 mt-0.5">
@@ -75,10 +75,10 @@
 
 		<div class="mt-4 pt-3 border-t-2 border-stone-200/80 flex items-center justify-between text-xs">
 			<div class="flex items-center gap-1.5 truncate max-w-[65%] text-stone-700 font-bold">
-				<MapPin class="w-3.5 h-3.5 text-stone-900 shrink-0" />
+				<MapPin class="w-3.5 h-3.5 text-[#0D0D0D] shrink-0" />
 				<span class="truncate text-[11px]">{plant.location_label || 'Kebun Sekolah'}</span>
 			</div>
-			<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#6BB092] text-stone-900 border border-[#0D0D0D] font-black text-[10px] shadow-[1px_1px_0px_#0D0D0D] group-hover:translate-x-0.5 transition-transform">
+			<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D4F469] text-[#0D0D0D] border border-[#0D0D0D] font-black text-[10px] shadow-[1px_1px_0px_#0D0D0D] group-hover:translate-x-0.5 transition-transform">
 				Lihat
 				<ArrowUpRight class="w-3 h-3 stroke-[3]" />
 			</span>

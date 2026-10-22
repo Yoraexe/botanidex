@@ -1,6 +1,6 @@
 <!--
   Flora SMK — QR Code Scanner Component (Svelte 5 Runes)
-  Tujuan: Memindai QR Code tanaman gaya Neo-Brutalist dari kamera HP atau unggahan foto QR
+  Tujuan: Memindai QR Code tanaman gaya Neo-Brutalist dari kamera HP atau unggahan foto QR (Option A)
   Caller: Halaman /scan
   BRD Ref: F3 (QR Code Scanner)
 -->
@@ -119,17 +119,17 @@
 
 <div class="max-w-md mx-auto flex flex-col gap-6">
 	<!-- Scanner Viewport Card -->
-	<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B] p-4 sm:p-5 text-center text-stone-900 relative">
+	<div class="bg-white rounded-2xl border-2 border-[#0D0D0D] shadow-[5px_5px_0px_#0D0D0D] p-4 sm:p-5 text-center text-[#0D0D0D] relative">
 		<div class="mb-3.5 flex items-center justify-between px-1">
 			<div class="flex items-center gap-2">
-				<div class="w-8 h-8 rounded-lg bg-[#6BB092] border border-[#18181B] flex items-center justify-center text-stone-900">
+				<div class="w-8 h-8 rounded-lg bg-[#D4F469] border border-[#0D0D0D] flex items-center justify-center text-[#0D0D0D]">
 					<Camera class="w-4 h-4 stroke-[2.5]" />
 				</div>
 				<span class="text-sm font-black tracking-tight">Kamera Pemindai Tanaman</span>
 			</div>
 			{#if isScanning}
-				<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-[#F6BD60] text-stone-900 border border-[#18181B] shadow-[1px_1px_0px_#18181B]">
-					<span class="w-1.5 h-1.5 rounded-full bg-[#18181B] animate-ping"></span>
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-[#D4F469] text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D]">
+					<span class="w-1.5 h-1.5 rounded-full bg-[#0D0D0D] animate-ping"></span>
 					Mencari QR...
 				</span>
 			{/if}
@@ -140,19 +140,19 @@
 			<div id={scannerId} class="w-full h-full"></div>
 
 			<!-- Visual Scan Guide Corners Overlay -->
-			<div class="absolute inset-8 pointer-events-none border-2 border-dashed border-[#E2EF46] rounded-xl flex items-center justify-center">
-				<div class="w-full h-0.5 bg-[#E2EF46] shadow-[0_0_8px_#E2EF46] animate-pulse"></div>
+			<div class="absolute inset-8 pointer-events-none border-2 border-dashed border-[#D4F469] rounded-xl flex items-center justify-center">
+				<div class="w-full h-0.5 bg-[#D4F469] shadow-[0_0_8px_#D4F469] animate-pulse"></div>
 			</div>
 		</div>
 
 		{#if errorMessage}
-			<div class="mt-3.5 p-3.5 bg-[#E07A5F]/20 border-2 border-[#0D0D0D] rounded-xl text-left flex items-start gap-2.5 text-xs text-stone-900">
+			<div class="mt-3.5 p-3.5 bg-[#E07A5F]/20 border-2 border-[#0D0D0D] rounded-xl text-left flex items-start gap-2.5 text-xs text-[#0D0D0D]">
 				<AlertCircle class="w-4 h-4 shrink-0 mt-0.5 text-[#E07A5F] stroke-[2.5]" />
 				<div class="flex-1 font-bold">
-					<p class="font-black text-stone-900">Kendala Kamera</p>
+					<p class="font-black text-[#0D0D0D]">Kendala Kamera</p>
 					<p class="text-stone-700 mt-0.5">{errorMessage}</p>
 				</div>
-				<button onclick={startScanner} class="p-1 hover:bg-stone-200 rounded-md cursor-pointer" title="Coba Lagi">
+				<button onclick={startScanner} class="p-1 hover:bg-[#F3F6ED] rounded-md cursor-pointer" title="Coba Lagi">
 					<RefreshCw class="w-4 h-4 stroke-[2.5]" />
 				</button>
 			</div>
@@ -160,15 +160,15 @@
 	</div>
 
 	<!-- Alternative Actions: Upload Image or Manual Search -->
-	<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#0D0D0D] p-5 shadow-[4px_4px_0px_#0D0D0D] flex flex-col gap-4">
-		<h3 class="text-sm font-black text-stone-900 border-b-2 border-[#0D0D0D] pb-2 uppercase tracking-wide">
+	<div class="bg-white rounded-2xl border-2 border-[#0D0D0D] p-5 shadow-[4px_4px_0px_#0D0D0D] flex flex-col gap-4">
+		<h3 class="text-sm font-black text-[#0D0D0D] border-b-2 border-[#0D0D0D] pb-2 uppercase tracking-wide">
 			Opsi Pemindaian Lainnya
 		</h3>
 
 		<!-- File Upload (Screenshot/Photo from Gallery) -->
 		<div>
-			<label class="flex items-center justify-center gap-2 p-3.5 border-2 border-dashed border-[#0D0D0D] hover:bg-[#E2EF46]/20 rounded-xl cursor-pointer bg-[#F7F2E7] transition-colors text-xs font-black text-stone-900 shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D]">
-				<ImageIcon class="w-4 h-4 text-stone-900 stroke-[2.5]" />
+			<label class="flex items-center justify-center gap-2 p-3.5 border-2 border-dashed border-[#0D0D0D] hover:bg-[#D4F469]/30 rounded-xl cursor-pointer bg-[#F3F6ED] transition-colors text-xs font-black text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D]">
+				<ImageIcon class="w-4 h-4 text-[#0D0D0D] stroke-[2.5]" />
 				<span>Pilih Foto QR dari Galeri</span>
 				<input type="file" accept="image/*" onchange={handleFileUpload} class="hidden" />
 			</label>
@@ -176,7 +176,7 @@
 
 		<!-- Manual Plant Code or Name Search -->
 		<form onsubmit={handleManualSubmit} class="flex flex-col gap-2 pt-2 border-t-2 border-[#0D0D0D]/20">
-			<label for="manual-plant-input" class="text-xs font-black text-stone-800 uppercase tracking-wide">
+			<label for="manual-plant-input" class="text-xs font-black text-[#0D0D0D] uppercase tracking-wide">
 				Cari Manual
 			</label>
 			<div class="flex gap-2">
@@ -184,9 +184,9 @@
 					id="manual-plant-input"
 					bind:value={manualInput}
 					placeholder="Contoh: Jahe Merah, Jagung, atau Kopi..."
-					class="flex-1 px-3.5 py-2.5 text-sm bg-white border-2 border-[#18181B] rounded-xl shadow-[2px_2px_0px_#18181B] focus:shadow-[3px_3px_0px_#18181B] outline-none font-bold placeholder:text-stone-400"
+					class="flex-1 px-3.5 py-2.5 text-sm bg-white border-2 border-[#0D0D0D] rounded-xl shadow-[2px_2px_0px_#0D0D0D] focus:shadow-[3px_3px_0px_#0D0D0D] outline-none font-bold placeholder:text-stone-400"
 				/>
-				<Button type="submit" variant="secondary" size="md">
+				<Button type="submit" variant="primary" size="md">
 					<Search class="w-4 h-4 stroke-[2.5]" />
 					Cari
 				</Button>

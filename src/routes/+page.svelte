@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Landing Page / Beranda (Svelte 5 Runes)
-  Visual Style: Tight, Interlocking 2-Column Proportional Layout (Crypko Poster Aesthetic)
+  Visual Style: Option A - Fresh Modern Agronomy (Crypko Poster Aesthetic)
   Caller: Route '/'
 -->
 <script lang="ts">
@@ -169,10 +169,10 @@
 
 <div class="flex flex-col gap-8 sm:gap-10">
 	<!-- ========================================================================= -->
-	<!-- REFINED, ORDERLY, HARMONIOUS HERO ARTBOARD -->
+	<!-- REFINED, ORDERLY, HARMONIOUS HERO ARTBOARD (OPTION A: FRESH AGRONOMY) -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1060px] mx-auto rounded-[32px] sm:rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#EAE4D6] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col"
+		class="w-full max-w-[1060px] mx-auto rounded-[32px] sm:rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#F3F6ED] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col"
 	>
 		<!-- TWO-COLUMN BALANCED INTERLOCKING GRID (ORDERLY, SPACED, ZERO-COLLISION) -->
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-start w-full">
@@ -212,7 +212,7 @@
 						>
 							<div class="flex flex-col pr-4">
 								<span
-									class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
+									class="text-[9px] sm:text-[10px] font-bold text-[#D4F469] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
 								>
 									{currentGarden.badge}
 								</span>
@@ -227,7 +227,7 @@
 									<button
 										type="button"
 										onclick={() => (currentGardenIndex = idx)}
-										class="h-1.5 rounded-full transition-all cursor-pointer {idx === currentGardenIndex ? 'w-5 bg-[#E2EF46]' : 'w-1.5 bg-white/60 hover:bg-white'}"
+										class="h-1.5 rounded-full transition-all cursor-pointer {idx === currentGardenIndex ? 'w-5 bg-[#D4F469]' : 'w-1.5 bg-white/60 hover:bg-white'}"
 										aria-label="Pilih foto kebun {idx + 1}"
 									></button>
 								{/each}
@@ -241,7 +241,7 @@
 			<div class="lg:col-span-5 flex flex-col gap-3.5 sm:gap-4 w-full">
 				<!-- Vertical Specimen Card: Plant Collection Showcase (Pure Display, Uniform Rounded Corner) -->
 				<div
-					class="relative w-full h-[260px] sm:h-[280px] rounded-tl-[4.5rem] rounded-tr-2xl rounded-br-2xl rounded-bl-2xl border-2 border-[#0D0D0D] bg-[#EAE4D6] overflow-hidden flex flex-row shadow-xs"
+					class="relative w-full h-[260px] sm:h-[280px] rounded-tl-[4.5rem] rounded-tr-2xl rounded-br-2xl rounded-bl-2xl border-2 border-[#0D0D0D] bg-[#F3F6ED] overflow-hidden flex flex-row shadow-xs"
 				>
 					<!-- Double contour line on top-left (Mirrors Left Card's signature motif) -->
 					<div
@@ -249,7 +249,7 @@
 					></div>
 
 					<!-- Image Area: Plant Specimens Showcase -->
-					<div class="flex-1 h-full relative overflow-hidden bg-[#EAE4D6] flex items-center justify-center">
+					<div class="flex-1 h-full relative overflow-hidden bg-[#F3F6ED] flex items-center justify-center">
 						<img
 							src={currentSpecimen.url}
 							alt={currentSpecimen.commonName}
@@ -261,9 +261,9 @@
 						</div>
 					</div>
 
-					<!-- Vertical Neon Chartreuse Strip (Scientific Latin Botanical Name) -->
+					<!-- Vertical Fresh Sprout Strip (Scientific Latin Botanical Name) -->
 					<div
-						class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-center py-4 text-[#0D0D0D] select-none shrink-0"
+						class="w-10 sm:w-11 bg-[#D4F469] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-center py-4 text-[#0D0D0D] select-none shrink-0"
 					>
 						<div class="flex-1 flex items-center justify-center overflow-hidden my-1">
 							<span
@@ -325,7 +325,7 @@
 						<button
 							type="button"
 							onclick={handleDirectInstall}
-							class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#E2EF46]/30 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
+							class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#D4F469]/40 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
 							title="Pasang aplikasi Flora SMK langsung ke perangkat Anda"
 						>
 							<Smartphone class="w-3.5 h-3.5 stroke-[2.2]" />
@@ -341,7 +341,7 @@
 	<!-- SEARCH & BOTANICAL CATEGORY CONTROL DECK (PRECISE & PROPORTIONAL) -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1060px] mx-auto bg-[#EAE4D6] rounded-[28px] border-[2.5px] border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] p-4 sm:p-5 flex flex-col gap-3.5 sm:gap-4"
+		class="w-full max-w-[1060px] mx-auto bg-[#F3F6ED] rounded-[28px] border-[2.5px] border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] p-4 sm:p-5 flex flex-col gap-3.5 sm:gap-4"
 	>
 		<!-- 1. Top Deck: Live Search Input with Direct Action Button -->
 		<form onsubmit={handleSearch} class="flex items-center gap-2.5 sm:gap-3 w-full">
@@ -355,7 +355,7 @@
 			</div>
 			<button
 				type="submit"
-				class="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#E2EF46] hover:bg-[#d8e538] text-[#0D0D0D] text-xs sm:text-sm font-black rounded-full border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all cursor-pointer shrink-0 uppercase tracking-wider select-none"
+				class="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] text-xs sm:text-sm font-black rounded-full border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all cursor-pointer shrink-0 uppercase tracking-wider select-none"
 			>
 				Cari
 			</button>
@@ -385,7 +385,7 @@
 			</div>
 			<a
 				href="/katalog"
-				class="text-xs font-black text-[#0D0D0D] px-3.5 py-1.5 rounded-full border-2 border-[#0D0D0D] bg-white shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#E2EF46] transition-colors flex items-center gap-1.5"
+				class="text-xs font-black text-[#0D0D0D] px-3.5 py-1.5 rounded-full border-2 border-[#0D0D0D] bg-white shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#D4F469] transition-colors flex items-center gap-1.5"
 			>
 				<span>Semua ({plants.length})</span>
 				<ArrowRight class="w-3.5 h-3.5 stroke-[2.5]" />
@@ -408,32 +408,35 @@
 	</section>
 
 	<!-- ========================================================================= -->
-	<!-- STUDENT VIDEO CALLOUT -->
+	<!-- STUDENT VIDEO CALLOUT (AGRONOMY FOREST ACCENT) -->
 	<!-- ========================================================================= -->
 	<section
-		class="max-w-[1040px] mx-auto w-full bg-[#E2EF46] rounded-3xl p-6 sm:p-8 border-2 border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] flex flex-col sm:flex-row items-center justify-between gap-6"
+		class="max-w-[1040px] mx-auto w-full bg-[#0F3E2E] text-white rounded-3xl p-6 sm:p-8 border-2 border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] flex flex-col sm:flex-row items-center justify-between gap-6"
 	>
 		<div class="flex items-start gap-4">
 			<div
-				class="w-12 h-12 rounded-2xl bg-white border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] text-[#0D0D0D] flex items-center justify-center shrink-0"
+				class="w-12 h-12 rounded-2xl bg-[#D4F469] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] text-[#0D0D0D] flex items-center justify-center shrink-0"
 			>
 				<Video class="w-6 h-6 stroke-[2.5]" />
 			</div>
 			<div>
-				<h3 class="text-base sm:text-xl font-black text-[#0D0D0D]">
+				<h3 class="text-base sm:text-xl font-black text-white">
 					Video Pembelajaran Siswa
 				</h3>
-				<p class="text-xs sm:text-sm text-[#0D0D0D] font-bold mt-1">
-					Dokumentasi morfologi dan agronomi lapangan.
+				<p class="text-xs sm:text-sm text-[#D4F469]/90 font-bold mt-1">
+					Dokumentasi morfologi dan agronomi lapangan langsung dari siswa SMK PPN Gorontalo.
 				</p>
 			</div>
 		</div>
 		<div class="flex items-center gap-3 shrink-0 w-full sm:w-auto">
 			<a href="/kontribusi/tambah" class="w-full sm:w-auto">
-				<Button variant="outline" size="md" fullWidth>
+				<button
+					type="button"
+					class="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] font-black text-sm border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+				>
 					<PlusCircle class="w-4 h-4 stroke-[2.5]" />
-					Unggah Video Tanaman
-				</Button>
+					<span>Unggah Video Tanaman</span>
+				</button>
 			</a>
 		</div>
 	</section>

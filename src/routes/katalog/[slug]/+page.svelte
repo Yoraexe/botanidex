@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Plant Detail Page (Svelte 5 Runes)
-  Tujuan: Profil lengkap tanaman gaya Neo-Brutalist, galeri foto, taksonomi, video edukasi siswa, lokasi peta, dan QR generator
+  Tujuan: Profil lengkap tanaman gaya Neo-Brutalist, galeri foto, taksonomi, video edukasi siswa, lokasi peta, dan QR generator (Option A)
   Caller: Route '/katalog/[slug]'
   BRD Ref: F2 (Detail Tanaman & Video Siswa)
 -->
@@ -101,7 +101,7 @@
 	<div class="flex items-center justify-between">
 		<a
 			href="/katalog"
-			class="inline-flex items-center gap-2 text-xs font-black text-stone-900 bg-white px-3.5 py-2.5 rounded-xl border-2 border-[#18181B] shadow-[2.5px_2.5px_0px_#18181B] hover:bg-[#F6BD60] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all"
+			class="inline-flex items-center gap-2 text-xs font-black text-[#0D0D0D] bg-white px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] shadow-[2.5px_2.5px_0px_#0D0D0D] hover:bg-[#D4F469] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all"
 		>
 			<ArrowLeft class="w-4 h-4 stroke-[2.5]" />
 			<span>Kembali ke Katalog</span>
@@ -110,7 +110,7 @@
 		<div class="flex items-center gap-2.5">
 			<button
 				onclick={() => (showQrModal = true)}
-				class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-stone-900 border-2 border-[#18181B] rounded-xl shadow-[2.5px_2.5px_0px_#18181B] hover:bg-[#6BB092] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all cursor-pointer"
+				class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-[#0D0D0D] border-2 border-[#0D0D0D] rounded-xl shadow-[2.5px_2.5px_0px_#0D0D0D] hover:bg-[#D4F469] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all cursor-pointer"
 				title="Lihat Label QR Tanaman"
 			>
 				<QrCode class="w-4 h-4 stroke-[2.5]" />
@@ -119,7 +119,7 @@
 
 			<button
 				onclick={handleShare}
-				class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-stone-900 border-2 border-[#18181B] rounded-xl shadow-[2.5px_2.5px_0px_#18181B] hover:bg-[#F6BD60] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all cursor-pointer"
+				class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-[#0D0D0D] border-2 border-[#0D0D0D] rounded-xl shadow-[2.5px_2.5px_0px_#0D0D0D] hover:bg-[#D4F469] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all cursor-pointer"
 				title="Bagikan Tautan Profil Tanaman"
 			>
 				<Share2 class="w-4 h-4 stroke-[2.5]" />
@@ -129,7 +129,7 @@
 	</div>
 
 	{#if isLoading && !plant}
-		<div class="bg-[#FFFEF9] rounded-3xl p-6 sm:p-8 border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B] animate-pulse flex flex-col gap-6">
+		<div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#0D0D0D] shadow-[5px_5px_0px_#0D0D0D] animate-pulse flex flex-col gap-6">
 			<div class="h-8 bg-stone-200 rounded-xl w-1/3"></div>
 			<div class="aspect-video bg-stone-200 rounded-2xl w-full"></div>
 			<div class="h-4 bg-stone-200 rounded w-full"></div>
@@ -140,31 +140,31 @@
 		{@const categoryLabel = getCategoryBadgeLabel(plant.category)}
 
 		<!-- Plant Main Profile Card (Neo-Brutalist) -->
-		<article class="bg-[#FFFEF9] rounded-3xl p-5 sm:p-8 border-2 border-[#18181B] shadow-[6px_6px_0px_#18181B] flex flex-col gap-6">
+		<article class="bg-white rounded-3xl p-5 sm:p-8 border-2 border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] flex flex-col gap-6">
 			<!-- Header Title & Badges -->
-			<div class="flex flex-col gap-2.5 pb-5 border-b-2 border-[#18181B]">
+			<div class="flex flex-col gap-2.5 pb-5 border-b-2 border-[#0D0D0D]">
 				<div class="flex flex-wrap items-center gap-2">
-					<span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] {colors.bg} text-stone-900">
+					<span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] {colors.bg} text-[#0D0D0D]">
 						{categoryLabel}
 					</span>
 					{#if plant.aliases && plant.aliases.length > 0}
-						<span class="text-xs font-bold text-stone-600 bg-[#F7F2E7] px-2 py-0.5 rounded-md border border-[#18181B]">
+						<span class="text-xs font-bold text-stone-600 bg-[#F3F6ED] px-2 py-0.5 rounded-md border border-[#0D0D0D]">
 							Sinonim: {plant.aliases.join(', ')}
 						</span>
 					{/if}
 				</div>
 
-				<h1 class="text-2xl sm:text-4xl font-black text-stone-900 tracking-tight leading-tight">
+				<h1 class="text-2xl sm:text-4xl font-black text-[#0D0D0D] tracking-tight leading-tight">
 					{plant.name_local}
 				</h1>
 
 				<div class="flex flex-wrap items-baseline gap-2">
-					<p class="font-latin italic text-lg sm:text-2xl text-stone-900 font-bold">
+					<p class="font-latin italic text-lg sm:text-2xl text-[#0D0D0D] font-bold">
 						{plant.name_latin}
 					</p>
 					{#if plant.name_english}
 						<span class="text-xs sm:text-sm font-semibold text-stone-600">
-							• Bahasa Inggris: <strong class="text-stone-900">{plant.name_english}</strong>
+							• Bahasa Inggris: <strong class="text-[#0D0D0D]">{plant.name_english}</strong>
 						</span>
 					{/if}
 				</div>
@@ -175,19 +175,19 @@
 
 			<!-- Location Badge with Direct Link to Map -->
 			{#if plant.location_label}
-				<div class="p-4 bg-[#F7F2E7] rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+				<div class="p-4 bg-[#F3F6ED] rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 					<div class="flex items-center gap-3">
-						<div class="w-10 h-10 rounded-xl bg-[#6BB092] border-2 border-[#0D0D0D] shadow-[1.5px_1.5px_0px_#0D0D0D] text-stone-900 flex items-center justify-center shrink-0">
+						<div class="w-10 h-10 rounded-xl bg-[#D4F469] border-2 border-[#0D0D0D] shadow-[1.5px_1.5px_0px_#0D0D0D] text-[#0D0D0D] flex items-center justify-center shrink-0">
 							<MapPin class="w-5 h-5 stroke-[2.5]" />
 						</div>
 						<div>
 							<p class="text-[10px] font-black text-stone-600 uppercase tracking-wider">Lokasi</p>
-							<p class="text-sm sm:text-base font-black text-stone-900">{plant.location_label}</p>
+							<p class="text-sm sm:text-base font-black text-[#0D0D0D]">{plant.location_label}</p>
 						</div>
 					</div>
 					<a
 						href="/peta"
-						class="px-4 py-2 rounded-full bg-[#FFFEF9] border-2 border-[#0D0D0D] text-stone-900 text-xs font-black hover:bg-[#E2EF46] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all self-start sm:self-auto shrink-0"
+						class="px-4 py-2 rounded-full bg-white border-2 border-[#0D0D0D] text-[#0D0D0D] text-xs font-black hover:bg-[#D4F469] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all self-start sm:self-auto shrink-0"
 					>
 						Lihat Peta →
 					</a>
@@ -196,11 +196,11 @@
 
 			<!-- Plant Description -->
 			<div class="flex flex-col gap-2.5">
-				<div class="flex items-center gap-2 text-stone-900 font-black text-sm uppercase tracking-wide">
+				<div class="flex items-center gap-2 text-[#0D0D0D] font-black text-sm uppercase tracking-wide">
 					<FileText class="w-4 h-4 stroke-[2.5]" />
 					<h3>Deskripsi</h3>
 				</div>
-				<p class="text-sm sm:text-base text-stone-800 font-medium leading-relaxed whitespace-pre-line bg-[#F7F2E7] p-5 rounded-2xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
+				<p class="text-sm sm:text-base text-stone-800 font-medium leading-relaxed whitespace-pre-line bg-[#F3F6ED] p-5 rounded-2xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
 					{plant.description}
 				</p>
 			</div>
@@ -215,10 +215,10 @@
 			<div class="pt-4 border-t-2 border-[#0D0D0D] flex flex-wrap items-center justify-between gap-3 text-xs text-stone-700 font-bold">
 				{#if plant.contributor_name}
 					<div class="flex items-center gap-2">
-						<div class="w-6 h-6 rounded-md bg-[#6BB092] border border-[#0D0D0D] flex items-center justify-center text-stone-900">
+						<div class="w-6 h-6 rounded-md bg-[#D4F469] border border-[#0D0D0D] flex items-center justify-center text-[#0D0D0D]">
 							<UserCheck class="w-3.5 h-3.5 stroke-[2.5]" />
 						</div>
-						<span>Kontributor: <strong class="text-stone-900">{plant.contributor_name}</strong></span>
+						<span>Kontributor: <strong class="text-[#0D0D0D]">{plant.contributor_name}</strong></span>
 					</div>
 				{/if}
 
@@ -229,10 +229,10 @@
 			</div>
 		</article>
 	{:else}
-		<div class="p-12 text-center bg-[#FFFEF9] rounded-3xl border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B]">
-			<h2 class="text-xl font-black text-stone-900">Tanaman Tidak Ditemukan</h2>
+		<div class="p-12 text-center bg-white rounded-3xl border-2 border-[#0D0D0D] shadow-[5px_5px_0px_#0D0D0D]">
+			<h2 class="text-xl font-black text-[#0D0D0D]">Tanaman Tidak Ditemukan</h2>
 			<p class="text-xs sm:text-sm text-stone-600 font-medium mt-1">Slug URL tidak cocok dengan spesies terdaftar di SMK PPN Gorontalo.</p>
-			<a href="/katalog" class="mt-4 inline-block text-xs font-black px-4 py-2.5 bg-[#6BB092] text-stone-900 rounded-xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B]">
+			<a href="/katalog" class="mt-4 inline-block text-xs font-black px-4 py-2.5 bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
 				Lihat Semua Tanaman
 			</a>
 		</div>
@@ -245,7 +245,7 @@
 		<div class="relative w-full max-w-sm">
 			<button
 				onclick={() => (showQrModal = false)}
-				class="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-xl bg-[#F6BD60] text-stone-900 hover:bg-[#eab052] border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] flex items-center justify-center cursor-pointer active:translate-y-0.5"
+				class="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-xl bg-[#D4F469] text-[#0D0D0D] hover:bg-[#c5e855] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center justify-center cursor-pointer active:translate-y-0.5"
 				aria-label="Tutup Modal"
 			>
 				<X class="w-5 h-5 stroke-[2.5]" />

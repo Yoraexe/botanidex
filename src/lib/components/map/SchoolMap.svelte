@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Interactive School Map Component (Svelte 5 Runes)
-  Tujuan: Peta interaktif denah sekolah gaya Neo-Brutalist untuk visualisasi zonasi lahan & lokasi tanaman
+  Tujuan: Peta interaktif denah sekolah gaya Neo-Brutalist untuk visualisasi zonasi lahan & lokasi tanaman (Option A - Fresh Modern Agronomy)
   Caller: Halaman /peta
   BRD Ref: F4 (Peta Lokasi Tanaman)
 -->
@@ -109,8 +109,8 @@
 		e.preventDefault();
 		const x = e.pageX - viewportRef.offsetLeft;
 		const y = e.pageY - viewportRef.offsetTop;
-		const walkX = x - startX;
-		const walkY = y - startY;
+		const walkX = (x - startX) * 1.5;
+		const walkY = (y - startY) * 1.5;
 		viewportRef.scrollLeft = scrollLeft - walkX;
 		viewportRef.scrollTop = scrollTop - walkY;
 	}
@@ -120,19 +120,16 @@
 	}
 </script>
 
-<div class="relative w-full rounded-2xl overflow-hidden bg-[#FFFEF9] border-2 border-[#0D0D0D] shadow-[5px_5px_0px_#0D0D0D] flex flex-col">
-	<!-- Map Top Controls Bar -->
-	<div class="p-3 bg-[#FFFEF9] border-b-2 border-[#0D0D0D] flex flex-wrap items-center justify-between gap-3 z-10">
-		<!-- Category Filter Chips (Dynamic from CMS) -->
-		<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-			<Layers class="w-4 h-4 stroke-[2.5] text-[#0D0D0D] shrink-0 mr-0.5" />
+<div class="relative bg-white rounded-3xl border-2 border-[#0D0D0D] shadow-[6px_6px_0px_#0D0D0D] overflow-hidden flex flex-col">
+	<!-- Control Bar Top (Clean, Functional, Zero Fluff) -->
+	<div class="p-4 sm:p-5 border-b-2 border-[#0D0D0D] flex flex-wrap items-center justify-between gap-3 bg-[#F3F6ED]">
+		<!-- Category Filter Chips -->
+		<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar flex-1 max-w-full sm:max-w-2xl py-0.5">
 			{#each categories as cat (cat.id)}
 				<FilterChip
 					active={selectedCategory === cat.id}
 					count={getCategoryCount(cat.id)}
-					onclick={() => {
-						selectedCategory = cat.id;
-					}}
+					onclick={() => (selectedCategory = cat.id)}
 				>
 					<span class="w-2 h-2 rounded-full {cat.dotColor}"></span>
 					<span>{cat.label}</span>
@@ -140,26 +137,26 @@
 			{/each}
 		</div>
 
-		<!-- Zoom Controls -->
-		<div class="flex items-center gap-1.5 bg-[#F7F2E7] p-1.5 rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] shrink-0">
+		<!-- Zoom & Reset Tools -->
+		<div class="flex items-center gap-1.5 ml-auto shrink-0 bg-white p-1 rounded-xl border border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
 			<button
 				type="button"
 				onclick={zoomIn}
 				disabled={zoomLevel >= 2.0}
-				class="p-1.5 bg-white border border-[#0D0D0D] rounded-lg text-stone-900 hover:bg-[#E2EF46] disabled:opacity-40 disabled:hover:bg-white transition-colors cursor-pointer shadow-[1px_1px_0px_#0D0D0D] active:translate-y-0.5"
+				class="p-1.5 bg-white border border-[#0D0D0D] rounded-lg text-stone-900 hover:bg-[#D4F469] disabled:opacity-40 disabled:hover:bg-white transition-colors cursor-pointer shadow-[1px_1px_0px_#0D0D0D] active:translate-y-0.5"
 				title="Perbesar Peta (+25%)"
 				aria-label="Zoom in"
 			>
 				<ZoomIn class="w-4 h-4 stroke-[2.5]" />
 			</button>
-			<span class="px-2 py-0.5 text-[11px] font-black text-stone-900 bg-white border border-[#0D0D0D] rounded-md shadow-[1px_1px_0px_#0D0D0D] select-none min-w-[46px] text-center">
+			<span class="text-xs font-black px-2 text-[#0D0D0D] min-w-10 text-center select-none">
 				{Math.round(zoomLevel * 100)}%
 			</span>
 			<button
 				type="button"
 				onclick={zoomOut}
 				disabled={zoomLevel <= 0.75}
-				class="p-1.5 bg-white border border-[#0D0D0D] rounded-lg text-stone-900 hover:bg-[#E2EF46] disabled:opacity-40 disabled:hover:bg-white transition-colors cursor-pointer shadow-[1px_1px_0px_#0D0D0D] active:translate-y-0.5"
+				class="p-1.5 bg-white border border-[#0D0D0D] rounded-lg text-stone-900 hover:bg-[#D4F469] disabled:opacity-40 disabled:hover:bg-white transition-colors cursor-pointer shadow-[1px_1px_0px_#0D0D0D] active:translate-y-0.5"
 				title="Perkecil Peta (-25%)"
 				aria-label="Zoom out"
 			>
@@ -168,7 +165,7 @@
 			<button
 				type="button"
 				onclick={resetZoom}
-				class="p-1.5 bg-white border border-[#0D0D0D] rounded-lg text-stone-900 hover:bg-[#E2EF46] transition-colors cursor-pointer shadow-[1px_1px_0px_#0D0D0D] active:translate-y-0.5"
+				class="p-1.5 bg-white border border-[#0D0D0D] rounded-lg text-stone-900 hover:bg-[#D4F469] transition-colors cursor-pointer shadow-[1px_1px_0px_#0D0D0D] active:translate-y-0.5"
 				title="Reset Posisi &amp; Skala"
 				aria-label="Reset zoom"
 			>
@@ -177,7 +174,7 @@
 		</div>
 	</div>
 
-	<!-- Scrollable Map Canvas Viewport (Fixed flex-centering bug: natural block layout with mx-auto) -->
+	<!-- Scrollable Map Canvas Viewport -->
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<div
 		bind:this={viewportRef}
@@ -187,10 +184,10 @@
 		onmouseleave={handleMouseUp}
 		role="region"
 		aria-label="Peta Interaktif Lahan Praktikum SMK PPN Gorontalo"
-		class="relative w-full overflow-auto bg-[#F7F2E7] retro-grid-bg p-4 sm:p-6 select-none {isDragging ? 'cursor-grabbing' : 'cursor-grab'}"
+		class="relative w-full overflow-auto bg-[#F8F9F5] retro-grid-bg p-4 sm:p-6 select-none {isDragging ? 'cursor-grabbing' : 'cursor-grab'}"
 		style="min-height: 480px; max-height: 75vh;"
 	>
-		<!-- Centered Map Container Wrapper (Natural block layout with mx-auto prevents clipping top & left) -->
+		<!-- Centered Map Container Wrapper -->
 		<div
 			class="mx-auto block"
 			style="width: {currentWidth}px; min-width: {currentWidth}px;"
@@ -224,7 +221,7 @@
 
 						<!-- Marker Pin Tag -->
 						<div
-							class="relative px-2.5 py-1 rounded-full shadow-[2px_2px_0px_#0D0D0D] border-2 border-[#0D0D0D] flex items-center gap-1.5 text-xs font-black text-stone-900 whitespace-nowrap {colors.bg} {isSelected ? 'ring-2 ring-[#0D0D0D] shadow-[3.5px_3.5px_0px_#0D0D0D]' : ''}"
+							class="relative px-2.5 py-1 rounded-full shadow-[2px_2px_0px_#0D0D0D] border-2 border-[#0D0D0D] flex items-center gap-1.5 text-xs font-black text-[#0D0D0D] whitespace-nowrap {colors.bg} {isSelected ? 'ring-2 ring-[#0D0D0D] shadow-[3.5px_3.5px_0px_#0D0D0D]' : ''}"
 						>
 							<MapPin class="w-3.5 h-3.5 fill-[#0D0D0D] text-transparent" />
 							<span class="max-w-[130px] truncate">{marker.name_local}</span>
@@ -239,7 +236,7 @@
 	{#if activeMarker}
 		{@const colors = getCategoryColorClass(activeMarker.category)}
 		<div
-			class="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-92 bg-[#FFFEF9] rounded-2xl shadow-[6px_6px_0px_#0D0D0D] border-2 border-[#0D0D0D] p-4 z-30 animate-in fade-in slide-in-from-bottom-2 duration-200"
+			class="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-92 bg-white rounded-2xl shadow-[6px_6px_0px_#0D0D0D] border-2 border-[#0D0D0D] p-4 z-30 animate-in fade-in slide-in-from-bottom-2 duration-200"
 		>
 			<div class="flex items-start gap-3">
 				<img
@@ -250,19 +247,19 @@
 
 				<div class="flex-1 min-w-0">
 					<div class="flex items-center justify-between">
-						<span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-[#0D0D0D] {colors.bg} text-stone-900 shadow-[1px_1px_0px_#0D0D0D]">
+						<span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-[#0D0D0D] {colors.bg} text-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D]">
 							{getCategoryBadgeLabel(activeMarker.category)}
 						</span>
 						<button
 							onclick={() => (activeMarker = null)}
-							class="text-stone-500 hover:text-stone-900 p-1 rounded-lg border border-transparent hover:border-[#0D0D0D] cursor-pointer"
+							class="text-stone-500 hover:text-[#0D0D0D] p-1 rounded-lg border border-transparent hover:border-[#0D0D0D] cursor-pointer"
 							aria-label="Tutup preview"
 						>
 							<X class="w-4 h-4 stroke-[2.5]" />
 						</button>
 					</div>
 
-					<h4 class="font-black text-sm sm:text-base text-stone-900 mt-1.5 truncate">
+					<h4 class="font-black text-sm sm:text-base text-[#0D0D0D] mt-1.5 truncate">
 						{activeMarker.name_local}
 					</h4>
 					<p class="font-latin italic text-xs text-stone-700 truncate font-semibold">
@@ -270,7 +267,7 @@
 					</p>
 					{#if activeMarker.location_label}
 						<p class="text-[11px] text-stone-600 mt-1.5 flex items-center gap-1 truncate font-bold">
-							<MapPin class="w-3.5 h-3.5 text-stone-900 shrink-0" />
+							<MapPin class="w-3.5 h-3.5 text-[#0D0D0D] shrink-0" />
 							<span>{activeMarker.location_label}</span>
 						</p>
 					{/if}
@@ -279,7 +276,7 @@
 
 			<a
 				href="/katalog/{activeMarker.slug}"
-				class="mt-3.5 w-full py-2.5 px-3 rounded-xl bg-[#6BB092] hover:bg-[#5da284] text-stone-900 text-xs font-black flex items-center justify-center gap-2 border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all"
+				class="mt-3.5 w-full py-2.5 px-3 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] text-xs font-black flex items-center justify-center gap-2 border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all"
 			>
 				<span>Buka Profil Tanaman</span>
 				<ArrowRight class="w-4 h-4 stroke-[2.5]" />

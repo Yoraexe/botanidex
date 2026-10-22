@@ -20,8 +20,8 @@
 </script>
 
 <div
-	class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B] overflow-hidden {hoverEffect
-		? 'transition-all duration-150 hover:shadow-[6px_6px_0px_#18181B] hover:-translate-x-0.5 hover:-translate-y-0.5'
+	class="bg-white rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] overflow-hidden {hoverEffect
+		? 'transition-all duration-150 hover:shadow-[6px_6px_0px_#0D0D0D] hover:-translate-x-0.5 hover:-translate-y-0.5'
 		: ''} {className}"
 >
 	{#if children}
