@@ -166,37 +166,6 @@
 	const totalVideos = $derived(
 		plants.reduce((acc, p) => acc + (p.videos ? p.videos.length : 0), 0)
 	);
-
-	// Geometry for Right Vertical Card (Crypko 45-degree chamfer top-left)
-	let rightCardW = $state(320);
-	let rightCardH = $state(280);
-
-	const rightCardPath = $derived.by(() => {
-		const w = rightCardW || 320;
-		const h = rightCardH || 280;
-		const r = 16;
-		const cut = 54; // Crisp, proportional 54px 45-degree chamfer
-		return `M ${cut} 2
-			L ${w - r} 2
-			Q ${w - 2} 2, ${w - 2} ${r}
-			L ${w - 2} ${h - r}
-			Q ${w - 2} ${h - 2}, ${w - r} ${h - 2}
-			L ${r} ${h - 2}
-			Q 2 ${h - 2}, 2 ${h - r}
-			L 2 ${cut}
-			Q 2 ${cut - 10}, 8 ${cut - 18}
-			L ${cut - 18} 8
-			Q ${cut - 10} 2, ${cut} 2
-			Z`;
-	});
-
-	const rightCardInnerContour = $derived.by(() => {
-		const cut = 54;
-		return `M 2 ${cut - 6}
-			Q 2 ${cut - 14}, 9 ${cut - 21}
-			L ${cut - 21} 9
-			Q ${cut - 14} 2, ${cut - 6} 2`;
-	});
 </script>
 
 <svelte:head>
@@ -291,85 +260,51 @@
 
 			<!-- ================= RIGHT COLUMN ================= -->
 			<div class="lg:col-span-5 flex flex-col gap-3.5 sm:gap-4 w-full">
-				<!-- Hidden SVG Defs for Right Card Chamfer Clip -->
-				<svg class="absolute w-0 h-0 overflow-hidden" aria-hidden="true">
-					<defs>
-						<clipPath id="right-card-chamfer-clip">
-							<path d={rightCardPath} />
-						</clipPath>
-					</defs>
-				</svg>
-
-				<!-- Vertical Specimen Card: Plant Collection Showcase (Pure Display, NOT an active button) -->
+				<!-- Vertical Specimen Card: Plant Collection Showcase (Pure Display, Uniform Rounded Corner) -->
 				<div
-					bind:clientWidth={rightCardW}
-					bind:clientHeight={rightCardH}
-					class="relative w-full h-[260px] sm:h-[280px] block shadow-xs"
+					class="relative w-full h-[260px] sm:h-[280px] rounded-tl-[4.5rem] rounded-tr-2xl rounded-br-2xl rounded-bl-2xl border-2 border-[#0D0D0D] bg-[#EAE4D6] overflow-hidden flex flex-row shadow-xs"
 				>
-					<!-- Clipped Content (Plant Photo + Clean Yellow Strip) -->
+					<!-- Double contour line on top-left (Mirrors Left Card's signature motif) -->
 					<div
-						class="w-full h-full flex flex-row bg-[#EAE4D6] overflow-hidden"
-						style="clip-path: url(#right-card-chamfer-clip);"
-					>
-						<!-- Image Area: Plant Specimens Showcase -->
-						<div class="flex-1 h-full relative overflow-hidden bg-[#EAE4D6] flex items-center justify-center">
-							<img
-								src={currentSpecimen.url}
-								alt={currentSpecimen.commonName}
-								class="w-full h-full object-cover transition-all duration-700"
-							/>
-							<!-- Plant Identity Tag at Bottom-Left of Photo (Indonesian Common Name) -->
-							<div class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-3 py-1.5 rounded-lg text-xs font-bold z-10 shadow-xs border border-white/10 backdrop-blur-xs">
-								<span>{currentSpecimen.commonName}</span>
-							</div>
-						</div>
+						class="absolute top-2 left-2 w-16 h-16 rounded-tl-[4rem] border-t-2 border-l-2 border-[#0D0D0D]/40 pointer-events-none z-20"
+					></div>
 
-						<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Latin Name in Middle, Up Arrow at Bottom) -->
-						<div
-							class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-3.5 text-[#0D0D0D] select-none shrink-0"
-						>
-							<!-- Two Black Stars Stacked Vertically (Crypko signature) -->
-							<div class="flex flex-col items-center gap-1 pt-0.5">
-								<span class="text-xs sm:text-sm font-black leading-none">★</span>
-								<span class="text-xs sm:text-sm font-black leading-none">★</span>
-							</div>
-
-							<!-- Middle: Scientific Botanical Name (Nama Ilmiah Latin) -->
-							<div class="flex-1 flex items-center justify-center py-2 overflow-hidden my-1">
-								<span
-									class="font-latin italic font-black text-xs sm:text-[13px] tracking-wide text-[#0D0D0D] select-none whitespace-nowrap"
-									style="writing-mode: vertical-rl;"
-								>
-									{currentSpecimen.latinName}
-								</span>
-							</div>
-
-							<!-- Upward Arrow at Bottom -->
-							<span class="text-base font-black leading-none">↑</span>
+					<!-- Image Area: Plant Specimens Showcase -->
+					<div class="flex-1 h-full relative overflow-hidden bg-[#EAE4D6] flex items-center justify-center">
+						<img
+							src={currentSpecimen.url}
+							alt={currentSpecimen.commonName}
+							class="w-full h-full object-cover transition-all duration-700"
+						/>
+						<!-- Plant Identity Tag at Bottom-Left of Photo (Indonesian Common Name) -->
+						<div class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-3 py-1.5 rounded-lg text-xs font-bold z-10 shadow-xs border border-white/10 backdrop-blur-xs">
+							<span>{currentSpecimen.commonName}</span>
 						</div>
 					</div>
 
-					<!-- Crisp SVG Border & Chamfer Inner Contour Overlay -->
-					<svg
-						class="absolute inset-0 w-full h-full pointer-events-none z-20"
-						viewBox="0 0 {rightCardW || 320} {rightCardH || 280}"
+					<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Latin Name in Middle, Up Arrow at Bottom) -->
+					<div
+						class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-3.5 text-[#0D0D0D] select-none shrink-0"
 					>
-						<!-- Top-Left Inner Contour Chamfer Line -->
-						<path
-							d={rightCardInnerContour}
-							fill="none"
-							stroke="#0D0D0D"
-							stroke-width="1.8"
-							stroke-opacity="0.38"
-						/>
-						<!-- Outer Solid Border -->
-						<path
-							d={rightCardPath}
-							fill="none"
-							stroke="#0D0D0D"
-							stroke-width="2.5"
-						/>
-					</svg>
+						<!-- Two Black Stars Stacked Vertically (Crypko signature) -->
+						<div class="flex flex-col items-center gap-1 pt-0.5">
+							<span class="text-xs sm:text-sm font-black leading-none">★</span>
+							<span class="text-xs sm:text-sm font-black leading-none">★</span>
+						</div>
+
+						<!-- Middle: Scientific Botanical Name (Nama Ilmiah Latin) -->
+						<div class="flex-1 flex items-center justify-center py-2 overflow-hidden my-1">
+							<span
+								class="font-latin italic font-black text-xs sm:text-[13px] tracking-wide text-[#0D0D0D] select-none whitespace-nowrap"
+								style="writing-mode: vertical-rl;"
+							>
+								{currentSpecimen.latinName}
+							</span>
+						</div>
+
+						<!-- Upward Arrow at Bottom -->
+						<span class="text-base font-black leading-none">↑</span>
+					</div>
 				</div>
 
 				<!-- Notched App Download Card (iOS & Android Logos + Scan QR Install Button) -->
