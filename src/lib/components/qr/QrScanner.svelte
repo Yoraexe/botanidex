@@ -136,21 +136,17 @@
 		</div>
 
 		<!-- Scanner Frame Container -->
-		<div class="relative w-full aspect-square max-w-[320px] mx-auto rounded-xl overflow-hidden bg-black border-2 border-[#18181B] shadow-[3px_3px_0px_#18181B] flex items-center justify-center">
+		<div class="relative w-full aspect-square max-w-[320px] mx-auto rounded-xl overflow-hidden bg-black border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] flex items-center justify-center">
 			<div id={scannerId} class="w-full h-full"></div>
 
 			<!-- Visual Scan Guide Corners Overlay -->
-			<div class="absolute inset-8 pointer-events-none border-2 border-dashed border-[#F6BD60] rounded-xl flex items-center justify-center">
-				<div class="w-full h-0.5 bg-[#F6BD60] shadow-[0_0_8px_#F6BD60] animate-pulse"></div>
+			<div class="absolute inset-8 pointer-events-none border-2 border-dashed border-[#E2EF46] rounded-xl flex items-center justify-center">
+				<div class="w-full h-0.5 bg-[#E2EF46] shadow-[0_0_8px_#E2EF46] animate-pulse"></div>
 			</div>
 		</div>
 
-		<p class="text-xs text-stone-600 font-bold mt-3.5 px-2">
-			Arahkan kamera ke label barcode / QR Code yang terpasang di batang pohon atau bedengan tanaman.
-		</p>
-
 		{#if errorMessage}
-			<div class="mt-3.5 p-3.5 bg-[#E07A5F]/20 border-2 border-[#18181B] rounded-xl text-left flex items-start gap-2.5 text-xs text-stone-900">
+			<div class="mt-3.5 p-3.5 bg-[#E07A5F]/20 border-2 border-[#0D0D0D] rounded-xl text-left flex items-start gap-2.5 text-xs text-stone-900">
 				<AlertCircle class="w-4 h-4 shrink-0 mt-0.5 text-[#E07A5F] stroke-[2.5]" />
 				<div class="flex-1 font-bold">
 					<p class="font-black text-stone-900">Kendala Kamera</p>
@@ -164,15 +160,14 @@
 	</div>
 
 	<!-- Alternative Actions: Upload Image or Manual Search -->
-	<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 shadow-[4px_4px_0px_#18181B] flex flex-col gap-4">
-		<h3 class="text-sm font-black text-stone-900 border-b-2 border-[#18181B] pb-2 uppercase tracking-wide">
+	<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#0D0D0D] p-5 shadow-[4px_4px_0px_#0D0D0D] flex flex-col gap-4">
+		<h3 class="text-sm font-black text-stone-900 border-b-2 border-[#0D0D0D] pb-2 uppercase tracking-wide">
 			Opsi Pemindaian Lainnya
 		</h3>
 
 		<!-- File Upload (Screenshot/Photo from Gallery) -->
 		<div>
-			<span class="block text-xs font-black text-stone-800 uppercase tracking-wide mb-2">Unggah Foto QR dari Galeri HP</span>
-			<label class="flex items-center justify-center gap-2 p-3.5 border-2 border-dashed border-[#18181B] hover:bg-[#F6BD60]/20 rounded-xl cursor-pointer bg-[#F7F2E7] transition-colors text-xs font-black text-stone-900 shadow-[2px_2px_0px_#18181B] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B]">
+			<label class="flex items-center justify-center gap-2 p-3.5 border-2 border-dashed border-[#0D0D0D] hover:bg-[#E2EF46]/20 rounded-xl cursor-pointer bg-[#F7F2E7] transition-colors text-xs font-black text-stone-900 shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D]">
 				<ImageIcon class="w-4 h-4 text-stone-900 stroke-[2.5]" />
 				<span>Pilih Foto QR dari Galeri</span>
 				<input type="file" accept="image/*" onchange={handleFileUpload} class="hidden" />
@@ -180,9 +175,9 @@
 		</div>
 
 		<!-- Manual Plant Code or Name Search -->
-		<form onsubmit={handleManualSubmit} class="flex flex-col gap-2 pt-2 border-t-2 border-[#18181B]/30">
+		<form onsubmit={handleManualSubmit} class="flex flex-col gap-2 pt-2 border-t-2 border-[#0D0D0D]/20">
 			<label for="manual-plant-input" class="text-xs font-black text-stone-800 uppercase tracking-wide">
-				Atau Cari Manual Berdasarkan Nama Tanaman
+				Cari Manual
 			</label>
 			<div class="flex gap-2">
 				<input

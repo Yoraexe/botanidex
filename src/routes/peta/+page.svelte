@@ -9,7 +9,7 @@
 	import { MapRepository } from '#lib/repositories/map.repository';
 	import type { SchoolMapInfo } from '#lib/types/map.types';
 	import SchoolMap from '#lib/components/map/SchoolMap.svelte';
-	import { Map, ArrowLeft, Info } from '@lucide/svelte';
+	import { Map, ArrowLeft } from '@lucide/svelte';
 
 	let mapData = $state<SchoolMapInfo | null>(null);
 	let isLoading = $state(true);
@@ -29,19 +29,14 @@
 	<title>Peta Kebun &amp; Lokasi Tanaman — Flora SMK</title>
 </svelte:head>
 
-<div class="flex flex-col gap-6">
-	<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-		<div>
-			<h1 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight flex items-center gap-2.5">
-				<div class="w-9 h-9 rounded-xl bg-[#93C5FD] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center justify-center text-stone-900 shrink-0">
-					<Map class="w-5 h-5 stroke-[2.5]" />
-				</div>
-				Peta Zonasi Kebun &amp; Praktikum
-			</h1>
-			<p class="text-xs sm:text-sm text-stone-600 font-semibold mt-1">
-				Klik pin marker untuk melihat preview tanaman, atau gunakan tombol zoom &amp; geser untuk menjelajahi area kebun.
-			</p>
-		</div>
+<div class="flex flex-col gap-5">
+	<div class="flex items-center justify-between gap-4">
+		<h1 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight flex items-center gap-2.5">
+			<div class="w-9 h-9 rounded-xl bg-[#93C5FD] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center justify-center text-stone-900 shrink-0">
+				<Map class="w-5 h-5 stroke-[2.5]" />
+			</div>
+			<span>Peta Zonasi Kebun</span>
+		</h1>
 
 		<a
 			href="/katalog"
@@ -59,17 +54,5 @@
 		</div>
 	{:else if mapData}
 		<SchoolMap {mapData} />
-
-		<div class="p-4 bg-[#FFFEF9] rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] text-xs text-stone-900 flex items-start gap-3">
-			<div class="w-8 h-8 rounded-xl bg-[#E2EF46] border-2 border-[#0D0D0D] shadow-[1.5px_1.5px_0px_#0D0D0D] flex items-center justify-center shrink-0 mt-0.5">
-				<Info class="w-4 h-4 text-stone-900 stroke-[2.5]" />
-			</div>
-			<div>
-				<p class="font-black text-sm text-stone-900">Panduan Lokasi Lapangan Praktikum:</p>
-				<p class="text-stone-700 font-medium mt-1 leading-relaxed">
-					Setiap marker pin menunjukkan posisi tanaman di lapangan praktikum. Di lokasi fisik kebun sekolah, Anda dapat menemukan plang barcode / QR code yang dapat dipindai langsung melalui menu <strong>Scan QR</strong>.
-				</p>
-			</div>
-		</div>
 	{/if}
 </div>

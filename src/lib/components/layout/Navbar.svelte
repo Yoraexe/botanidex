@@ -53,11 +53,11 @@
 			<div>
 				<div class="font-black text-xl leading-none tracking-tight text-stone-900 flex items-center gap-2">
 					{identity.appName}
-					<span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#F6BD60] text-stone-900 border border-[#18181B] shadow-[1px_1px_0px_#18181B] uppercase tracking-wider">
+					<span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#E2EF46] text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D] uppercase tracking-wider">
 						PWA
 					</span>
 				</div>
-				<p class="text-[11px] text-stone-600 font-bold mt-0.5">{identity.tagline}</p>
+				<p class="hidden lg:block text-[11px] text-stone-600 font-bold mt-0.5">{identity.tagline}</p>
 			</div>
 		</a>
 

@@ -404,9 +404,6 @@
 
 		<!-- 2. Bottom Deck: Proportional Category Filter Pills -->
 		<div class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 no-scrollbar w-full pt-2.5 border-t border-[#0D0D0D]/10">
-			<span class="text-[10px] font-black uppercase tracking-wider text-[#0D0D0D]/60 shrink-0 mr-1 hidden sm:inline">
-				Kategori:
-			</span>
 			{#each categories as cat (cat.id)}
 				<FilterChip
 					active={selectedCategory === cat.id}
@@ -426,11 +423,10 @@
 		<div class="flex items-center justify-between">
 			<div>
 				<h2 class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">Koleksi Tanaman Unggulan</h2>
-				<p class="text-xs sm:text-sm text-stone-600 font-medium">Spesies tanaman yang dipelajari dalam praktikum ATPH &amp; Agribisnis</p>
 			</div>
 			<a
 				href="/katalog"
-				class="text-xs font-black text-[#0D0D0D] px-3.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-white shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#E2EF46] transition-colors flex items-center gap-1"
+				class="text-xs font-black text-[#0D0D0D] px-3.5 py-1.5 rounded-full border-2 border-[#0D0D0D] bg-white shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#E2EF46] transition-colors flex items-center gap-1.5"
 			>
 				<span>Semua ({plants.length})</span>
 				<ArrowRight class="w-3.5 h-3.5 stroke-[2.5]" />
@@ -466,10 +462,10 @@
 			</div>
 			<div>
 				<h3 class="text-base sm:text-xl font-black text-[#0D0D0D]">
-					Video Pembelajaran Langsung dari Siswa
+					Video Pembelajaran Siswa
 				</h3>
-				<p class="text-xs sm:text-sm text-[#0D0D0D] font-semibold mt-1 max-w-xl leading-relaxed">
-					Setiap tanaman dilengkapi dokumentasi video yang dibuat siswa untuk melatih kemampuan presentasi agronomi, identifikasi hama penyakit, dan teknik pemangkasan.
+				<p class="text-xs sm:text-sm text-[#0D0D0D] font-bold mt-1">
+					Dokumentasi morfologi dan agronomi lapangan.
 				</p>
 			</div>
 		</div>

@@ -175,21 +175,21 @@
 
 			<!-- Location Badge with Direct Link to Map -->
 			{#if plant.location_label}
-				<div class="p-4 bg-[#F7F2E7] rounded-2xl border-2 border-[#18181B] shadow-[3px_3px_0px_#18181B] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+				<div class="p-4 bg-[#F7F2E7] rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 					<div class="flex items-center gap-3">
-						<div class="w-10 h-10 rounded-xl bg-[#6BB092] border-2 border-[#18181B] shadow-[1.5px_1.5px_0px_#18181B] text-stone-900 flex items-center justify-center shrink-0">
+						<div class="w-10 h-10 rounded-xl bg-[#6BB092] border-2 border-[#0D0D0D] shadow-[1.5px_1.5px_0px_#0D0D0D] text-stone-900 flex items-center justify-center shrink-0">
 							<MapPin class="w-5 h-5 stroke-[2.5]" />
 						</div>
 						<div>
-							<p class="text-[10px] font-black text-stone-600 uppercase tracking-wider">Lokasi di Area Kebun Sekolah</p>
+							<p class="text-[10px] font-black text-stone-600 uppercase tracking-wider">Lokasi</p>
 							<p class="text-sm sm:text-base font-black text-stone-900">{plant.location_label}</p>
 						</div>
 					</div>
 					<a
 						href="/peta"
-						class="px-4 py-2 rounded-xl bg-[#FFFEF9] border-2 border-[#18181B] text-stone-900 text-xs font-black hover:bg-[#F6BD60] shadow-[2px_2px_0px_#18181B] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all self-start sm:self-auto shrink-0"
+						class="px-4 py-2 rounded-full bg-[#FFFEF9] border-2 border-[#0D0D0D] text-stone-900 text-xs font-black hover:bg-[#E2EF46] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all self-start sm:self-auto shrink-0"
 					>
-						Buka Peta Kebun →
+						Lihat Peta →
 					</a>
 				</div>
 			{/if}
@@ -198,9 +198,9 @@
 			<div class="flex flex-col gap-2.5">
 				<div class="flex items-center gap-2 text-stone-900 font-black text-sm uppercase tracking-wide">
 					<FileText class="w-4 h-4 stroke-[2.5]" />
-					<h3>Deskripsi Botani &amp; Budidaya</h3>
+					<h3>Deskripsi</h3>
 				</div>
-				<p class="text-sm sm:text-base text-stone-800 font-medium leading-relaxed whitespace-pre-line bg-[#F7F2E7] p-5 rounded-2xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B]">
+				<p class="text-sm sm:text-base text-stone-800 font-medium leading-relaxed whitespace-pre-line bg-[#F7F2E7] p-5 rounded-2xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
 					{plant.description}
 				</p>
 			</div>
@@ -212,13 +212,13 @@
 			<PlantVideoSection videos={plant.videos} plantName={plant.name_local} />
 
 			<!-- Metadata Footer -->
-			<div class="pt-4 border-t-2 border-[#18181B] flex flex-wrap items-center justify-between gap-3 text-xs text-stone-700 font-bold">
+			<div class="pt-4 border-t-2 border-[#0D0D0D] flex flex-wrap items-center justify-between gap-3 text-xs text-stone-700 font-bold">
 				{#if plant.contributor_name}
 					<div class="flex items-center gap-2">
-						<div class="w-6 h-6 rounded-md bg-[#6BB092] border border-[#18181B] flex items-center justify-center text-stone-900">
+						<div class="w-6 h-6 rounded-md bg-[#6BB092] border border-[#0D0D0D] flex items-center justify-center text-stone-900">
 							<UserCheck class="w-3.5 h-3.5 stroke-[2.5]" />
 						</div>
-						<span>Kontributor Siswa: <strong class="text-stone-900">{plant.contributor_name}</strong></span>
+						<span>Kontributor: <strong class="text-stone-900">{plant.contributor_name}</strong></span>
 					</div>
 				{/if}
 

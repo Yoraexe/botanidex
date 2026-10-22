@@ -6,13 +6,12 @@
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
 	import type { PlantMarker, SchoolMapInfo } from '#lib/types/map.types';
 	import type { CategoryItemConfig } from '#lib/types/config.types';
 	import { ConfigService } from '#lib/services/config.service';
 	import { getCategoryColorClass, getCategoryBadgeLabel } from '#lib/utils/format';
 	import FilterChip from '#lib/components/ui/FilterChip.svelte';
-	import { ZoomIn, ZoomOut, RotateCcw, MapPin, X, ArrowRight, Layers, Hand } from '@lucide/svelte';
+	import { ZoomIn, ZoomOut, RotateCcw, MapPin, X, ArrowRight, Layers } from '@lucide/svelte';
 
 	interface Props {
 		mapData: SchoolMapInfo;
@@ -25,7 +24,6 @@
 	let activeMarker = $state<PlantMarker | null>(null);
 	let selectedCategory = $state<string>('semua');
 	let categories = $state<CategoryItemConfig[]>(ConfigService.getCategories());
-	let showHint = $state(true);
 
 	// Drag & Pan state
 	let viewportRef = $state<HTMLDivElement | null>(null);
@@ -38,13 +36,7 @@
 	const baseWidth = 980;
 	const currentWidth = $derived(Math.round(baseWidth * zoomLevel));
 
-	function dismissHint() {
-		if (showHint) {
-			showHint = false;
-		}
-	}
-
-	// Sinkronisasi kategori dengan event dinamis CMS & Timer auto-fade untuk hint
+	// Sinkronisasi kategori dengan event dinamis CMS
 	onMount(() => {
 		categories = ConfigService.getCategories();
 
@@ -52,11 +44,6 @@
 			categories = ConfigService.getCategories();
 		};
 		window.addEventListener('flora:config-updated', handleConfigUpdate);
-
-		// Hilangkan badge hint secara halus setelah 2.5 detik agar estetika peta bersih
-		const hintTimer = setTimeout(() => {
-			dismissHint();
-		}, 2500);
 
 		// Center horizontal scroll saat awal muat agar langsung fokus ke koridor utama
 		if (viewportRef) {
@@ -68,7 +55,6 @@
 		}
 
 		return () => {
-			clearTimeout(hintTimer);
 			window.removeEventListener('flora:config-updated', handleConfigUpdate);
 		};
 	});
@@ -86,21 +72,18 @@
 	};
 
 	function zoomIn() {
-		dismissHint();
 		if (zoomLevel < 2.0) {
 			zoomLevel = Number((zoomLevel + 0.25).toFixed(2));
 		}
 	}
 
 	function zoomOut() {
-		dismissHint();
 		if (zoomLevel > 0.75) {
 			zoomLevel = Number((zoomLevel - 0.25).toFixed(2));
 		}
 	}
 
 	function resetZoom() {
-		dismissHint();
 		zoomLevel = 1;
 		activeMarker = null;
 		if (viewportRef) {
@@ -111,7 +94,6 @@
 	}
 
 	function handleMouseDown(e: MouseEvent) {
-		dismissHint();
 		// Abaikan jika klik berasal dari tombol kontrol, marker, atau preview link
 		if (e.button !== 0 || (e.target as HTMLElement).closest('button, a')) return;
 		if (!viewportRef) return;
@@ -143,16 +125,12 @@
 	<div class="p-3 bg-[#FFFEF9] border-b-2 border-[#0D0D0D] flex flex-wrap items-center justify-between gap-3 z-10">
 		<!-- Category Filter Chips (Dynamic from CMS) -->
 		<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-			<span class="text-xs font-black text-[#0D0D0D] mr-1 flex items-center gap-1.5 shrink-0 uppercase tracking-wider">
-				<Layers class="w-4 h-4 stroke-[2.5]" />
-				<span>Kategori:</span>
-			</span>
+			<Layers class="w-4 h-4 stroke-[2.5] text-[#0D0D0D] shrink-0 mr-0.5" />
 			{#each categories as cat (cat.id)}
 				<FilterChip
 					active={selectedCategory === cat.id}
 					count={getCategoryCount(cat.id)}
 					onclick={() => {
-						dismissHint();
 						selectedCategory = cat.id;
 					}}
 				>
@@ -203,7 +181,6 @@
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<div
 		bind:this={viewportRef}
-		onscroll={dismissHint}
 		onmousedown={handleMouseDown}
 		onmousemove={handleMouseMove}
 		onmouseup={handleMouseUp}
@@ -234,7 +211,6 @@
 						type="button"
 						onclick={(e) => {
 							e.stopPropagation();
-							dismissHint();
 							activeMarker = marker;
 						}}
 						class="absolute -translate-x-1/2 -translate-y-full group cursor-pointer transition-all focus:outline-none z-20 {isSelected ? 'scale-115 z-30' : 'hover:scale-110'}"
@@ -257,17 +233,6 @@
 				{/each}
 			</div>
 		</div>
-
-		<!-- Drag to Pan Hint Badge (Auto-fades out and dismisses immediately on scroll/drag/interaction) -->
-		{#if showHint}
-			<div
-				transition:fade={{ duration: 300 }}
-				class="absolute bottom-4 left-4 pointer-events-none hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] text-[11px] font-black text-stone-800 z-10 select-none"
-			>
-				<Hand class="w-3.5 h-3.5 stroke-[2.5]" />
-				<span>Geser untuk navigasi denah</span>
-			</div>
-		{/if}
 	</div>
 
 	<!-- Active Marker Popup Preview Card -->
@@ -316,7 +281,7 @@
 				href="/katalog/{activeMarker.slug}"
 				class="mt-3.5 w-full py-2.5 px-3 rounded-xl bg-[#6BB092] hover:bg-[#5da284] text-stone-900 text-xs font-black flex items-center justify-center gap-2 border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all"
 			>
-				<span>Buka Profil Tanaman Lengkap</span>
+				<span>Buka Profil Tanaman</span>
 				<ArrowRight class="w-4 h-4 stroke-[2.5]" />
 			</a>
 		</div>
