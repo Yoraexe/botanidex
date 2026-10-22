@@ -64,37 +64,33 @@
 
 	// Geometry for Right Vertical Card (Crypko 45-degree chamfer top-left)
 	let rightCardW = $state(320);
-	let rightCardH = $state(325);
+	let rightCardH = $state(280);
 
 	const rightCardPath = $derived.by(() => {
 		const w = rightCardW || 320;
-		const h = rightCardH || 325;
+		const h = rightCardH || 280;
 		const r = 16;
-		const cutX = Math.round(w * 0.35); // ~110px on top edge
-		const cutY = Math.round(h * 0.28); // ~90px on left edge
-		return `M ${cutX} 2
+		const cut = 54; // Crisp, proportional 54px 45-degree chamfer
+		return `M ${cut} 2
 			L ${w - r} 2
 			Q ${w - 2} 2, ${w - 2} ${r}
 			L ${w - 2} ${h - r}
 			Q ${w - 2} ${h - 2}, ${w - r} ${h - 2}
 			L ${r} ${h - 2}
 			Q 2 ${h - 2}, 2 ${h - r}
-			L 2 ${cutY}
-			Q 2 ${cutY - 14}, 12 ${cutY - 24}
-			L ${cutX - 22} 12
-			Q ${cutX - 12} 2, ${cutX} 2
+			L 2 ${cut}
+			Q 2 ${cut - 10}, 8 ${cut - 18}
+			L ${cut - 18} 8
+			Q ${cut - 10} 2, ${cut} 2
 			Z`;
 	});
 
 	const rightCardInnerContour = $derived.by(() => {
-		const w = rightCardW || 320;
-		const h = rightCardH || 325;
-		const cutX = Math.round(w * 0.35);
-		const cutY = Math.round(h * 0.28);
-		return `M 2 ${cutY - 10}
-			Q 2 ${cutY - 20}, 14 ${cutY - 30}
-			L ${cutX - 24} 12
-			Q ${cutX - 14} 4, ${cutX + 4} 4`;
+		const cut = 54;
+		return `M 2 ${cut - 6}
+			Q 2 ${cut - 14}, 9 ${cut - 21}
+			L ${cut - 21} 9
+			Q ${cut - 14} 2, ${cut - 6} 2`;
 	});
 </script>
 
@@ -102,62 +98,67 @@
 	<title>Flora SMK — Katalog Botani Digital SMK Pertanian</title>
 </svelte:head>
 
-<div class="flex flex-col gap-10 sm:gap-12">
+<div class="flex flex-col gap-8 sm:gap-10">
 	<!-- ========================================================================= -->
-	<!-- TIGHT, BALANCED, ZERO-EMPTY-GAP CRYPKO HERO ARTBOARD -->
+	<!-- REFINED, ORDERLY, HARMONIOUS CRYPKO HERO ARTBOARD -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1040px] mx-auto rounded-[32px] sm:rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#E6E1D3] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 relative overflow-hidden flex flex-col gap-3.5 sm:gap-4"
+		class="w-full max-w-[1060px] mx-auto rounded-[32px] sm:rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#EAE4D6] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col gap-4 sm:gap-5"
 	>
-		<!-- 1. TOP BRAND MARK (Clean Left Logo) -->
-		<div class="flex items-center justify-between w-full">
+		<!-- 1. TOP BRAND BAR (Editorial Top Notch Style) -->
+		<div class="flex items-center justify-between w-full pb-2.5 border-b-2 border-[#0D0D0D]/10">
 			<a
 				href="/"
-				class="flex items-center gap-1 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity"
+				class="flex items-center gap-1.5 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity"
 			>
 				<span>flora smk</span>
 				<span class="text-sm text-[#0D0D0D]">♥</span>
 			</a>
+			<div class="hidden sm:flex items-center gap-2">
+				<span class="text-[10px] font-black uppercase tracking-widest text-[#0D0D0D]/60 border border-[#0D0D0D]/20 px-2.5 py-0.5 rounded-full">
+					Katalog Botani Digital • SMK Pertanian
+				</span>
+			</div>
 		</div>
 
-		<!-- 2. TWO-COLUMN DENSE INTERLOCKING GRID (PROPORTIONAL & TIGHT) -->
-		<div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-6 items-start w-full">
+		<!-- 2. TWO-COLUMN BALANCED INTERLOCKING GRID (ORDERLY, SPACED, ZERO-COLLISION) -->
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-start w-full">
 			<!-- ================= LEFT COLUMN ================= -->
 			<div class="lg:col-span-7 flex flex-col gap-3.5 sm:gap-4 w-full">
 				<!-- Giant Condensed Headline -->
 				<div>
 					<h1
-						class="font-display text-6xl sm:text-7xl lg:text-[6.5rem] xl:text-[7.2rem] font-black uppercase tracking-tight leading-[0.83] text-[#0D0D0D]"
+						class="font-display text-5xl sm:text-6xl lg:text-[5.4rem] xl:text-[6.2rem] font-black uppercase tracking-tight leading-[0.84] text-[#0D0D0D]"
 					>
 						KATALOG BOTANI<br />
 						SMK PERTANIAN
 					</h1>
 				</div>
 
-				<!-- Landscape Botanical Card (Faithful Crypko Asymmetric Leaf Shape: Rounded-TR + Rounded-BL) -->
-				<div class="relative w-full h-[270px] sm:h-[285px]">
+				<!-- Landscape Botanical Card (Asymmetric Leaf Shape: Rounded-TR + Rounded-BL) -->
+				<div class="relative w-full h-[235px] sm:h-[250px] lg:h-[260px]">
 					<!-- Card Container with Diagonally-Opposed Giant Curves -->
 					<div
-						class="w-full h-full rounded-tl-2xl rounded-br-2xl rounded-tr-[5rem] sm:rounded-tr-[5.5rem] rounded-bl-[5rem] sm:rounded-bl-[5.5rem] border-2 border-[#0D0D0D] bg-stone-900 overflow-hidden relative group shadow-xs"
+						class="w-full h-full rounded-tl-2xl rounded-br-2xl rounded-tr-[4.5rem] rounded-bl-[4.5rem] border-2 border-[#0D0D0D] bg-stone-900 overflow-hidden relative group shadow-xs"
 					>
 						<!-- Double contour line on top-right (Crypko signature motif) -->
 						<div
-							class="absolute top-2 right-2 w-20 h-20 rounded-tr-[4.6rem] border-t-2 border-r-2 border-white/45 pointer-events-none z-20"
+							class="absolute top-2 right-2 w-16 h-16 rounded-tr-[4rem] border-t-2 border-r-2 border-white/50 pointer-events-none z-20"
 						></div>
 
 						<!-- Image Area -->
 						<img
 							src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80"
 							alt="Greenhouse Pembibitan Tanaman SMK"
-							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95"
 						/>
 
 						<!-- Bottom Gradient Overlay (Padded to clear the bottom-left curve) -->
 						<div
-							class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-4 sm:p-5 pl-14 sm:pl-16 pr-16 flex flex-col justify-end text-white z-10"
+							class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-4 sm:p-5 pl-12 sm:pl-14 pr-16 flex flex-col justify-end text-white z-10"
 						>
 							<span
-								class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1.5 border border-white/20"
+								class="text-[9px] sm:text-[10px] font-bold text-[#E2EF46] uppercase tracking-wider bg-black/70 px-2 py-0.5 rounded w-fit mb-1 border border-white/20"
 							>
 								Greenhouse Florikultura &amp; Bibit
 							</span>
@@ -165,19 +166,19 @@
 								Budidaya &amp; Observasi Praktikum Agronomi
 							</h4>
 						</div>
-					</div>
 
-					<!-- Crypko-style Floating Yellow Capsule Tab Protruding on Right Edge -->
-					<a
-						href="/katalog?cat=pangan"
-						class="absolute -right-3 sm:-right-4 top-1/2 -translate-y-1/2 z-30 bg-[#E2EF46] border-2 border-[#0D0D0D] rounded-full px-2.5 sm:px-3 py-3.5 sm:py-4 flex flex-col items-center justify-center gap-1 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#d8e538] hover:scale-105 active:scale-95 transition-all select-none group/tab"
-						title="Eksplorasi tanaman budidaya"
-					>
-						<span class="text-xl group-hover/tab:scale-110 transition-transform">🌱</span>
-						<span class="text-[9px] font-black uppercase text-center leading-[1.1] text-[#0D0D0D]">
-							JELAJAH<br />BOTANI
-						</span>
-					</a>
+						<!-- Crypko-style Compact Floating Yellow Capsule Tab -->
+						<a
+							href="/katalog?cat=pangan"
+							class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-12 py-3 px-1.5 bg-[#E2EF46] border-2 border-[#0D0D0D] rounded-full flex flex-col items-center justify-center gap-1 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#d8e538] hover:scale-105 active:scale-95 transition-all select-none group/tab"
+							title="Eksplorasi tanaman budidaya"
+						>
+							<span class="text-lg group-hover/tab:scale-110 transition-transform">🌱</span>
+							<span class="text-[8px] font-black uppercase text-center leading-[1.1] text-[#0D0D0D]">
+								JELAJAH<br />BOTANI
+							</span>
+						</a>
+					</div>
 				</div>
 			</div>
 
@@ -197,18 +198,18 @@
 					href="/katalog/anggrek-bulan"
 					bind:clientWidth={rightCardW}
 					bind:clientHeight={rightCardH}
-					class="relative w-full h-[305px] sm:h-[325px] block group hover:-translate-y-1 transition-all shadow-xs"
+					class="relative w-full h-[260px] sm:h-[280px] block group hover:-translate-y-1 transition-all shadow-xs"
 				>
 					<!-- Clipped Content (Photo + Clean Yellow Strip) -->
 					<div
-						class="w-full h-full flex flex-row bg-[#D5D0C3] overflow-hidden"
+						class="w-full h-full flex flex-row bg-[#EAE4D6] overflow-hidden"
 						style="clip-path: url(#right-card-chamfer-clip);"
 					>
-						<!-- Image Area (Neutral Botanical Specimen) -->
-						<div class="flex-1 h-full relative overflow-hidden bg-[#D5D0C3] flex items-center justify-center">
+						<!-- Image Area (Vibrant Close-Up Botanical Bloom) -->
+						<div class="flex-1 h-full relative overflow-hidden bg-[#EAE4D6] flex items-center justify-center">
 							<img
-								src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=800&q=80"
-								alt="Anggrek Bulan Puspa Pesona"
+								src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80"
+								alt="Spesimen Botani Puspa Pesona"
 								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 							/>
 						</div>
@@ -234,7 +235,7 @@
 					<!-- Crisp SVG Border & Chamfer Inner Contour Overlay -->
 					<svg
 						class="absolute inset-0 w-full h-full pointer-events-none z-20"
-						viewBox="0 0 {rightCardW || 320} {rightCardH || 325}"
+						viewBox="0 0 {rightCardW || 320} {rightCardH || 280}"
 					>
 						<!-- Top-Left Inner Contour Chamfer Line -->
 						<path
@@ -256,7 +257,7 @@
 
 				<!-- Notched App Card (Immediately below vertical card, tight gap) -->
 				<div
-					class="relative w-full h-[155px] sm:h-[165px] bg-white rounded-2xl border-2 border-[#0D0D0D] p-4 flex flex-col justify-between shadow-xs"
+					class="relative w-full h-[140px] sm:h-[150px] bg-white rounded-2xl border-2 border-[#0D0D0D] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs"
 				>
 					<!-- Top Chamfer Notch Contour -->
 					<div
@@ -264,7 +265,7 @@
 					></div>
 
 					<!-- Notched Header with 3 Dots Tab -->
-					<div class="flex items-center justify-between border-b border-stone-200 pb-2">
+					<div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
 						<h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-[#0D0D0D]">
 							APLIKASI PWA LAPANGAN
 						</h3>
@@ -277,12 +278,12 @@
 					</div>
 
 					<!-- Description -->
-					<p class="text-[11px] sm:text-xs text-stone-600 font-medium leading-relaxed">
+					<p class="text-[11px] sm:text-xs text-stone-600 font-medium leading-snug">
 						Katalog botani mandiri SMK Pertanian. Identifikasi taksonomi, video budidaya siswa, dan QR scanner offline.
 					</p>
 
 					<!-- Bottom Row: Platform icons & Action pill button -->
-					<div class="flex items-center justify-between pt-1.5 border-t border-stone-100">
+					<div class="flex items-center justify-between pt-1 border-t border-stone-100">
 						<div class="flex items-center -space-x-1">
 							<span
 								class="w-6 h-6 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px] font-black z-10"
@@ -301,11 +302,11 @@
 						<!-- Action Pill Button with Yellow Circle Arrow -->
 						<a
 							href="/scan"
-							class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#0D0D0D] bg-white hover:bg-stone-50 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all select-none"
+							class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0D0D0D] bg-white hover:bg-stone-50 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all select-none"
 						>
 							<span>Scan QR</span>
 							<div
-								class="w-5 h-5 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[10px] font-black"
+								class="w-4 h-4 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[9px] font-black"
 							>
 								↓
 							</div>
