@@ -8,6 +8,7 @@
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { PlantService } from '#lib/services/plant.service';
+	import { ConfigService } from '#lib/services/config.service';
 	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant, PlantCategory } from '#lib/types/plant.types';
 	import PlantCard from '#lib/components/plant/PlantCard.svelte';
@@ -17,18 +18,37 @@
 	let plants = $state<Plant[]>([...INITIAL_PLANTS_DATA]);
 	let isLoading = $state(false);
 	let searchQuery = $state('');
-	let selectedCategory = $state<PlantCategory | 'semua'>('semua');
+	let selectedCategory = $state<string>('semua');
+	let categories = $state(ConfigService.getCategories());
 
-	onMount(async () => {
+	onMount(() => {
+		// Listen to configuration updates from Admin
+		const handleConfigChange = (e: any) => {
+			if (e.detail?.categories) {
+				categories = e.detail.categories;
+			}
+		};
+		if (typeof window !== 'undefined') {
+			window.addEventListener('flora:config-updated', handleConfigChange);
+		}
+
 		// Baca initial query param jika ada (misal dari /katalog?q=... atau /katalog?cat=...)
 		const urlParams = page.url.searchParams;
 		const queryParam = urlParams.get('q');
-		const catParam = urlParams.get('cat') as PlantCategory | null;
+		const catParam = urlParams.get('cat');
 
 		if (queryParam) searchQuery = queryParam;
 		if (catParam) selectedCategory = catParam;
 
-		await loadPlants();
+		(async () => {
+			await loadPlants();
+		})();
+
+		return () => {
+			if (typeof window !== 'undefined') {
+				window.removeEventListener('flora:config-updated', handleConfigChange);
+			}
+		};
 	});
 
 	async function loadPlants() {
@@ -62,14 +82,10 @@
 		})
 	);
 
-	const categoryCounts = $derived({
-		semua: plants.length,
-		obat: plants.filter((p) => p.category === 'obat').length,
-		pangan: plants.filter((p) => p.category === 'pangan').length,
-		hias: plants.filter((p) => p.category === 'hias').length,
-		industri: plants.filter((p) => p.category === 'industri').length,
-		kayu: plants.filter((p) => p.category === 'kayu').length
-	});
+	const getCategoryCount = (catId: string) => {
+		if (catId === 'semua') return plants.length;
+		return plants.filter((p) => p.category === catId).length;
+	};
 </script>
 
 <svelte:head>
@@ -111,50 +127,18 @@
 		</div>
 	</div>
 
-	<!-- Category Filter Chips -->
+	<!-- Category Filter Chips (Dynamic from CMS) -->
 	<div class="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar py-1">
-		<FilterChip
-			active={selectedCategory === 'semua'}
-			count={categoryCounts.semua}
-			onclick={() => (selectedCategory = 'semua')}
-		>
-			Semua Tanaman
-		</FilterChip>
-		<FilterChip
-			active={selectedCategory === 'obat'}
-			count={categoryCounts.obat}
-			onclick={() => (selectedCategory = 'obat')}
-		>
-			Tanaman Obat (TOGA)
-		</FilterChip>
-		<FilterChip
-			active={selectedCategory === 'pangan'}
-			count={categoryCounts.pangan}
-			onclick={() => (selectedCategory = 'pangan')}
-		>
-			Tanaman Pangan
-		</FilterChip>
-		<FilterChip
-			active={selectedCategory === 'hias'}
-			count={categoryCounts.hias}
-			onclick={() => (selectedCategory = 'hias')}
-		>
-			Florikultura (Hias)
-		</FilterChip>
-		<FilterChip
-			active={selectedCategory === 'industri'}
-			count={categoryCounts.industri}
-			onclick={() => (selectedCategory = 'industri')}
-		>
-			Perkebunan / Industri
-		</FilterChip>
-		<FilterChip
-			active={selectedCategory === 'kayu'}
-			count={categoryCounts.kayu}
-			onclick={() => (selectedCategory = 'kayu')}
-		>
-			Kayu &amp; Kehutanan
-		</FilterChip>
+		{#each categories as cat (cat.id)}
+			<FilterChip
+				active={selectedCategory === cat.id}
+				count={getCategoryCount(cat.id)}
+				onclick={() => (selectedCategory = cat.id)}
+			>
+				<span class="w-2 h-2 rounded-full {cat.dotColor}"></span>
+				<span>{cat.label}</span>
+			</FilterChip>
+		{/each}
 	</div>
 
 	<!-- Results Count & Active Filters -->

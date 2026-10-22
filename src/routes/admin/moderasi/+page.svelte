@@ -98,6 +98,24 @@
 </svelte:head>
 
 <div class="max-w-4xl mx-auto flex flex-col gap-6">
+	<!-- Top Navigation Tabs (Moderasi vs CMS Settings) -->
+	<div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border-2 border-[#18181B] shadow-[3px_3px_0px_#18181B]">
+		<div class="flex items-center gap-2">
+			<span class="px-3.5 py-1.5 rounded-xl border-2 border-[#18181B] bg-[#18181B] text-[#E2EF46] text-xs font-black shadow-[2px_2px_0px_#18181B] select-none">
+				Moderasi Siswa
+			</span>
+			<a
+				href="/admin/pengaturan"
+				class="px-3.5 py-1.5 rounded-xl border-2 border-[#18181B] text-xs font-bold text-stone-700 hover:bg-stone-100 transition-all select-none"
+			>
+				⚙️ Pengaturan CMS &amp; Tampilan
+			</a>
+		</div>
+		<span class="text-[10px] font-black uppercase tracking-wider text-stone-500 hidden sm:inline">
+			Portal Administrator
+		</span>
+	</div>
+
 	<!-- Page Header -->
 	<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-[#18181B]">
 		<div class="flex items-center gap-3">

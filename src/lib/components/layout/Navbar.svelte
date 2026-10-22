@@ -4,13 +4,33 @@
   Caller: src/routes/+layout.svelte
 -->
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { authUser } from '#lib/stores/auth.store';
-	import { Sprout, QrCode, Map, BookOpen, PlusCircle, ShieldCheck, User, LogOut, ChevronDown } from '@lucide/svelte';
+	import { ConfigService } from '#lib/services/config.service';
+	import { Sprout, QrCode, Map, BookOpen, PlusCircle, ShieldCheck, User, LogOut, ChevronDown, Sliders } from '@lucide/svelte';
 	import Button from '../ui/Button.svelte';
 
 	let isDropdownOpen = $state(false);
 	const currentPath = $derived(page.url.pathname);
+
+	let identity = $state(ConfigService.getConfig().identity);
+
+	onMount(() => {
+		const handleConfigChange = (e: any) => {
+			if (e.detail?.identity) {
+				identity = e.detail.identity;
+			}
+		};
+		if (typeof window !== 'undefined') {
+			window.addEventListener('flora:config-updated', handleConfigChange);
+		}
+		return () => {
+			if (typeof window !== 'undefined') {
+				window.removeEventListener('flora:config-updated', handleConfigChange);
+			}
+		};
+	});
 
 	function handleSwitchRole(role: 'admin' | 'contributor' | 'viewer') {
 		authUser.loginAsDemo(role);
@@ -32,12 +52,12 @@
 			</div>
 			<div>
 				<div class="font-black text-xl leading-none tracking-tight text-stone-900 flex items-center gap-2">
-					Flora SMK
+					{identity.appName}
 					<span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#F6BD60] text-stone-900 border border-[#18181B] shadow-[1px_1px_0px_#18181B] uppercase tracking-wider">
 						PWA
 					</span>
 				</div>
-				<p class="text-[11px] text-stone-600 font-bold mt-0.5">SMK Pertanian Digital</p>
+				<p class="text-[11px] text-stone-600 font-bold mt-0.5">{identity.tagline}</p>
 			</div>
 		</a>
 
@@ -78,7 +98,16 @@
 						: 'border-transparent hover:border-[#18181B] hover:bg-[#CDB4DB]/40 hover:shadow-[2px_2px_0px_#18181B]'}"
 				>
 					<ShieldCheck class="w-4 h-4 text-stone-900 stroke-[2.2]" />
-					<span>Moderasi Guru</span>
+					<span>Portal Guru</span>
+				</a>
+				<a
+					href="/admin/pengaturan"
+					class="px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 {currentPath.startsWith('/admin/pengaturan')
+						? 'bg-[#E2EF46] border-[#18181B] shadow-[2px_2px_0px_#18181B]'
+						: 'border-transparent hover:border-[#18181B] hover:bg-[#E2EF46]/30 hover:shadow-[2px_2px_0px_#18181B]'}"
+				>
+					<Sliders class="w-4 h-4 text-stone-900 stroke-[2.2]" />
+					<span>CMS</span>
 				</a>
 			{/if}
 			{#if $authUser?.role === 'contributor' || $authUser?.role === 'admin'}
