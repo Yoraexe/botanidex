@@ -20,6 +20,7 @@
   --color-neo-blue: #93C5FD;
 
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Bebas Neue', 'Plus Jakarta Sans', sans-serif;
   --font-latin: 'Lora', Georgia, serif;
 }
 
@@ -89,6 +90,26 @@ body {
 .font-latin {
   font-family: var(--font-latin);
   font-style: italic;
+}
+
+/* Condensed display headline */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+/* Slow spin for Memphis seal/stamp */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 25s linear infinite;
 }
 
 /* Grid background texture */
