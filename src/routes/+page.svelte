@@ -6,7 +6,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import QRCode from 'qrcode';
+	import { toast } from '#lib/stores/toast.store';
 	import { PlantService } from '#lib/services/plant.service';
 	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant, PlantCategory } from '#lib/types/plant.types';
@@ -23,7 +23,6 @@
 		PlusCircle,
 		ArrowUpRight,
 		Camera,
-		X,
 		Smartphone
 	} from '@lucide/svelte';
 
@@ -32,29 +31,26 @@
 	let plants = $state<Plant[]>([...INITIAL_PLANTS_DATA]);
 	let isLoading = $state(false);
 
-	// PWA Install & QR Modal State
-	let showInstallModal = $state(false);
-	let installQrDataUrl = $state('');
+	// Direct PWA Install State
 	let deferredPrompt = $state<any>(null);
-	let appOrigin = $state('');
+	let isInstalled = $state(false);
 
 	onMount(async () => {
 		if (typeof window !== 'undefined') {
-			appOrigin = window.location.origin;
+			if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
+				isInstalled = true;
+			}
+
 			window.addEventListener('beforeinstallprompt', (e) => {
 				e.preventDefault();
 				deferredPrompt = e;
 			});
 
-			try {
-				installQrDataUrl = await QRCode.toDataURL(appOrigin, {
-					width: 240,
-					margin: 1,
-					color: { dark: '#0D0D0D', light: '#FFFFFF' }
-				});
-			} catch (err) {
-				console.warn('Gagal membuat QR install:', err);
-			}
+			window.addEventListener('appinstalled', () => {
+				isInstalled = true;
+				deferredPrompt = null;
+				toast.success('Pemasangan Berhasil!', 'Flora SMK berhasil ditambahkan ke perangkat Anda.');
+			});
 		}
 
 		try {
@@ -67,33 +63,23 @@
 		}
 	});
 
-	async function openInstallModal() {
-		showInstallModal = true;
-		if (!installQrDataUrl && typeof window !== 'undefined') {
-			try {
-				appOrigin = window.location.origin;
-				installQrDataUrl = await QRCode.toDataURL(appOrigin, {
-					width: 240,
-					margin: 1,
-					color: { dark: '#0D0D0D', light: '#FFFFFF' }
-				});
-			} catch (err) {
-				console.warn('Gagal membuat QR install:', err);
-			}
-		}
-	}
-
-	function closeInstallModal() {
-		showInstallModal = false;
-	}
-
-	async function triggerDirectInstall() {
+	async function handleDirectInstall() {
 		if (deferredPrompt) {
 			deferredPrompt.prompt();
 			const { outcome } = await deferredPrompt.userChoice;
 			if (outcome === 'accepted') {
+				toast.success('Pemasangan Berhasil!', 'Flora SMK berhasil ditambahkan ke perangkat Anda.');
 				deferredPrompt = null;
-				showInstallModal = false;
+				isInstalled = true;
+			}
+		} else if (isInstalled) {
+			toast.info('Aplikasi Sudah Terpasang', 'Flora SMK sudah terpasang di perangkat ini dan siap digunakan offline.');
+		} else {
+			const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+			if (isIOS) {
+				toast.info('Pasang di iOS Safari', 'Ketuk tombol Bagikan (Share) 📤 di Safari, lalu pilih "Tambah ke Layar Utama" ➕.');
+			} else {
+				toast.info('Pasang Aplikasi PWA', 'Ketuk ikon pasang (⊕) di bilah alamat browser atau menu titik tiga (⋮) → "Instal Aplikasi".');
 			}
 		}
 	}
@@ -365,14 +351,14 @@
 							</div>
 						</div>
 
-						<!-- Action Pill Button: Scan QR Install -->
+						<!-- Action Pill Button: Direct Install App -->
 						<button
 							type="button"
-							onclick={openInstallModal}
-							class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#E2EF46]/30 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
-							title="Pindai QR untuk memasang aplikasi ke smartphone Anda"
+							onclick={handleDirectInstall}
+							class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-[#0D0D0D] bg-white hover:bg-[#E2EF46]/30 text-xs font-bold text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer select-none"
+							title="Pasang aplikasi Flora SMK langsung ke perangkat Anda"
 						>
-							<span>Scan QR Install</span>
+							<span>Pasang App</span>
 							<div
 								class="w-4 h-4 rounded-full bg-[#E2EF46] border border-[#0D0D0D] flex items-center justify-center text-[9px] font-black"
 							>
@@ -384,108 +370,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- ========================================================================= -->
-	<!-- PWA INSTALL & QR CODE MODAL DIALOG -->
-	<!-- ========================================================================= -->
-	{#if showInstallModal}
-		<div
-			class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
-			onclick={(e) => { if (e.target === e.currentTarget) closeInstallModal(); }}
-			onkeydown={(e) => { if (e.key === 'Escape') closeInstallModal(); }}
-			role="dialog"
-			tabindex="-1"
-			aria-modal="true"
-			aria-label="Unduh dan Pasang Aplikasi Flora SMK"
-		>
-			<div
-				class="w-full max-w-md bg-[#F7F2E7] border-[3px] border-[#0D0D0D] rounded-3xl shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-6 relative flex flex-col gap-4 text-[#0D0D0D] animate-in zoom-in-95 duration-200"
-			>
-				<!-- Modal Header -->
-				<div class="flex items-start justify-between border-b-2 border-[#0D0D0D] pb-3">
-					<div class="flex items-center gap-2.5">
-						<div class="w-9 h-9 rounded-xl bg-[#E2EF46] border-2 border-[#0D0D0D] flex items-center justify-center text-base font-black shadow-xs">
-							📲
-						</div>
-						<div>
-							<h3 class="font-black text-base sm:text-lg leading-tight uppercase tracking-tight">
-								Pasang Aplikasi Lapangan
-							</h3>
-							<p class="text-[11px] font-bold text-stone-600">
-								PWA Mandiri untuk Apple iOS &amp; Android
-							</p>
-						</div>
-					</div>
-					<button
-						type="button"
-						onclick={closeInstallModal}
-						class="w-8 h-8 rounded-xl bg-white hover:bg-stone-100 border-2 border-[#0D0D0D] flex items-center justify-center text-[#0D0D0D] shadow-xs active:translate-y-0.5 transition-all cursor-pointer"
-						title="Tutup dialog"
-					>
-						<X class="w-4 h-4 stroke-[3]" />
-					</button>
-				</div>
-
-				<!-- QR Code Card -->
-				<div class="flex flex-col items-center gap-2 bg-white p-4 rounded-2xl border-2 border-[#0D0D0D] shadow-xs w-fit mx-auto text-center">
-					{#if installQrDataUrl}
-						<img
-							src={installQrDataUrl}
-							alt="QR Code Install Flora SMK"
-							class="w-44 h-44 sm:w-48 sm:h-48 rounded-lg"
-						/>
-					{:else}
-						<div class="w-44 h-44 flex items-center justify-center text-xs text-stone-400">
-							Membuat QR Code...
-						</div>
-					{/if}
-					<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-stone-100 border border-stone-300 text-[10px] font-mono font-bold text-stone-700 max-w-[240px] truncate">
-						<span>🔗</span>
-						<span class="truncate">{appOrigin || 'http://localhost:5173'}</span>
-					</div>
-					<p class="text-[11px] font-bold text-stone-700 max-w-[260px] leading-tight">
-						Pindai QR ini langsung dengan kamera HP untuk memasang katalog ke Layar Utama
-					</p>
-				</div>
-
-				<!-- OS Instructions Cards -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-left text-[11px]">
-					<!-- Apple iOS Instructions -->
-					<div class="p-3 bg-white rounded-xl border-2 border-[#0D0D0D] shadow-xs flex flex-col gap-1">
-						<div class="flex items-center gap-1.5 font-black uppercase text-stone-900 border-b border-stone-200 pb-1">
-							<span class="w-4 h-4 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px]">🍎</span>
-							<span>Apple iOS</span>
-						</div>
-						<p class="text-stone-600 leading-relaxed pt-0.5">
-							Buka di <b>Safari</b> → Ketuk tombol <b>Bagikan (Share) 📤</b> → Pilih <b>"Tambah ke Layar Utama" ➕</b>.
-						</p>
-					</div>
-
-					<!-- Android Instructions -->
-					<div class="p-3 bg-white rounded-xl border-2 border-[#0D0D0D] shadow-xs flex flex-col gap-1">
-						<div class="flex items-center gap-1.5 font-black uppercase text-stone-900 border-b border-stone-200 pb-1">
-							<span class="w-4 h-4 rounded-full bg-[#0D0D0D] text-white flex items-center justify-center text-[9px]">🤖</span>
-							<span>Android</span>
-						</div>
-						<p class="text-stone-600 leading-relaxed pt-0.5">
-							Buka di <b>Chrome</b> → Ketuk menu <b>titik tiga (⋮)</b> → Pilih <b>"Instal Aplikasi" 📥</b>.
-						</p>
-					</div>
-				</div>
-
-				<!-- Direct Install Button (If supported on current device) -->
-				{#if deferredPrompt}
-					<button
-						type="button"
-						onclick={triggerDirectInstall}
-						class="w-full py-2.5 rounded-xl bg-[#E2EF46] hover:bg-[#d8e538] border-2 border-[#0D0D0D] text-xs font-black uppercase tracking-wider text-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
-					>
-						<span>⚡ Pasang di Perangkat Ini Sekarang</span>
-					</button>
-				{/if}
-			</div>
-		</div>
-	{/if}
 
 	<!-- ========================================================================= -->
 	<!-- SEARCH & COMMODITY FILTER BAR (DEDICATED FULL-WIDTH BAR) -->
