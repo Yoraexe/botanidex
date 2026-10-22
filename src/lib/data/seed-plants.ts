@@ -29,8 +29,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Jahe merah (Zingiber officinale var. rubrum) merupakan tanaman rimpang terna semusim dengan tinggi 40–100 cm. Kulit rimpang berwarna merah jingga hingga merah tua dengan serat lebih kasar dan rasa pedas yang jauh lebih tajam dibanding jahe gajah atau jahe emprit karena kandungan gingerol dan shogaol yang tinggi. Biasa dibudidayakan di kebun toga SMK Pertanian sebagai bahan fitofarmaka dan minuman herbal penghangat tubuh.',
-		location_x: 24.5,
-		location_y: 36.0,
+		location_x: 38.0,
+		location_y: 25.0,
 		location_label: 'Kebun Tanaman Obat (TOGA) Blok A-1',
 		status: 'approved',
 		contributor_name: 'Ahmad Fauzi (Siswa XII Agribisnis)',
@@ -85,8 +85,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Jagung hibrida merupakan tanaman pangan serealia semusim berakar serabut dengan batang tegak beruas-ruas. Tanaman ini adalah salah satu komoditas praktikum agronomi utama di lahan terbuka SMK Pertanian, dengan fokus pembelajaran teknik penyerbukan silang, pemupukan berimbang NPK, dan penanganan pascapanen tongkol jagung.',
-		location_x: 68.0,
-		location_y: 28.5,
+		location_x: 82.0,
+		location_y: 22.0,
 		location_label: 'Lahan Praktikum Pangan Bedeng C-4',
 		status: 'approved',
 		contributor_name: 'Budi Santoso (Siswa XI ATPH 2)',
@@ -141,7 +141,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Anggrek bulan merupakan salah satu bunga nasional Indonesia bergelar Puspa Pesona. Merupakan tumbuhan epifit dengan daun tebal berdaging dan bunga berwarna putih bersih dengan lidah bercak kekuningan. Di SMK Pertanian, anggrek bulan dibudidayakan di dalam Greenhouse Florikultura dengan naungan paranet 65% dan sistem kabut otomatis untuk kontrol kelembaban.',
-		location_x: 42.0,
+		location_x: 46.0,
 		location_y: 52.0,
 		location_label: 'Greenhouse Florikultura & Kultur Jaringan',
 		status: 'approved',
@@ -197,8 +197,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Lidah buaya adalah tanaman sukulen berdaun tebal berdaging dengan tepi bergerigi lunak. Gel bening di dalam daun mengandung polisakarida, vitamin, dan asam amino esensial yang efektif menyembuhkan luka bakar, melembabkan kulit, serta diolah menjadi minuman nata de aloe vera oleh jurusan Agribisnis Pengolahan Hasil Pertanian (APHP).',
-		location_x: 28.0,
-		location_y: 44.0,
+		location_x: 52.0,
+		location_y: 25.0,
 		location_label: 'Kebun Tanaman Obat (TOGA) Blok B-2',
 		status: 'approved',
 		contributor_name: 'Dewi Lestari (Siswa XI APHP)',
@@ -234,8 +234,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Kopi Robusta tumbuh optimal di dataran rendah hingga sedang (200–800 mdpl). Memiliki kadar kafein lebih tinggi dibanding Arabika dengan daya tahan lebih kokoh terhadap serangan karat daun (Hemileia vastatrix). Pohon kopi di kebun sekolah digunakan untuk melatih siswa teknik pemangkasan bentuk, okulasi sambung pucuk, dan petik merah ceri.',
-		location_x: 78.0,
-		location_y: 62.0,
+		location_x: 75.0,
+		location_y: 45.0,
 		location_label: 'Kebun Praktikum Perkebunan Blok Selatan',
 		status: 'approved',
 		contributor_name: 'Rian Hidayat (Siswa XII Agribisnis Perkebunan)',
@@ -272,7 +272,7 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		description:
 			'Kakao merupakan pohon berdaun rindang asal Amerika Selatan dengan sifat kauliflori unik, di mana bunga dan buah muncul langsung dari batang pokok atau cabang tua. Buah kakao diolah siswa SMK Pertanian dari proses fermentasi biji, penjemuran, pemanggangan (roasting), hingga menjadi bubuk cokelat dan pasta cokelat bernilai jual.',
 		location_x: 82.0,
-		location_y: 74.0,
+		location_y: 52.0,
 		location_label: 'Kebun Kakao Pembibitan Terpadu',
 		status: 'approved',
 		contributor_name: 'Faisal Basri (Siswa XI ATPH 1)',
@@ -308,8 +308,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Kelapa sawit adalah tanaman penghasil minyak nabati paling efisien per hektar di dunia. Di area demonstrasi plot SMK Pertanian, tanaman sawit difungsikan untuk pengenalan anatomi tandan buah segar (TBS), pemupukan kalium, kastrasi bunga muda, serta pengenalan kumbang penyerbuk Elaeidobius kamerunicus.',
-		location_x: 88.0,
-		location_y: 40.0,
+		location_x: 89.0,
+		location_y: 60.0,
 		location_label: 'Demplot Perkebunan Sawit Percobaan',
 		status: 'approved',
 		contributor_name: 'Hendra Gunawan (Siswa XII Agribisnis)',
@@ -345,8 +345,8 @@ export const INITIAL_PLANTS_DATA: Plant[] = [
 		},
 		description:
 			'Jati emas merupakan klon unggul jati dengan laju pertumbuhan vegetatif lebih cepat dan batang lurus silindris. Ditanam di batas terluar lahan SMK Pertanian sebagai sabuk hijau (windbreak) sekaligus media praktikum silvikultur, pengukuran diameter setinggi dada (DBH), dan taksasi volume kayu berdiri.',
-		location_x: 15.0,
-		location_y: 80.0,
+		location_x: 13.0,
+		location_y: 50.0,
 		location_label: 'Hutan Sekolah & Pembatas Angin Barat',
 		status: 'approved',
 		contributor_name: 'Ir. Suhardi, M.P. (Guru Kehutanan & Pertanian)',
