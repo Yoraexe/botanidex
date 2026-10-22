@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Scan QR Code Page (Svelte 5 Runes)
-  Tujuan: Memindai QR Code tanaman langsung dari browser menggunakan kamera atau upload foto
+  Tujuan: Memindai QR Code tanaman langsung dari browser menggunakan kamera atau upload foto gaya Neo-Brutalist
   Caller: Route '/scan'
   BRD Ref: F3 (QR Code Scanner)
 -->
@@ -13,18 +13,18 @@
 	<title>Scan QR Code Tanaman — Flora SMK</title>
 </svelte:head>
 
-<div class="max-w-xl mx-auto flex flex-col gap-5">
+<div class="max-w-xl mx-auto flex flex-col gap-6">
 	<div class="flex items-center justify-between">
 		<a
 			href="/katalog"
-			class="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-emerald-700 bg-white px-3 py-1.5 rounded-xl border border-stone-200 transition-colors shadow-xs"
+			class="inline-flex items-center gap-2 text-xs font-black text-stone-900 bg-white px-3.5 py-2 rounded-xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] hover:bg-[#F6BD60] transition-colors active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B]"
 		>
-			<ArrowLeft class="w-4 h-4" />
+			<ArrowLeft class="w-4 h-4 stroke-[2.5]" />
 			<span>Katalog</span>
 		</a>
 
-		<div class="flex items-center gap-1.5 text-emerald-800 font-bold text-sm">
-			<QrCode class="w-4 h-4 text-emerald-600" />
+		<div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#6BB092] border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] text-stone-900 font-black text-xs uppercase tracking-wider">
+			<QrCode class="w-4 h-4 stroke-[2.5]" />
 			<span>Scanner Lapangan</span>
 		</div>
 	</div>

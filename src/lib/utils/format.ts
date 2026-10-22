@@ -1,10 +1,8 @@
 // ==============================================================================
-// Flora SMK — Formatting & Localization Utilities
-// Tujuan: Format teks kategori, tanggal Indonesia, dan durasi video
+// Flora SMK — Formatting & Localization Utilities (Neo-Brutalist Theme)
+// Tujuan: Format teks kategori, tanggal Indonesia, durasi, dan token warna pop
 // Caller: PlantCard, PlantDetail, Moderation Dashboard
 // Dependensi: PlantCategory
-// Main Functions: getCategoryBadgeLabel, getCategoryColorClass, formatDateId, formatDuration
-// Side Effects: none (pure function)
 // ==============================================================================
 
 import type { PlantCategory } from '../types/plant.types';
@@ -21,20 +19,62 @@ export function getCategoryBadgeLabel(category: PlantCategory): string {
 	return labels[category] || category;
 }
 
-export function getCategoryColorClass(category: PlantCategory): { bg: string; text: string; border: string; dot: string } {
+export function getCategoryColorClass(category: PlantCategory): {
+	bg: string;
+	text: string;
+	border: string;
+	dot: string;
+	accentHex: string;
+} {
 	switch (category) {
 		case 'obat':
-			return { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200', dot: '#059669' };
+			return {
+				bg: 'bg-[#6BB092]',
+				text: 'text-stone-900',
+				border: 'border-2 border-stone-900',
+				dot: '#18181B',
+				accentHex: '#6BB092'
+			};
 		case 'pangan':
-			return { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', dot: '#d97706' };
+			return {
+				bg: 'bg-[#F6BD60]',
+				text: 'text-stone-900',
+				border: 'border-2 border-stone-900',
+				dot: '#18181B',
+				accentHex: '#F6BD60'
+			};
 		case 'hias':
-			return { bg: 'bg-pink-50', text: 'text-pink-800', border: 'border-pink-200', dot: '#db2777' };
+			return {
+				bg: 'bg-[#CDB4DB]',
+				text: 'text-stone-900',
+				border: 'border-2 border-stone-900',
+				dot: '#18181B',
+				accentHex: '#CDB4DB'
+			};
 		case 'kayu':
-			return { bg: 'bg-stone-100', text: 'text-stone-800', border: 'border-stone-300', dot: '#57534e' };
+			return {
+				bg: 'bg-[#E07A5F]',
+				text: 'text-stone-900',
+				border: 'border-2 border-stone-900',
+				dot: '#18181B',
+				accentHex: '#E07A5F'
+			};
 		case 'industri':
-			return { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', dot: '#2563eb' };
+			return {
+				bg: 'bg-[#93C5FD]',
+				text: 'text-stone-900',
+				border: 'border-2 border-stone-900',
+				dot: '#18181B',
+				accentHex: '#93C5FD'
+			};
 		default:
-			return { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200', dot: '#6b7280' };
+			return {
+				bg: 'bg-[#E5E7EB]',
+				text: 'text-stone-900',
+				border: 'border-2 border-stone-900',
+				dot: '#18181B',
+				accentHex: '#E5E7EB'
+			};
 	}
 }
 

@@ -1,14 +1,16 @@
 <!--
   Flora SMK — Global Header / Navbar (Svelte 5 Runes)
-  Tujuan: Navigasi utama atas untuk desktop dan mobile dengan profil peran pengguna
+  Tujuan: Navigasi utama atas gaya Neo-Brutalist / Retro Pop dengan profil peran pengguna
   Caller: src/routes/+layout.svelte
 -->
 <script lang="ts">
+	import { page } from '$app/state';
 	import { authUser } from '#lib/stores/auth.store';
-	import { Sprout, QrCode, Map, BookOpen, PlusCircle, ShieldCheck, User, LogOut } from '@lucide/svelte';
+	import { Sprout, QrCode, Map, BookOpen, PlusCircle, ShieldCheck, User, LogOut, ChevronDown } from '@lucide/svelte';
 	import Button from '../ui/Button.svelte';
 
 	let isDropdownOpen = $state(false);
+	const currentPath = $derived(page.url.pathname);
 
 	function handleSwitchRole(role: 'admin' | 'contributor' | 'viewer') {
 		authUser.loginAsDemo(role);
@@ -21,61 +23,73 @@
 	}
 </script>
 
-<header class="bg-white/95 backdrop-blur-md border-b border-stone-200/80 sticky top-0 z-40 transition-shadow">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+<header class="bg-[#FFFEF9] border-b-2 border-[#18181B] sticky top-0 z-40">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
 		<!-- Brand & Logo -->
-		<a href="/" class="flex items-center gap-2.5 text-emerald-700 hover:text-emerald-800 transition-colors">
-			<div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs">
-				<Sprout class="w-6 h-6" />
+		<a href="/" class="flex items-center gap-3 group">
+			<div class="w-11 h-11 rounded-xl bg-[#6BB092] border-2 border-[#18181B] shadow-[2.5px_2.5px_0px_#18181B] flex items-center justify-center text-stone-900 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+				<Sprout class="w-6 h-6 stroke-[2.5]" />
 			</div>
 			<div>
-				<div class="font-bold text-lg leading-tight tracking-tight text-stone-900 flex items-center gap-1.5">
+				<div class="font-black text-xl leading-none tracking-tight text-stone-900 flex items-center gap-2">
 					Flora SMK
-					<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-widest">PWA</span>
+					<span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#F6BD60] text-stone-900 border border-[#18181B] shadow-[1px_1px_0px_#18181B] uppercase tracking-wider">
+						PWA
+					</span>
 				</div>
-				<p class="text-[11px] text-stone-500 font-medium">Katalog Tanaman SMK Pertanian</p>
+				<p class="text-[11px] text-stone-600 font-bold mt-0.5">SMK Pertanian Digital</p>
 			</div>
 		</a>
 
 		<!-- Desktop Navigation Links -->
-		<nav class="hidden md:flex items-center gap-1 text-sm font-medium text-stone-600">
+		<nav class="hidden md:flex items-center gap-2 text-sm font-bold text-stone-900">
 			<a
 				href="/katalog"
-				class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition-colors flex items-center gap-1.5"
+				class="px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 {currentPath.startsWith('/katalog')
+					? 'bg-[#F6BD60] border-[#18181B] shadow-[2px_2px_0px_#18181B]'
+					: 'border-transparent hover:border-[#18181B] hover:bg-stone-100 hover:shadow-[2px_2px_0px_#18181B]'}"
 			>
-				<BookOpen class="w-4 h-4" />
-				Katalog Tanaman
+				<BookOpen class="w-4 h-4 stroke-[2.2]" />
+				<span>Katalog Tanaman</span>
 			</a>
 			<a
 				href="/scan"
-				class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition-colors flex items-center gap-1.5"
+				class="px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 {currentPath.startsWith('/scan')
+					? 'bg-[#6BB092] border-[#18181B] shadow-[2px_2px_0px_#18181B]'
+					: 'border-transparent hover:border-[#18181B] hover:bg-stone-100 hover:shadow-[2px_2px_0px_#18181B]'}"
 			>
-				<QrCode class="w-4 h-4" />
-				Scan QR
+				<QrCode class="w-4 h-4 stroke-[2.2]" />
+				<span>Scan QR</span>
 			</a>
 			<a
 				href="/peta"
-				class="px-3 py-2 rounded-lg hover:text-emerald-700 hover:bg-emerald-50 transition-colors flex items-center gap-1.5"
+				class="px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 {currentPath.startsWith('/peta')
+					? 'bg-[#93C5FD] border-[#18181B] shadow-[2px_2px_0px_#18181B]'
+					: 'border-transparent hover:border-[#18181B] hover:bg-stone-100 hover:shadow-[2px_2px_0px_#18181B]'}"
 			>
-				<Map class="w-4 h-4" />
-				Peta Kebun
+				<Map class="w-4 h-4 stroke-[2.2]" />
+				<span>Peta Kebun</span>
 			</a>
 			{#if $authUser?.role === 'admin'}
 				<a
 					href="/admin/moderasi"
-					class="px-3 py-2 rounded-lg text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-colors flex items-center gap-1.5 font-semibold"
+					class="px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 {currentPath.startsWith('/admin')
+						? 'bg-[#CDB4DB] border-[#18181B] shadow-[2px_2px_0px_#18181B]'
+						: 'border-transparent hover:border-[#18181B] hover:bg-[#CDB4DB]/40 hover:shadow-[2px_2px_0px_#18181B]'}"
 				>
-					<ShieldCheck class="w-4 h-4 text-emerald-600" />
-					Moderasi Guru
+					<ShieldCheck class="w-4 h-4 text-stone-900 stroke-[2.2]" />
+					<span>Moderasi Guru</span>
 				</a>
 			{/if}
 			{#if $authUser?.role === 'contributor' || $authUser?.role === 'admin'}
 				<a
 					href="/kontribusi/tambah"
-					class="px-3 py-2 rounded-lg text-emerald-700 hover:bg-emerald-50 transition-colors flex items-center gap-1.5"
+					class="px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 {currentPath.startsWith('/kontribusi')
+						? 'bg-[#6BB092] border-[#18181B] shadow-[2px_2px_0px_#18181B]'
+						: 'border-transparent hover:border-[#18181B] hover:bg-[#6BB092]/30 hover:shadow-[2px_2px_0px_#18181B]'}"
 				>
-					<PlusCircle class="w-4 h-4" />
-					Tambah Tanaman
+					<PlusCircle class="w-4 h-4 stroke-[2.2]" />
+					<span>Tambah Tanaman</span>
 				</a>
 			{/if}
 		</nav>
@@ -86,51 +100,52 @@
 				<div class="relative">
 					<button
 						onclick={() => (isDropdownOpen = !isDropdownOpen)}
-						class="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors text-left"
+						class="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-2 rounded-xl border-2 border-[#18181B] bg-white shadow-[2px_2px_0px_#18181B] hover:shadow-[3px_3px_0px_#18181B] transition-all text-left cursor-pointer active:translate-y-0.5"
 					>
-						<div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center">
+						<div class="w-8 h-8 rounded-lg border border-[#18181B] font-black text-xs flex items-center justify-center {$authUser.role === 'admin' ? 'bg-[#CDB4DB] text-stone-900' : 'bg-[#6BB092] text-stone-900'}">
 							{$authUser.role === 'admin' ? 'GURU' : 'SISWA'}
 						</div>
 						<div class="hidden sm:block">
-							<p class="text-xs font-bold text-stone-900 leading-none">{$authUser.display_name.split(' ')[0]}</p>
-							<p class="text-[10px] text-stone-500 uppercase tracking-wider font-semibold">{$authUser.role}</p>
+							<p class="text-xs font-black text-stone-900 leading-none">{$authUser.display_name.split(' ')[0]}</p>
+							<p class="text-[10px] text-stone-600 uppercase tracking-wider font-extrabold mt-0.5">{$authUser.role}</p>
 						</div>
+						<ChevronDown class="w-3.5 h-3.5 text-stone-700 ml-0.5" />
 					</button>
 
 					{#if isDropdownOpen}
 						<div
-							class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-stone-200 p-2 z-50 text-xs text-stone-700 animate-in fade-in zoom-in-95 duration-100"
+							class="absolute right-0 mt-2 w-64 bg-[#FFFEF9] rounded-2xl shadow-[5px_5px_0px_#18181B] border-2 border-[#18181B] p-2.5 z-50 text-xs text-stone-800"
 						>
-							<div class="p-2 border-b border-stone-100 mb-1">
-								<p class="font-bold text-stone-900 truncate">{$authUser.display_name}</p>
-								<p class="text-[11px] text-stone-500 truncate">{$authUser.email}</p>
-								<span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800">
+							<div class="p-2.5 bg-stone-100 rounded-xl border border-[#18181B] mb-2">
+								<p class="font-black text-stone-900 truncate">{$authUser.display_name}</p>
+								<p class="text-[11px] text-stone-600 truncate font-medium">{$authUser.email}</p>
+								<span class="inline-block mt-1.5 px-2 py-0.5 rounded-md text-[10px] font-black uppercase border border-[#18181B] {$authUser.role === 'admin' ? 'bg-[#CDB4DB]' : 'bg-[#6BB092]'}">
 									Peran: {$authUser.role}
 								</span>
 							</div>
 
-							<p class="px-2 py-1 text-[10px] font-bold text-stone-400 uppercase tracking-wider">Ganti Akun Demo</p>
+							<p class="px-2 py-1 text-[10px] font-black text-stone-500 uppercase tracking-wider">Ganti Mode Akun</p>
 							<button
 								onclick={() => handleSwitchRole('admin')}
-								class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-stone-100 flex items-center gap-2"
+								class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-[#CDB4DB]/40 flex items-center gap-2.5 font-bold cursor-pointer transition-colors"
 							>
-								<ShieldCheck class="w-4 h-4 text-emerald-600" />
+								<ShieldCheck class="w-4 h-4 text-stone-900" />
 								<span>Login sebagai Guru / Admin</span>
 							</button>
 							<button
 								onclick={() => handleSwitchRole('contributor')}
-								class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-stone-100 flex items-center gap-2"
+								class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-[#6BB092]/40 flex items-center gap-2.5 font-bold cursor-pointer transition-colors"
 							>
-								<PlusCircle class="w-4 h-4 text-emerald-600" />
+								<PlusCircle class="w-4 h-4 text-stone-900" />
 								<span>Login sebagai Siswa</span>
 							</button>
 
-							<div class="border-t border-stone-100 mt-1 pt-1">
+							<div class="border-t-2 border-[#18181B] mt-2 pt-2">
 								<button
 									onclick={handleLogout}
-									class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-red-50 text-red-600 flex items-center gap-2 font-medium"
+									class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-[#E07A5F]/20 text-stone-900 flex items-center gap-2.5 font-bold cursor-pointer transition-colors"
 								>
-									<LogOut class="w-4 h-4" />
+									<LogOut class="w-4 h-4 text-[#E07A5F]" />
 									<span>Keluar (Guest Mode)</span>
 								</button>
 							</div>
@@ -139,15 +154,15 @@
 				</div>
 			{:else}
 				<!-- Quick Login for Demo/SMK presentation -->
-				<div class="flex items-center gap-1.5">
+				<div class="flex items-center gap-2">
 					<button
 						onclick={() => handleSwitchRole('contributor')}
-						class="text-xs font-semibold px-2.5 py-1.5 rounded-lg text-emerald-700 hover:bg-emerald-50 transition-colors"
+						class="text-xs font-black px-3 py-2 rounded-xl border-2 border-[#18181B] bg-white text-stone-900 shadow-[2px_2px_0px_#18181B] hover:bg-[#F6BD60] transition-colors cursor-pointer"
 					>
 						Masuk Siswa
 					</button>
 					<Button size="sm" variant="primary" onclick={() => handleSwitchRole('admin')}>
-						<ShieldCheck class="w-3.5 h-3.5" />
+						<ShieldCheck class="w-4 h-4 text-stone-900" />
 						Portal Guru
 					</Button>
 				</div>

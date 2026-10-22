@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Plant Detail Page (Svelte 5 Runes)
-  Tujuan: Profil lengkap tanaman, galeri foto, taksonomi, video edukasi siswa, lokasi peta, dan QR generator
+  Tujuan: Profil lengkap tanaman gaya Neo-Brutalist, galeri foto, taksonomi, video edukasi siswa, lokasi peta, dan QR generator
   Caller: Route '/katalog/[slug]'
   BRD Ref: F2 (Detail Tanaman & Video Siswa)
 -->
@@ -101,36 +101,36 @@
 	<div class="flex items-center justify-between">
 		<a
 			href="/katalog"
-			class="inline-flex items-center gap-2 text-xs font-semibold text-stone-600 hover:text-emerald-700 bg-white px-3 py-2 rounded-xl border border-stone-200 transition-colors shadow-xs"
+			class="inline-flex items-center gap-2 text-xs font-black text-stone-900 bg-white px-3.5 py-2.5 rounded-xl border-2 border-[#18181B] shadow-[2.5px_2.5px_0px_#18181B] hover:bg-[#F6BD60] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all"
 		>
-			<ArrowLeft class="w-4 h-4" />
+			<ArrowLeft class="w-4 h-4 stroke-[2.5]" />
 			<span>Kembali ke Katalog</span>
 		</a>
 
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-2.5">
 			<button
 				onclick={() => (showQrModal = true)}
-				class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white text-stone-700 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors shadow-xs cursor-pointer"
+				class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-stone-900 border-2 border-[#18181B] rounded-xl shadow-[2.5px_2.5px_0px_#18181B] hover:bg-[#6BB092] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all cursor-pointer"
 				title="Lihat Label QR Tanaman"
 			>
-				<QrCode class="w-4 h-4 text-emerald-600" />
+				<QrCode class="w-4 h-4 stroke-[2.5]" />
 				<span class="hidden sm:inline">Cetak QR</span>
 			</button>
 
 			<button
 				onclick={handleShare}
-				class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white text-stone-700 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors shadow-xs cursor-pointer"
+				class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-stone-900 border-2 border-[#18181B] rounded-xl shadow-[2.5px_2.5px_0px_#18181B] hover:bg-[#F6BD60] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all cursor-pointer"
 				title="Bagikan Tautan Profil Tanaman"
 			>
-				<Share2 class="w-4 h-4 text-stone-600" />
+				<Share2 class="w-4 h-4 stroke-[2.5]" />
 				<span>Bagikan</span>
 			</button>
 		</div>
 	</div>
 
 	{#if isLoading && !plant}
-		<div class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 animate-pulse flex flex-col gap-6">
-			<div class="h-8 bg-stone-200 rounded-lg w-1/3"></div>
+		<div class="bg-[#FFFEF9] rounded-3xl p-6 sm:p-8 border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B] animate-pulse flex flex-col gap-6">
+			<div class="h-8 bg-stone-200 rounded-xl w-1/3"></div>
 			<div class="aspect-video bg-stone-200 rounded-2xl w-full"></div>
 			<div class="h-4 bg-stone-200 rounded w-full"></div>
 			<div class="h-4 bg-stone-200 rounded w-2/3"></div>
@@ -139,32 +139,32 @@
 		{@const colors = getCategoryColorClass(plant.category)}
 		{@const categoryLabel = getCategoryBadgeLabel(plant.category)}
 
-		<!-- Plant Main Profile Card -->
-		<article class="bg-white rounded-3xl p-5 sm:p-8 border border-stone-200/90 shadow-sm flex flex-col gap-6">
+		<!-- Plant Main Profile Card (Neo-Brutalist) -->
+		<article class="bg-[#FFFEF9] rounded-3xl p-5 sm:p-8 border-2 border-[#18181B] shadow-[6px_6px_0px_#18181B] flex flex-col gap-6">
 			<!-- Header Title & Badges -->
-			<div class="flex flex-col gap-2 pb-4 border-b border-stone-100">
-				<div class="flex items-center gap-2">
-					<span class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider border {colors.bg} {colors.text} {colors.border}">
+			<div class="flex flex-col gap-2.5 pb-5 border-b-2 border-[#18181B]">
+				<div class="flex flex-wrap items-center gap-2">
+					<span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] {colors.bg} text-stone-900">
 						{categoryLabel}
 					</span>
 					{#if plant.aliases && plant.aliases.length > 0}
-						<span class="text-xs text-stone-400 hidden sm:inline">
+						<span class="text-xs font-bold text-stone-600 bg-[#F7F2E7] px-2 py-0.5 rounded-md border border-[#18181B]">
 							Sinonim: {plant.aliases.join(', ')}
 						</span>
 					{/if}
 				</div>
 
-				<h1 class="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+				<h1 class="text-2xl sm:text-4xl font-black text-stone-900 tracking-tight leading-tight">
 					{plant.name_local}
 				</h1>
 
 				<div class="flex flex-wrap items-baseline gap-2">
-					<p class="font-latin italic text-base sm:text-xl text-emerald-800 font-semibold">
+					<p class="font-latin italic text-lg sm:text-2xl text-stone-900 font-bold">
 						{plant.name_latin}
 					</p>
 					{#if plant.name_english}
-						<span class="text-xs sm:text-sm text-stone-400">
-							• Bahasa Inggris: <span class="font-medium text-stone-600">{plant.name_english}</span>
+						<span class="text-xs sm:text-sm font-semibold text-stone-600">
+							• Bahasa Inggris: <strong class="text-stone-900">{plant.name_english}</strong>
 						</span>
 					{/if}
 				</div>
@@ -175,19 +175,19 @@
 
 			<!-- Location Badge with Direct Link to Map -->
 			{#if plant.location_label}
-				<div class="p-3.5 bg-emerald-50/60 rounded-xl border border-emerald-200/60 flex items-center justify-between gap-3">
-					<div class="flex items-center gap-2">
-						<div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
-							<MapPin class="w-4 h-4" />
+				<div class="p-4 bg-[#F7F2E7] rounded-2xl border-2 border-[#18181B] shadow-[3px_3px_0px_#18181B] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+					<div class="flex items-center gap-3">
+						<div class="w-10 h-10 rounded-xl bg-[#6BB092] border-2 border-[#18181B] shadow-[1.5px_1.5px_0px_#18181B] text-stone-900 flex items-center justify-center shrink-0">
+							<MapPin class="w-5 h-5 stroke-[2.5]" />
 						</div>
 						<div>
-							<p class="text-[11px] font-bold text-emerald-900 uppercase tracking-wider">Lokasi di Area Sekolah</p>
-							<p class="text-xs sm:text-sm font-semibold text-stone-800">{plant.location_label}</p>
+							<p class="text-[10px] font-black text-stone-600 uppercase tracking-wider">Lokasi di Area Kebun Sekolah</p>
+							<p class="text-sm sm:text-base font-black text-stone-900">{plant.location_label}</p>
 						</div>
 					</div>
 					<a
 						href="/peta"
-						class="px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-800 text-xs font-bold hover:bg-emerald-100/50 transition-colors shrink-0"
+						class="px-4 py-2 rounded-xl bg-[#FFFEF9] border-2 border-[#18181B] text-stone-900 text-xs font-black hover:bg-[#F6BD60] shadow-[2px_2px_0px_#18181B] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B] transition-all self-start sm:self-auto shrink-0"
 					>
 						Buka Peta Kebun →
 					</a>
@@ -195,12 +195,12 @@
 			{/if}
 
 			<!-- Plant Description -->
-			<div class="flex flex-col gap-2">
-				<div class="flex items-center gap-2 text-stone-900 font-bold text-sm">
-					<FileText class="w-4 h-4 text-emerald-600" />
+			<div class="flex flex-col gap-2.5">
+				<div class="flex items-center gap-2 text-stone-900 font-black text-sm uppercase tracking-wide">
+					<FileText class="w-4 h-4 stroke-[2.5]" />
 					<h3>Deskripsi Botani &amp; Budidaya</h3>
 				</div>
-				<p class="text-sm sm:text-base text-stone-700 leading-relaxed whitespace-pre-line bg-stone-50/60 p-4 rounded-xl border border-stone-200/60">
+				<p class="text-sm sm:text-base text-stone-800 font-medium leading-relaxed whitespace-pre-line bg-[#F7F2E7] p-5 rounded-2xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B]">
 					{plant.description}
 				</p>
 			</div>
@@ -212,25 +212,27 @@
 			<PlantVideoSection videos={plant.videos} plantName={plant.name_local} />
 
 			<!-- Metadata Footer -->
-			<div class="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-400">
+			<div class="pt-4 border-t-2 border-[#18181B] flex flex-wrap items-center justify-between gap-3 text-xs text-stone-700 font-bold">
 				{#if plant.contributor_name}
-					<div class="flex items-center gap-1.5 text-stone-600">
-						<UserCheck class="w-3.5 h-3.5 text-emerald-600" />
-						<span>Kontributor: <strong class="text-stone-800">{plant.contributor_name}</strong></span>
+					<div class="flex items-center gap-2">
+						<div class="w-6 h-6 rounded-md bg-[#6BB092] border border-[#18181B] flex items-center justify-center text-stone-900">
+							<UserCheck class="w-3.5 h-3.5 stroke-[2.5]" />
+						</div>
+						<span>Kontributor Siswa: <strong class="text-stone-900">{plant.contributor_name}</strong></span>
 					</div>
 				{/if}
 
-				<div class="flex items-center gap-1.5">
+				<div class="flex items-center gap-1.5 text-stone-600 font-medium">
 					<Calendar class="w-3.5 h-3.5" />
 					<span>Diperbarui: {formatDateId(plant.updated_at)}</span>
 				</div>
 			</div>
 		</article>
 	{:else}
-		<div class="p-12 text-center bg-white rounded-3xl border border-stone-200">
-			<h2 class="text-lg font-bold text-stone-900">Tanaman Tidak Ditemukan</h2>
-			<p class="text-xs text-stone-500 mt-1">Slug URL tidak cocok dengan spesies terdaftar di SMK Pertanian.</p>
-			<a href="/katalog" class="mt-4 inline-block text-xs font-semibold px-4 py-2 bg-emerald-600 text-white rounded-xl">
+		<div class="p-12 text-center bg-[#FFFEF9] rounded-3xl border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B]">
+			<h2 class="text-xl font-black text-stone-900">Tanaman Tidak Ditemukan</h2>
+			<p class="text-xs sm:text-sm text-stone-600 font-medium mt-1">Slug URL tidak cocok dengan spesies terdaftar di SMK Pertanian.</p>
+			<a href="/katalog" class="mt-4 inline-block text-xs font-black px-4 py-2.5 bg-[#6BB092] text-stone-900 rounded-xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B]">
 				Lihat Semua Tanaman
 			</a>
 		</div>
@@ -239,14 +241,14 @@
 
 <!-- Modal QR Code Generator -->
 {#if showQrModal && plant}
-	<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+	<div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
 		<div class="relative w-full max-w-sm">
 			<button
 				onclick={() => (showQrModal = false)}
-				class="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white text-stone-600 hover:text-stone-900 shadow-md flex items-center justify-center border border-stone-200 cursor-pointer"
+				class="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-xl bg-[#F6BD60] text-stone-900 hover:bg-[#eab052] border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] flex items-center justify-center cursor-pointer active:translate-y-0.5"
 				aria-label="Tutup Modal"
 			>
-				<X class="w-4 h-4" />
+				<X class="w-5 h-5 stroke-[2.5]" />
 			</button>
 			<QrGenerator {plant} />
 		</div>

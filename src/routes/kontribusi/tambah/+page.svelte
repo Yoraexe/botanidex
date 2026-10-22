@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Student Plant Contribution Form (Svelte 5 Runes)
-  Tujuan: Formulir pengajuan data tanaman baru lengkap dengan foto dan video penjelasan siswa
+  Tujuan: Formulir pengajuan data tanaman baru gaya Neo-Brutalist lengkap dengan foto dan video penjelasan siswa
   Caller: Route '/kontribusi/tambah'
   BRD Ref: F5 (Kontribusi Siswa & Moderasi)
 -->
@@ -187,24 +187,24 @@
 
 <div class="max-w-3xl mx-auto flex flex-col gap-6">
 	<!-- Page Header -->
-	<div class="pb-4 border-b border-stone-200">
-		<div class="flex items-center gap-2">
-			<div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-				<PlusCircle class="w-5 h-5 text-emerald-600" />
+	<div class="pb-4 border-b-2 border-[#18181B]">
+		<div class="flex items-center gap-3">
+			<div class="w-10 h-10 rounded-xl bg-[#6BB092] border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] flex items-center justify-center text-stone-900 shrink-0">
+				<PlusCircle class="w-6 h-6 stroke-[2.5]" />
 			</div>
 			<div>
-				<h1 class="text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight">
+				<h1 class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">
 					Tambah Tanaman Baru ke Katalog
 				</h1>
-				<p class="text-xs text-stone-500">
+				<p class="text-xs sm:text-sm text-stone-600 font-semibold mt-0.5">
 					Dokumentasikan koleksi tanaman di lingkungan SMK Pertanian beserta taksonomi dan video penjelasan.
 				</p>
 			</div>
 		</div>
 
 		{#if $authUser?.role !== 'admin'}
-			<div class="mt-3 p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-xs text-amber-900 flex items-center gap-2">
-				<AlertCircle class="w-4 h-4 text-amber-600 shrink-0" />
+			<div class="mt-4 p-3.5 bg-[#F6BD60] rounded-xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] text-xs text-stone-900 font-black flex items-center gap-2.5">
+				<AlertCircle class="w-4 h-4 text-stone-900 stroke-[2.5] shrink-0" />
 				<span>Pengajuan oleh siswa akan dimoderasi oleh guru pembimbing sebelum muncul di katalog publik.</span>
 			</div>
 		{/if}
@@ -213,8 +213,8 @@
 	<!-- Main Form -->
 	<form onsubmit={handleSubmit} class="flex flex-col gap-6">
 		<!-- Section 1: Informasi Dasar -->
-		<div class="bg-white rounded-2xl border border-stone-200/90 p-5 sm:p-6 shadow-xs flex flex-col gap-4">
-			<h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider pb-2 border-b border-stone-100">
+		<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 sm:p-6 shadow-[4px_4px_0px_#18181B] flex flex-col gap-4">
+			<h2 class="text-sm font-black text-stone-900 uppercase tracking-wider pb-2 border-b-2 border-[#18181B]">
 				1. Informasi Pokok Tanaman
 			</h2>
 
@@ -228,18 +228,18 @@
 				/>
 
 				<div class="flex flex-col gap-1.5 w-full">
-					<label for="latin-input" class="text-xs font-semibold text-stone-700 tracking-wide uppercase">
+					<label for="latin-input" class="text-xs font-black text-stone-900 tracking-wider uppercase">
 						Nama Latin Ilmiah *
 					</label>
 					<input
 						id="latin-input"
 						bind:value={nameLatin}
 						placeholder="Contoh: Zingiber officinale"
-						class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-600 font-latin italic"
+						class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#18181B] rounded-xl shadow-[2px_2px_0px_#18181B] focus:shadow-[4px_4px_0px_#18181B] outline-none font-latin italic font-bold text-stone-900"
 						required
 					/>
 					{#if errors.name_latin}
-						<p class="text-xs text-red-600">{errors.name_latin}</p>
+						<p class="text-xs font-black text-[#E07A5F]">{errors.name_latin}</p>
 					{/if}
 				</div>
 			</div>
@@ -253,13 +253,13 @@
 				/>
 
 				<div class="flex flex-col gap-1.5 w-full">
-					<label for="category-select" class="text-xs font-semibold text-stone-700 tracking-wide uppercase">
+					<label for="category-select" class="text-xs font-black text-stone-900 tracking-wider uppercase">
 						Kategori Komoditas *
 					</label>
 					<select
 						id="category-select"
 						bind:value={category}
-						class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+						class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#18181B] rounded-xl shadow-[2px_2px_0px_#18181B] focus:shadow-[4px_4px_0px_#18181B] outline-none font-bold text-stone-900"
 					>
 						<option value="obat">Tanaman Obat / Herbal (TOGA)</option>
 						<option value="pangan">Tanaman Pangan &amp; Palawija</option>
@@ -278,7 +278,7 @@
 			/>
 
 			<div class="flex flex-col gap-1.5 w-full">
-				<label for="desc-textarea" class="text-xs font-semibold text-stone-700 tracking-wide uppercase">
+				<label for="desc-textarea" class="text-xs font-black text-stone-900 tracking-wider uppercase">
 					Deskripsi Morfologi, Habitat, &amp; Manfaat Praktikum *
 				</label>
 				<textarea
@@ -286,25 +286,25 @@
 					bind:value={description}
 					rows="4"
 					placeholder="Jelaskan ciri-ciri daun, batang, rimpang/buah, kebutuhan cahaya, serta materi praktikum yang terkait..."
-					class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+					class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#18181B] rounded-xl shadow-[2px_2px_0px_#18181B] focus:shadow-[4px_4px_0px_#18181B] outline-none font-medium text-stone-900"
 					required
 				></textarea>
 				{#if errors.description}
-					<p class="text-xs text-red-600">{errors.description}</p>
+					<p class="text-xs font-black text-[#E07A5F]">{errors.description}</p>
 				{/if}
 			</div>
 		</div>
 
 		<!-- Section 2: Taksonomi Ilmiah -->
-		<div class="bg-white rounded-2xl border border-stone-200/90 p-5 sm:p-6 shadow-xs flex flex-col gap-4">
-			<div class="flex items-center gap-2 pb-2 border-b border-stone-100">
-				<Dna class="w-4 h-4 text-emerald-600" />
-				<h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">
-					2. Klasifikasi Taksonomi Ilmiah (Opsional namun disarankan)
+		<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 sm:p-6 shadow-[4px_4px_0px_#18181B] flex flex-col gap-4">
+			<div class="flex items-center gap-2.5 pb-2 border-b-2 border-[#18181B]">
+				<Dna class="w-5 h-5 text-stone-900 stroke-[2.5]" />
+				<h2 class="text-sm font-black text-stone-900 uppercase tracking-wider">
+					2. Klasifikasi Taksonomi Ilmiah (Opsional)
 				</h2>
 			</div>
 
-			<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+			<div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
 				<Input label="Kingdom" bind:value={taxonomyKingdom} />
 				<Input label="Divisio" placeholder="Tracheophyta" bind:value={taxonomyDivisio} />
 				<Input label="Classis" placeholder="Liliopsida" bind:value={taxonomyClassis} />
@@ -315,68 +315,68 @@
 		</div>
 
 		<!-- Section 3: Foto & Video Penjelasan Siswa -->
-		<div class="bg-white rounded-2xl border border-stone-200/90 p-5 sm:p-6 shadow-xs flex flex-col gap-4">
-			<h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider pb-2 border-b border-stone-100">
+		<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 sm:p-6 shadow-[4px_4px_0px_#18181B] flex flex-col gap-4">
+			<h2 class="text-sm font-black text-stone-900 uppercase tracking-wider pb-2 border-b-2 border-[#18181B]">
 				3. Dokumentasi Foto &amp; Video Edukasi
 			</h2>
 
 			<!-- Photo Upload Box -->
 			<div>
-				<span class="block text-xs font-semibold text-stone-700 tracking-wide uppercase mb-1.5">Foto Tanaman * (Maksimal 5 foto, min 1 foto)</span>
+				<span class="block text-xs font-black text-stone-900 tracking-wider uppercase mb-2">Foto Tanaman * (Maksimal 5 foto, min 1 foto)</span>
 
 				<div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
 					{#each photoPreviews as url, idx}
-						<div class="relative aspect-square rounded-xl overflow-hidden border border-stone-200 group">
+						<div class="relative aspect-square rounded-xl overflow-hidden border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B]">
 							<img src={url} alt="Preview {idx + 1}" class="w-full h-full object-cover" />
 							<button
 								type="button"
 								onclick={() => removePhoto(idx)}
-								class="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full shadow-sm hover:bg-red-700"
+								class="absolute top-1.5 right-1.5 p-1 bg-[#E07A5F] text-white rounded-lg border border-[#18181B] shadow-[1px_1px_0px_#18181B] cursor-pointer"
 								title="Hapus foto"
 							>
-								<X class="w-3.5 h-3.5" />
+								<X class="w-3.5 h-3.5 stroke-[2.5]" />
 							</button>
 						</div>
 					{/each}
 
 					{#if photoFiles.length < 5}
-						<label class="aspect-square rounded-xl border-2 border-dashed border-stone-300 hover:border-emerald-500 bg-stone-50 hover:bg-emerald-50/50 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-colors text-stone-500 text-xs">
-							<ImageIcon class="w-6 h-6 text-stone-400" />
-							<span class="font-medium">+ Tambah Foto</span>
+						<label class="aspect-square rounded-xl border-2 border-dashed border-[#18181B] hover:bg-[#F6BD60]/20 bg-[#F7F2E7] flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-colors text-stone-900 text-xs font-black shadow-[2px_2px_0px_#18181B]">
+							<ImageIcon class="w-6 h-6 stroke-[2]" />
+							<span>+ Tambah Foto</span>
 							<input type="file" accept="image/*" multiple onchange={handlePhotoSelect} class="hidden" />
 						</label>
 					{/if}
 				</div>
 				{#if errors.photos}
-					<p class="text-xs text-red-600 mt-1">{errors.photos}</p>
+					<p class="text-xs font-black text-[#E07A5F] mt-1.5">{errors.photos}</p>
 				{/if}
-				<p class="text-[11px] text-stone-400 mt-1">Foto otomatis dikompresi agar hemat kuota.</p>
+				<p class="text-[11px] text-stone-500 font-semibold mt-1.5">Foto otomatis dikompresi agar hemat kuota.</p>
 			</div>
 
 			<!-- Student Explanation Video Upload (BRD Ref) -->
-			<div class="pt-4 border-t border-stone-100 flex flex-col gap-3">
+			<div class="pt-4 border-t-2 border-[#18181B] flex flex-col gap-3">
 				<div class="flex items-center gap-2">
-					<Video class="w-4 h-4 text-amber-500" />
-					<span class="text-xs font-bold text-stone-900 uppercase tracking-wide">Video Penjelasan Siswa (Opsional)</span>
+					<Video class="w-4 h-4 text-stone-900 stroke-[2.5]" />
+					<span class="text-xs font-black text-stone-900 uppercase tracking-wide">Video Penjelasan Siswa (Opsional)</span>
 				</div>
 
-				<p class="text-xs text-stone-500">
+				<p class="text-xs text-stone-600 font-medium">
 					Unggah video penjelasan identifikasi botani, morfologi, atau cara pemeliharaan tanaman (Maks. 50MB, format MP4 atau WebM).
 				</p>
 
 				{#if videoFile}
-					<div class="p-3 bg-amber-50 rounded-xl border border-amber-200 flex items-center justify-between">
-						<div class="flex items-center gap-2">
-							<Video class="w-5 h-5 text-amber-600" />
+					<div class="p-3.5 bg-[#F6BD60] rounded-xl border-2 border-[#18181B] shadow-[2px_2px_0px_#18181B] flex items-center justify-between">
+						<div class="flex items-center gap-2.5">
+							<Video class="w-5 h-5 text-stone-900 stroke-[2.5]" />
 							<div>
-								<p class="text-xs font-bold text-stone-900">{videoFile.name}</p>
-								<p class="text-[10px] text-stone-500">{(videoFile.size / (1024 * 1024)).toFixed(1)} MB</p>
+								<p class="text-xs font-black text-stone-900">{videoFile.name}</p>
+								<p class="text-[10px] text-stone-700 font-bold">{(videoFile.size / (1024 * 1024)).toFixed(1)} MB</p>
 							</div>
 						</div>
 						<button
 							type="button"
 							onclick={() => (videoFile = null)}
-							class="text-xs text-red-600 hover:underline font-semibold"
+							class="text-xs text-stone-900 hover:text-red-700 font-black underline cursor-pointer"
 						>
 							Hapus Video
 						</button>
@@ -388,8 +388,8 @@
 						bind:value={videoTitle}
 					/>
 				{:else}
-					<label class="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-xl cursor-pointer bg-amber-50/50 hover:bg-amber-50 transition-colors text-xs font-semibold text-amber-900">
-						<UploadCloud class="w-5 h-5 text-amber-600" />
+					<label class="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-[#18181B] hover:bg-[#F6BD60]/20 rounded-xl cursor-pointer bg-[#F7F2E7] transition-colors text-xs font-black text-stone-900 shadow-[2px_2px_0px_#18181B]">
+						<UploadCloud class="w-5 h-5 text-stone-900 stroke-[2.5]" />
 						<span>Pilih File Video (MP4 / WebM)</span>
 						<input type="file" accept="video/mp4,video/webm" onchange={handleVideoSelect} class="hidden" />
 					</label>
@@ -398,8 +398,8 @@
 		</div>
 
 		<!-- Section 4: Lokasi di Sekolah -->
-		<div class="bg-white rounded-2xl border border-stone-200/90 p-5 sm:p-6 shadow-xs flex flex-col gap-4">
-			<h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider pb-2 border-b border-stone-100">
+		<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 sm:p-6 shadow-[4px_4px_0px_#18181B] flex flex-col gap-4">
+			<h2 class="text-sm font-black text-stone-900 uppercase tracking-wider pb-2 border-b-2 border-[#18181B]">
 				4. Lokasi Kebun Sekolah
 			</h2>
 
@@ -411,19 +411,19 @@
 
 			<div class="grid grid-cols-2 gap-4">
 				<div>
-					<label for="pos-x-range" class="text-xs font-semibold text-stone-700">Posisi Peta X: {locationX}%</label>
-					<input id="pos-x-range" type="range" min="5" max="95" bind:value={locationX} class="w-full accent-emerald-600 mt-1" />
+					<label for="pos-x-range" class="text-xs font-black text-stone-900">Posisi Peta X: {locationX}%</label>
+					<input id="pos-x-range" type="range" min="5" max="95" bind:value={locationX} class="w-full accent-stone-900 mt-1 cursor-pointer" />
 				</div>
 				<div>
-					<label for="pos-y-range" class="text-xs font-semibold text-stone-700">Posisi Peta Y: {locationY}%</label>
-					<input id="pos-y-range" type="range" min="5" max="95" bind:value={locationY} class="w-full accent-emerald-600 mt-1" />
+					<label for="pos-y-range" class="text-xs font-black text-stone-900">Posisi Peta Y: {locationY}%</label>
+					<input id="pos-y-range" type="range" min="5" max="95" bind:value={locationY} class="w-full accent-stone-900 mt-1 cursor-pointer" />
 				</div>
 			</div>
 		</div>
 
 		<!-- Submit Button -->
 		<Button type="submit" variant="primary" size="lg" loading={isSubmitting} fullWidth>
-			<CheckCircle2 class="w-5 h-5" />
+			<CheckCircle2 class="w-5 h-5 stroke-[2.5]" />
 			<span>Simpan &amp; Ajukan Data Tanaman</span>
 		</Button>
 	</form>

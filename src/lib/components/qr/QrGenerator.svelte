@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Printable QR Plant Tag Generator (Svelte 5 Runes)
-  Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah
+  Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah gaya Neo-Brutalist
   Caller: Halaman detail tanaman, panel admin
   BRD Ref: F3 (QR Code Generator)
 -->
@@ -43,55 +43,55 @@
 	}
 </script>
 
-<div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs flex flex-col items-center text-center">
-	<div class="flex items-center gap-2 mb-3 text-stone-900 font-bold text-sm">
-		<QrCode class="w-4 h-4 text-emerald-600" />
+<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 sm:p-6 shadow-[5px_5px_0px_#18181B] flex flex-col items-center text-center">
+	<div class="flex items-center gap-2 mb-3 text-stone-900 font-black text-sm uppercase tracking-wide">
+		<QrCode class="w-4 h-4 stroke-[2.5]" />
 		<span>Label QR Botani Fisik</span>
 	</div>
 
 	<!-- Printable Physical Tag Preview Box -->
 	<div
 		id="printable-tag"
-		class="w-64 p-4 rounded-xl border-2 border-stone-800 bg-white shadow-sm flex flex-col items-center text-stone-900 my-2"
+		class="w-68 p-4 rounded-xl border-2 border-[#18181B] bg-white shadow-[3px_3px_0px_#18181B] flex flex-col items-center text-stone-900 my-2"
 	>
-		<p class="text-[10px] font-black uppercase tracking-widest text-emerald-800 border-b border-stone-200 pb-1 w-full text-center">
+		<p class="text-[10px] font-black uppercase tracking-widest text-stone-900 border-b-2 border-[#18181B] pb-1 w-full text-center bg-[#F6BD60] py-1 rounded-md">
 			SMK PERTANIAN • FLORA DIGITAL
 		</p>
 
 		{#if qrDataUrl}
-			<div class="p-2 my-2 bg-white rounded-lg border border-stone-200">
+			<div class="p-2.5 my-3 bg-white rounded-xl border-2 border-[#18181B]">
 				<img src={qrDataUrl} alt="QR Code {plant.name_local}" class="w-36 h-36 mx-auto object-contain" />
 			</div>
 		{:else if isLoading}
-			<div class="w-36 h-36 flex items-center justify-center text-xs text-stone-400">
+			<div class="w-36 h-36 flex items-center justify-center text-xs text-stone-400 font-bold">
 				Membuat QR...
 			</div>
 		{/if}
 
-		<h4 class="font-bold text-sm text-stone-900 leading-tight">
+		<h4 class="font-black text-base text-stone-900 leading-tight">
 			{plant.name_local}
 		</h4>
-		<p class="font-latin italic text-xs text-stone-600 mt-0.5">
+		<p class="font-latin italic text-xs text-stone-700 font-bold mt-0.5">
 			{plant.name_latin}
 		</p>
 		{#if plant.taxonomy.familia}
-			<p class="text-[10px] text-stone-500 uppercase font-semibold mt-1">
+			<p class="text-[10px] text-stone-600 uppercase font-black mt-1">
 				Famili: {plant.taxonomy.familia}
 			</p>
 		{/if}
-		<p class="text-[9px] text-stone-400 mt-2 border-t border-stone-100 pt-1 w-full">
-			Scan menggunakan kamera HP untuk informasi lengkap
+		<p class="text-[9px] text-stone-500 font-bold mt-2.5 border-t border-[#18181B]/30 pt-1.5 w-full">
+			Scan menggunakan kamera HP untuk video &amp; profil botani
 		</p>
 	</div>
 
 	<!-- Action Buttons -->
-	<div class="flex items-center gap-2 mt-4 w-full">
+	<div class="flex items-center gap-2.5 mt-4 w-full">
 		<Button variant="outline" size="sm" fullWidth onclick={handleDownload} disabled={!qrDataUrl}>
-			<Download class="w-3.5 h-3.5" />
+			<Download class="w-3.5 h-3.5 stroke-[2.5]" />
 			Download PNG
 		</Button>
 		<Button variant="primary" size="sm" fullWidth onclick={handlePrint} disabled={!qrDataUrl}>
-			<Printer class="w-3.5 h-3.5" />
+			<Printer class="w-3.5 h-3.5 stroke-[2.5]" />
 			Cetak Label
 		</Button>
 	</div>

@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Card UI Primitive (Svelte 5 Runes)
-  Tujuan: Kontainer kartu modular dengan elevation dan border halus
+  Tujuan: Kontainer kartu modular dengan gaya Neo-Brutalist (solid border & tactile shadow)
   Caller: PlantCard, Detail sections, Form wrappers
 -->
 <script lang="ts">
@@ -20,8 +20,8 @@
 </script>
 
 <div
-	class="bg-white rounded-xl border border-stone-200/80 shadow-xs overflow-hidden {hoverEffect
-		? 'transition-all duration-200 hover:shadow-md hover:-translate-y-0.5'
+	class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B] overflow-hidden {hoverEffect
+		? 'transition-all duration-150 hover:shadow-[6px_6px_0px_#18181B] hover:-translate-x-0.5 hover:-translate-y-0.5'
 		: ''} {className}"
 >
 	{#if children}

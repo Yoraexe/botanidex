@@ -1,6 +1,6 @@
 <!--
   Flora SMK — QR Code Scanner Component (Svelte 5 Runes)
-  Tujuan: Memindai QR Code tanaman dari kamera HP atau unggahan foto QR
+  Tujuan: Memindai QR Code tanaman gaya Neo-Brutalist dari kamera HP atau unggahan foto QR
   Caller: Halaman /scan
   BRD Ref: F3 (QR Code Scanner)
 -->
@@ -117,69 +117,71 @@
 	});
 </script>
 
-<div class="max-w-md mx-auto flex flex-col gap-5">
+<div class="max-w-md mx-auto flex flex-col gap-6">
 	<!-- Scanner Viewport Card -->
-	<div class="bg-stone-900 rounded-3xl overflow-hidden shadow-xl border border-stone-800 p-4 text-center text-white relative">
-		<div class="mb-3 flex items-center justify-between px-2">
+	<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] shadow-[5px_5px_0px_#18181B] p-4 sm:p-5 text-center text-stone-900 relative">
+		<div class="mb-3.5 flex items-center justify-between px-1">
 			<div class="flex items-center gap-2">
-				<Camera class="w-5 h-5 text-emerald-400" />
-				<span class="text-sm font-bold tracking-tight">Kamera Pemindai Tanaman</span>
+				<div class="w-8 h-8 rounded-lg bg-[#6BB092] border border-[#18181B] flex items-center justify-center text-stone-900">
+					<Camera class="w-4 h-4 stroke-[2.5]" />
+				</div>
+				<span class="text-sm font-black tracking-tight">Kamera Pemindai Tanaman</span>
 			</div>
 			{#if isScanning}
-				<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-					<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-[#F6BD60] text-stone-900 border border-[#18181B] shadow-[1px_1px_0px_#18181B]">
+					<span class="w-1.5 h-1.5 rounded-full bg-[#18181B] animate-ping"></span>
 					Mencari QR...
 				</span>
 			{/if}
 		</div>
 
 		<!-- Scanner Frame Container -->
-		<div class="relative w-full aspect-square max-w-[320px] mx-auto rounded-2xl overflow-hidden bg-black flex items-center justify-center">
+		<div class="relative w-full aspect-square max-w-[320px] mx-auto rounded-xl overflow-hidden bg-black border-2 border-[#18181B] shadow-[3px_3px_0px_#18181B] flex items-center justify-center">
 			<div id={scannerId} class="w-full h-full"></div>
 
 			<!-- Visual Scan Guide Corners Overlay -->
-			<div class="absolute inset-8 pointer-events-none border-2 border-dashed border-emerald-400/50 rounded-xl flex items-center justify-center">
-				<div class="w-full h-0.5 bg-emerald-400 shadow-[0_0_12px_#34d399] animate-pulse"></div>
+			<div class="absolute inset-8 pointer-events-none border-2 border-dashed border-[#F6BD60] rounded-xl flex items-center justify-center">
+				<div class="w-full h-0.5 bg-[#F6BD60] shadow-[0_0_8px_#F6BD60] animate-pulse"></div>
 			</div>
 		</div>
 
-		<p class="text-xs text-stone-400 mt-3 px-4">
+		<p class="text-xs text-stone-600 font-bold mt-3.5 px-2">
 			Arahkan kamera ke label barcode / QR Code yang terpasang di batang pohon atau bedengan tanaman.
 		</p>
 
 		{#if errorMessage}
-			<div class="mt-3 p-3 bg-red-950/80 border border-red-800/80 rounded-xl text-left flex items-start gap-2.5 text-xs text-red-200">
-				<AlertCircle class="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
-				<div class="flex-1">
-					<p class="font-bold">Kendala Kamera</p>
-					<p>{errorMessage}</p>
+			<div class="mt-3.5 p-3.5 bg-[#E07A5F]/20 border-2 border-[#18181B] rounded-xl text-left flex items-start gap-2.5 text-xs text-stone-900">
+				<AlertCircle class="w-4 h-4 shrink-0 mt-0.5 text-[#E07A5F] stroke-[2.5]" />
+				<div class="flex-1 font-bold">
+					<p class="font-black text-stone-900">Kendala Kamera</p>
+					<p class="text-stone-700 mt-0.5">{errorMessage}</p>
 				</div>
-				<button onclick={startScanner} class="p-1 hover:text-white" title="Coba Lagi">
-					<RefreshCw class="w-4 h-4" />
+				<button onclick={startScanner} class="p-1 hover:bg-stone-200 rounded-md cursor-pointer" title="Coba Lagi">
+					<RefreshCw class="w-4 h-4 stroke-[2.5]" />
 				</button>
 			</div>
 		{/if}
 	</div>
 
 	<!-- Alternative Actions: Upload Image or Manual Search -->
-	<div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs flex flex-col gap-4">
-		<h3 class="text-sm font-bold text-stone-900 border-b border-stone-100 pb-2">
+	<div class="bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] p-5 shadow-[4px_4px_0px_#18181B] flex flex-col gap-4">
+		<h3 class="text-sm font-black text-stone-900 border-b-2 border-[#18181B] pb-2 uppercase tracking-wide">
 			Opsi Pemindaian Lainnya
 		</h3>
 
 		<!-- File Upload (Screenshot/Photo from Gallery) -->
 		<div>
-			<span class="block text-xs font-semibold text-stone-700 uppercase tracking-wide mb-1.5">Unggah Foto QR dari Galeri HP</span>
-			<label class="flex items-center justify-center gap-2 p-3 border-2 border-dashed border-stone-300 hover:border-emerald-500 rounded-xl cursor-pointer bg-stone-50 hover:bg-emerald-50/50 transition-colors text-xs font-medium text-stone-700">
-				<ImageIcon class="w-4 h-4 text-emerald-600" />
+			<span class="block text-xs font-black text-stone-800 uppercase tracking-wide mb-2">Unggah Foto QR dari Galeri HP</span>
+			<label class="flex items-center justify-center gap-2 p-3.5 border-2 border-dashed border-[#18181B] hover:bg-[#F6BD60]/20 rounded-xl cursor-pointer bg-[#F7F2E7] transition-colors text-xs font-black text-stone-900 shadow-[2px_2px_0px_#18181B] active:translate-y-0.5 active:shadow-[1px_1px_0px_#18181B]">
+				<ImageIcon class="w-4 h-4 text-stone-900 stroke-[2.5]" />
 				<span>Pilih Foto QR dari Galeri</span>
 				<input type="file" accept="image/*" onchange={handleFileUpload} class="hidden" />
 			</label>
 		</div>
 
 		<!-- Manual Plant Code or Name Search -->
-		<form onsubmit={handleManualSubmit} class="flex flex-col gap-2 pt-2 border-t border-stone-100">
-			<label for="manual-plant-input" class="text-xs font-semibold text-stone-700 uppercase tracking-wide">
+		<form onsubmit={handleManualSubmit} class="flex flex-col gap-2 pt-2 border-t-2 border-[#18181B]/30">
+			<label for="manual-plant-input" class="text-xs font-black text-stone-800 uppercase tracking-wide">
 				Atau Cari Manual Berdasarkan Nama Tanaman
 			</label>
 			<div class="flex gap-2">
@@ -187,10 +189,10 @@
 					id="manual-plant-input"
 					bind:value={manualInput}
 					placeholder="Contoh: Jahe Merah, Jagung, atau Kopi..."
-					class="flex-1 px-3.5 py-2.5 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+					class="flex-1 px-3.5 py-2.5 text-sm bg-white border-2 border-[#18181B] rounded-xl shadow-[2px_2px_0px_#18181B] focus:shadow-[3px_3px_0px_#18181B] outline-none font-bold placeholder:text-stone-400"
 				/>
-				<Button type="submit" variant="primary" size="md">
-					<Search class="w-4 h-4" />
+				<Button type="submit" variant="secondary" size="md">
+					<Search class="w-4 h-4 stroke-[2.5]" />
 					Cari
 				</Button>
 			</div>

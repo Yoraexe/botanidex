@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Root Layout (Svelte 5 Runes)
-  Tujuan: Membungkus seluruh halaman dengan Navbar, Banner status offline, Toast container, dan BottomNav
+  Tujuan: Membungkus seluruh halaman dengan tema Neo-Brutalist, Navbar, Banner status offline, Toast, dan BottomNav
   Caller: SvelteKit router
 -->
 <script lang="ts">
@@ -18,7 +18,7 @@
 	let { children }: Props = $props();
 </script>
 
-<div class="min-h-screen flex flex-col bg-stone-50 text-stone-900 pb-20 md:pb-0">
+<div class="min-h-screen flex flex-col bg-[#F7F2E7] retro-grid-bg text-[#18181B] pb-24 md:pb-0">
 	<!-- Offline status alert -->
 	<OfflineBanner />
 
@@ -36,15 +36,20 @@
 	</main>
 
 	<!-- Footer Desktop -->
-	<footer class="hidden md:block bg-white border-t border-stone-200 mt-auto py-8 text-stone-500 text-xs">
+	<footer class="hidden md:block bg-[#FFFEF9] border-t-2 border-[#18181B] mt-auto py-8 text-stone-700 text-xs">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-			<div class="flex items-center gap-2">
-				<div class="w-6 h-6 rounded-md bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold">
+			<div class="flex items-center gap-2.5">
+				<div class="w-7 h-7 rounded-lg bg-[#6BB092] border-2 border-[#18181B] shadow-[1.5px_1.5px_0px_#18181B] flex items-center justify-center text-stone-900 text-xs font-black">
 					FS
 				</div>
-				<p class="font-semibold text-stone-700">Flora SMK — Inovasi Botani Digital untuk SMK Pertanian</p>
+				<p class="font-extrabold text-stone-900">Flora SMK — Inovasi Botani Digital untuk SMK Pertanian</p>
 			</div>
-			<p>© 2026 SMK Pertanian Indonesia. Progressive Web App didesain untuk edukasi lapangan.</p>
+			<div class="flex items-center gap-3">
+				<span class="px-2 py-0.5 rounded-md bg-[#F6BD60] text-stone-900 border border-[#18181B] font-black text-[10px] uppercase">
+					PWA Offline-Ready
+				</span>
+				<p class="font-medium text-stone-600">© 2026 SMK Pertanian Indonesia. Progressive Web App.</p>
+			</div>
 		</div>
 	</footer>
 

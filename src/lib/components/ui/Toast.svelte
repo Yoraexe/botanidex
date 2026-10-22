@@ -1,6 +1,6 @@
 <!--
   Flora SMK — Toast Alert Container (Svelte 5 Runes)
-  Tujuan: Menampilkan notifikasi popup aksi di sudut layar
+  Tujuan: Menampilkan notifikasi popup aksi gaya Neo-Brutalist di sudut layar
   Caller: src/routes/+layout.svelte
 -->
 <script lang="ts">
@@ -14,18 +14,11 @@
 		info: Info
 	};
 
-	const borderStyles = {
-		success: 'border-l-emerald-600',
-		warning: 'border-l-amber-500',
-		error: 'border-l-red-600',
-		info: 'border-l-blue-600'
-	};
-
-	const iconStyles = {
-		success: 'text-emerald-600',
-		warning: 'text-amber-500',
-		error: 'text-red-600',
-		info: 'text-blue-600'
+	const bgAccentMap = {
+		success: 'bg-[#6BB092] text-stone-900',
+		warning: 'bg-[#F6BD60] text-stone-900',
+		error: 'bg-[#E07A5F] text-white',
+		info: 'bg-[#93C5FD] text-stone-900'
 	};
 </script>
 
@@ -33,20 +26,20 @@
 	{#each $toast as item (item.id)}
 		{@const Icon = iconMap[item.type]}
 		<div
-			class="pointer-events-auto flex items-start gap-3 p-3.5 bg-white rounded-xl shadow-lg border border-stone-200 border-l-4 {borderStyles[
-				item.type
-			]} transition-all animate-in fade-in slide-in-from-top-2 duration-200"
+			class="pointer-events-auto flex items-start gap-3 p-3.5 bg-[#FFFEF9] rounded-2xl border-2 border-[#18181B] shadow-[4px_4px_0px_#18181B] transition-all"
 		>
-			<Icon class="w-5 h-5 mt-0.5 shrink-0 {iconStyles[item.type]}" />
-			<div class="flex-1 min-w-0">
-				<p class="text-sm font-semibold text-stone-900">{item.title}</p>
+			<div class="w-8 h-8 rounded-xl border border-[#18181B] flex items-center justify-center shrink-0 {bgAccentMap[item.type]}">
+				<Icon class="w-4 h-4" />
+			</div>
+			<div class="flex-1 min-w-0 pt-0.5">
+				<p class="text-sm font-black text-stone-900 leading-tight">{item.title}</p>
 				{#if item.message}
-					<p class="text-xs text-stone-600 mt-0.5">{item.message}</p>
+					<p class="text-xs text-stone-700 mt-0.5 font-medium">{item.message}</p>
 				{/if}
 			</div>
 			<button
 				onclick={() => toast.remove(item.id)}
-				class="text-stone-400 hover:text-stone-700 p-1 rounded-md transition-colors"
+				class="text-stone-500 hover:text-stone-900 p-1 rounded-lg border border-transparent hover:border-[#18181B] transition-all cursor-pointer"
 				aria-label="Tutup notifikasi"
 			>
 				<X class="w-4 h-4" />
