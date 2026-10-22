@@ -169,32 +169,12 @@
 
 <div class="flex flex-col gap-8 sm:gap-10">
 	<!-- ========================================================================= -->
-	<!-- REFINED, ORDERLY, HARMONIOUS CRYPKO HERO ARTBOARD -->
+	<!-- REFINED, ORDERLY, HARMONIOUS HERO ARTBOARD -->
 	<!-- ========================================================================= -->
 	<section
-		class="w-full max-w-[1060px] mx-auto rounded-[32px] sm:rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#EAE4D6] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col gap-4 sm:gap-5"
+		class="w-full max-w-[1060px] mx-auto rounded-[32px] sm:rounded-[36px] border-[3px] border-[#0D0D0D] bg-[#EAE4D6] shadow-[8px_8px_0px_#0D0D0D] p-5 sm:p-7 lg:p-8 relative overflow-hidden flex flex-col"
 	>
-		<!-- 1. TOP BRAND BAR (Editorial Top Notch Style) -->
-		<div class="flex items-center justify-between w-full pb-2.5 border-b-2 border-[#0D0D0D]/10">
-			<a
-				href="/"
-				class="flex items-center gap-2.5 font-bold text-2xl sm:text-3xl tracking-tight text-[#0D0D0D] select-none hover:opacity-80 transition-opacity"
-			>
-				<img
-					src="/SMK-Pertanian-Gorontalo.png"
-					alt="Logo SMK PPN Gorontalo"
-					class="w-7 h-7 sm:w-8 sm:h-8 object-contain"
-				/>
-				<span>{appConfig.identity.appName.toLowerCase()}</span>
-			</a>
-			<div class="hidden sm:flex items-center gap-2">
-				<span class="text-[10px] font-black uppercase tracking-widest text-[#0D0D0D]/70 border border-[#0D0D0D]/20 px-3 py-1 rounded-full">
-					{appConfig.identity.headerBadge}
-				</span>
-			</div>
-		</div>
-
-		<!-- 2. TWO-COLUMN BALANCED INTERLOCKING GRID (ORDERLY, SPACED, ZERO-COLLISION) -->
+		<!-- TWO-COLUMN BALANCED INTERLOCKING GRID (ORDERLY, SPACED, ZERO-COLLISION) -->
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-start w-full">
 			<!-- ================= LEFT COLUMN ================= -->
 			<div class="lg:col-span-7 flex flex-col gap-3.5 sm:gap-4 w-full">
