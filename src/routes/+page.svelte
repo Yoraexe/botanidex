@@ -61,6 +61,41 @@
 	const totalVideos = $derived(
 		plants.reduce((acc, p) => acc + (p.videos ? p.videos.length : 0), 0)
 	);
+
+	// Geometry for Right Vertical Card (Crypko 45-degree chamfer top-left)
+	let rightCardW = $state(320);
+	let rightCardH = $state(325);
+
+	const rightCardPath = $derived.by(() => {
+		const w = rightCardW || 320;
+		const h = rightCardH || 325;
+		const r = 16;
+		const cutX = Math.round(w * 0.35); // ~110px on top edge
+		const cutY = Math.round(h * 0.28); // ~90px on left edge
+		return `M ${cutX} 2
+			L ${w - r} 2
+			Q ${w - 2} 2, ${w - 2} ${r}
+			L ${w - 2} ${h - r}
+			Q ${w - 2} ${h - 2}, ${w - r} ${h - 2}
+			L ${r} ${h - 2}
+			Q 2 ${h - 2}, 2 ${h - r}
+			L 2 ${cutY}
+			Q 2 ${cutY - 14}, 12 ${cutY - 24}
+			L ${cutX - 22} 12
+			Q ${cutX - 12} 2, ${cutX} 2
+			Z`;
+	});
+
+	const rightCardInnerContour = $derived.by(() => {
+		const w = rightCardW || 320;
+		const h = rightCardH || 325;
+		const cutX = Math.round(w * 0.35);
+		const cutY = Math.round(h * 0.28);
+		return `M 2 ${cutY - 10}
+			Q 2 ${cutY - 20}, 14 ${cutY - 30}
+			L ${cutX - 24} 12
+			Q ${cutX - 14} 4, ${cutX + 4} 4`;
+	});
 </script>
 
 <svelte:head>
@@ -148,42 +183,75 @@
 
 			<!-- ================= RIGHT COLUMN ================= -->
 			<div class="lg:col-span-5 flex flex-col gap-3.5 sm:gap-4 w-full">
-				<!-- Vertical Card with Yellow Strip -->
+				<!-- Hidden SVG Defs for Right Card Chamfer Clip -->
+				<svg class="absolute w-0 h-0 overflow-hidden" aria-hidden="true">
+					<defs>
+						<clipPath id="right-card-chamfer-clip">
+							<path d={rightCardPath} />
+						</clipPath>
+					</defs>
+				</svg>
+
+				<!-- Vertical Specimen Card (Faithful Crypko 45-degree Chamfer Top-Left + Star Strip) -->
 				<a
 					href="/katalog/anggrek-bulan"
-					class="relative w-full h-[305px] sm:h-[325px] rounded-2xl rounded-tl-[3.5rem] border-2 border-[#0D0D0D] bg-[#D5D0C3] overflow-hidden flex flex-row group hover:-translate-y-1 hover:shadow-[5px_5px_0px_#0D0D0D] transition-all shadow-xs"
+					bind:clientWidth={rightCardW}
+					bind:clientHeight={rightCardH}
+					class="relative w-full h-[305px] sm:h-[325px] block group hover:-translate-y-1 transition-all shadow-xs"
 				>
-					<!-- Double contour line on top-left notch (Crypko detail) -->
+					<!-- Clipped Content (Photo + Clean Yellow Strip) -->
 					<div
-						class="absolute top-2 left-2 w-16 h-16 rounded-tl-[2.8rem] border-t-2 border-l-2 border-[#0D0D0D]/40 pointer-events-none z-10"
-					></div>
+						class="w-full h-full flex flex-row bg-[#D5D0C3] overflow-hidden"
+						style="clip-path: url(#right-card-chamfer-clip);"
+					>
+						<!-- Image Area (Neutral Botanical Specimen) -->
+						<div class="flex-1 h-full relative overflow-hidden bg-[#D5D0C3] flex items-center justify-center">
+							<img
+								src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=800&q=80"
+								alt="Anggrek Bulan Puspa Pesona"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+							/>
+						</div>
 
-					<!-- Image Area -->
-					<div class="flex-1 h-full relative overflow-hidden bg-[#D5D0C3] flex items-center justify-center p-2">
-						<img
-							src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=800&q=80"
-							alt="Anggrek Bulan Puspa Pesona"
-							class="w-full h-full object-cover rounded-tl-[3rem] group-hover:scale-105 transition-transform duration-500"
-						/>
+						<!-- Vertical Neon Chartreuse Strip (Two Stars on Top, Empty Middle, Up Arrow at Bottom) -->
 						<div
-							class="absolute bottom-3 left-3 bg-[#0D0D0D]/85 text-white px-2.5 py-1 rounded-md text-[10px] font-bold z-10"
+							class="w-10 sm:w-11 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-4 text-[#0D0D0D] select-none shrink-0"
 						>
-							<p class="font-latin italic">Phalaenopsis amabilis</p>
+							<!-- Two Black Stars Stacked Vertically (Crypko signature) -->
+							<div class="flex flex-col items-center gap-1.5 pt-0.5">
+								<span class="text-sm font-black leading-none">★</span>
+								<span class="text-sm font-black leading-none">★</span>
+							</div>
+
+							<!-- Middle: Empty clean yellow space per reference -->
+							<div class="flex-1"></div>
+
+							<!-- Upward Arrow at Bottom -->
+							<span class="text-base font-black leading-none group-hover:-translate-y-1 transition-transform">↑</span>
 						</div>
 					</div>
 
-					<!-- Vertical Neon Chartreuse Strip -->
-					<div
-						class="w-10 bg-[#E2EF46] border-l-2 border-[#0D0D0D] flex flex-col items-center justify-between py-4 text-[#0D0D0D] select-none shrink-0"
+					<!-- Crisp SVG Border & Chamfer Inner Contour Overlay -->
+					<svg
+						class="absolute inset-0 w-full h-full pointer-events-none z-20"
+						viewBox="0 0 {rightCardW || 320} {rightCardH || 325}"
 					>
-						<span class="text-xs font-black tracking-tighter">✦ ✦</span>
-						<span
-							class="writing-mode-vertical text-[10px] font-black uppercase tracking-widest rotate-180 text-center"
-						>
-							PUSPA PESONA
-						</span>
-						<span class="text-sm font-black group-hover:-translate-y-0.5 transition-transform">↑</span>
-					</div>
+						<!-- Top-Left Inner Contour Chamfer Line -->
+						<path
+							d={rightCardInnerContour}
+							fill="none"
+							stroke="#0D0D0D"
+							stroke-width="1.8"
+							stroke-opacity="0.38"
+						/>
+						<!-- Outer Solid Border -->
+						<path
+							d={rightCardPath}
+							fill="none"
+							stroke="#0D0D0D"
+							stroke-width="2.5"
+						/>
+					</svg>
 				</a>
 
 				<!-- Notched App Card (Immediately below vertical card, tight gap) -->
@@ -377,9 +445,3 @@
 		</div>
 	</section>
 </div>
-
-<style>
-	.writing-mode-vertical {
-		writing-mode: vertical-rl;
-	}
-</style>
