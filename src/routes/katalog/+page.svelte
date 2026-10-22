@@ -8,13 +8,14 @@
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { PlantService } from '#lib/services/plant.service';
+	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant, PlantCategory } from '#lib/types/plant.types';
 	import PlantCard from '#lib/components/plant/PlantCard.svelte';
 	import FilterChip from '#lib/components/ui/FilterChip.svelte';
 	import { Search, X, BookOpen, AlertCircle, RefreshCw } from '@lucide/svelte';
 
-	let plants = $state<Plant[]>([]);
-	let isLoading = $state(true);
+	let plants = $state<Plant[]>([...INITIAL_PLANTS_DATA]);
+	let isLoading = $state(false);
 	let searchQuery = $state('');
 	let selectedCategory = $state<PlantCategory | 'semua'>('semua');
 
@@ -31,13 +32,13 @@
 	});
 
 	async function loadPlants() {
-		isLoading = true;
 		try {
-			plants = await PlantService.getCatalog();
+			const updated = await PlantService.getCatalog();
+			if (updated && updated.length > 0) {
+				plants = updated;
+			}
 		} catch (err) {
 			console.warn('Gagal memuat katalog:', err);
-		} finally {
-			isLoading = false;
 		}
 	}
 
@@ -165,7 +166,7 @@
 					searchQuery = '';
 					selectedCategory = 'semua';
 				}}
-				class="text-emerald-700 hover:underline font-semibold"
+				class="text-emerald-700 hover:underline font-semibold cursor-pointer"
 			>
 				Reset Filter
 			</button>
@@ -200,7 +201,7 @@
 					searchQuery = '';
 					selectedCategory = 'semua';
 				}}
-				class="mt-2 text-xs font-semibold px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors"
+				class="mt-2 text-xs font-semibold px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors cursor-pointer"
 			>
 				Tampilkan Semua Tanaman
 			</button>

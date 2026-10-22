@@ -7,22 +7,24 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { PlantService } from '#lib/services/plant.service';
+	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant } from '#lib/types/plant.types';
 	import PlantCard from '#lib/components/plant/PlantCard.svelte';
 	import Button from '#lib/components/ui/Button.svelte';
 	import { Search, QrCode, Map, Sparkles, Video, BookOpen, ArrowRight, ShieldCheck, PlusCircle } from '@lucide/svelte';
 
 	let searchQuery = $state('');
-	let plants = $state<Plant[]>([]);
-	let isLoading = $state(true);
+	let plants = $state<Plant[]>([...INITIAL_PLANTS_DATA]);
+	let isLoading = $state(false);
 
 	onMount(async () => {
 		try {
-			plants = await PlantService.getCatalog();
+			const updated = await PlantService.getCatalog();
+			if (updated && updated.length > 0) {
+				plants = updated;
+			}
 		} catch (err) {
 			console.warn('Gagal memuat tanaman:', err);
-		} finally {
-			isLoading = false;
 		}
 	});
 

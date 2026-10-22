@@ -8,6 +8,7 @@
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { PlantService } from '#lib/services/plant.service';
+	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant } from '#lib/types/plant.types';
 	import { getCategoryBadgeLabel, getCategoryColorClass, formatDateId } from '#lib/utils/format';
 	import PlantGallery from '#lib/components/plant/PlantGallery.svelte';
@@ -28,26 +29,34 @@
 		X
 	} from '@lucide/svelte';
 
+	const slug = $derived(page.params.slug);
 	let plant = $state<Plant | null>(null);
-	let isLoading = $state(true);
+	let isLoading = $state(false);
 	let showQrModal = $state(false);
 
-	const slug = $derived(page.params.slug);
+	$effect(() => {
+		if (slug && (!plant || plant.slug !== slug)) {
+			const initial = INITIAL_PLANTS_DATA.find((p) => p.slug === slug);
+			if (initial) {
+				plant = initial;
+			}
+		}
+	});
 
 	onMount(async () => {
 		await loadPlantDetail();
 	});
 
 	async function loadPlantDetail() {
-		isLoading = true;
 		try {
 			if (slug) {
-				plant = await PlantService.getPlantBySlug(slug);
+				const fetched = await PlantService.getPlantBySlug(slug);
+				if (fetched) {
+					plant = fetched;
+				}
 			}
 		} catch (err) {
 			console.warn('Gagal memuat detail tanaman:', err);
-		} finally {
-			isLoading = false;
 		}
 	}
 
@@ -101,7 +110,7 @@
 		<div class="flex items-center gap-2">
 			<button
 				onclick={() => (showQrModal = true)}
-				class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white text-stone-700 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors shadow-xs"
+				class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white text-stone-700 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors shadow-xs cursor-pointer"
 				title="Lihat Label QR Tanaman"
 			>
 				<QrCode class="w-4 h-4 text-emerald-600" />
@@ -110,7 +119,7 @@
 
 			<button
 				onclick={handleShare}
-				class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white text-stone-700 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors shadow-xs"
+				class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white text-stone-700 border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors shadow-xs cursor-pointer"
 				title="Bagikan Tautan Profil Tanaman"
 			>
 				<Share2 class="w-4 h-4 text-stone-600" />
@@ -119,7 +128,7 @@
 		</div>
 	</div>
 
-	{#if isLoading}
+	{#if isLoading && !plant}
 		<div class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 animate-pulse flex flex-col gap-6">
 			<div class="h-8 bg-stone-200 rounded-lg w-1/3"></div>
 			<div class="aspect-video bg-stone-200 rounded-2xl w-full"></div>
@@ -199,7 +208,7 @@
 			<!-- Scientific Taxonomy Hierarchy -->
 			<PlantTaxonomy taxonomy={plant.taxonomy} />
 
-			<!-- Student Explanation Video Player Section (BRD Amendment) -->
+			<!-- Student Explanation Video Player Section (BRD Ref) -->
 			<PlantVideoSection videos={plant.videos} plantName={plant.name_local} />
 
 			<!-- Metadata Footer -->
@@ -234,7 +243,7 @@
 		<div class="relative w-full max-w-sm">
 			<button
 				onclick={() => (showQrModal = false)}
-				class="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white text-stone-600 hover:text-stone-900 shadow-md flex items-center justify-center border border-stone-200"
+				class="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white text-stone-600 hover:text-stone-900 shadow-md flex items-center justify-center border border-stone-200 cursor-pointer"
 				aria-label="Tutup Modal"
 			>
 				<X class="w-4 h-4" />

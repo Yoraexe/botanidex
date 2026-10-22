@@ -45,8 +45,16 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
 	const url = new URL(event.request.url);
 
-	// Jangan intercept non-GET requests atau request ke Supabase auth/storage video
-	if (event.request.method !== 'GET' || url.pathname.includes('/auth/v1/')) {
+	// Jangan intercept non-GET, internal Vite dev requests, HMR, atau Supabase auth/storage
+	if (
+		event.request.method !== 'GET' ||
+		url.pathname.includes('/auth/v1/') ||
+		url.pathname.startsWith('/@') ||
+		url.pathname.includes('node_modules') ||
+		url.searchParams.has('import') ||
+		url.searchParams.has('v') ||
+		url.pathname.endsWith('.svelte')
+	) {
 		return;
 	}
 
