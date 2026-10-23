@@ -17,27 +17,14 @@ import type { SchoolMapInfo } from '../types/map.types';
 import type { PlantFormValues } from '../schemas/plant.schema';
 
 export class PlantService {
-	static async getCatalog(filters?: PlantFilterOptions): Promise<Plant[]> {
-		return PlantRepository.getApprovedPlants(filters);
-	}
-
-	static async getPlantBySlug(slug: string): Promise<Plant | null> {
-		return slug ? PlantRepository.getPlantBySlug(slug) : null;
-	}
-
-	static async getSchoolMapData(): Promise<SchoolMapInfo> {
-		return MapRepository.getSchoolMapData();
-	}
+	static async getCatalog(filters?: PlantFilterOptions): Promise<Plant[]> { return PlantRepository.getApprovedPlants(filters); }
+	static async getPlantBySlug(slug: string): Promise<Plant | null> { return slug ? PlantRepository.getPlantBySlug(slug) : null; }
+	static async getSchoolMapData(): Promise<SchoolMapInfo> { return MapRepository.getSchoolMapData(); }
 
 	static async generateQrDataUrl(slugOrUrl: string): Promise<string> {
 		const origin = typeof window !== 'undefined' ? window.location.origin : 'https://botanidex.app';
 		const targetUrl = slugOrUrl.startsWith('http') ? slugOrUrl : `${origin}/katalog/${slugOrUrl}`;
-		return QRCode.toDataURL(targetUrl, {
-			width: 320,
-			margin: 2,
-			color: { dark: '#14532d', light: '#ffffff' },
-			errorCorrectionLevel: 'M'
-		});
+		return QRCode.toDataURL(targetUrl, { width: 320, margin: 2, color: { dark: '#14532d', light: '#ffffff' }, errorCorrectionLevel: 'M' });
 	}
 
 	static async submitPlant(
@@ -54,11 +41,7 @@ export class PlantService {
 		const baseSlug = createPlantSlug(formData.name_local, formData.name_latin);
 		const exists = await PlantRepository.getPlantBySlug(baseSlug);
 		const slug = exists ? `${baseSlug}-${Math.random().toString(36).substring(2, 6)}` : baseSlug;
-		const aliases = (formData.aliases_raw || '')
-			.split(',')
-			.map((a) => a.trim())
-			.filter(Boolean);
-
+		const aliases = (formData.aliases_raw || '').split(',').map((a) => a.trim()).filter(Boolean);
 		const now = new Date().toISOString();
 		const id = crypto.randomUUID();
 		const status: ContributionStatus = options.isAdmin ? 'approved' : 'pending';
@@ -73,25 +56,22 @@ export class PlantService {
 		}));
 
 		const videos = options.uploadedVideoUrl
-			? [
-					{
-						id: crypto.randomUUID(),
-						plant_id: id,
-						storage_path: options.uploadedVideoUrl,
-						thumbnail_path: photos[0]?.storage_path,
-						title: formData.video_title || `Penjelasan Edukasi: ${formData.name_local}`,
-						duration_seconds: options.videoDurationSeconds ?? formData.video_duration_seconds,
-						uploaded_by_name: options.contributorName || 'Siswa SMK PPN Gorontalo',
-						uploaded_by: options.contributorId,
-						status,
-						created_at: now
-					}
-				]
+			? [{
+					id: crypto.randomUUID(),
+					plant_id: id,
+					storage_path: options.uploadedVideoUrl,
+					thumbnail_path: photos[0]?.storage_path,
+					title: formData.video_title || `Penjelasan Edukasi: ${formData.name_local}`,
+					duration_seconds: options.videoDurationSeconds ?? formData.video_duration_seconds,
+					uploaded_by_name: options.contributorName || 'Siswa SMK PPN Gorontalo',
+					uploaded_by: options.contributorId,
+					status,
+					created_at: now
+				}]
 			: [];
 
 		return PlantRepository.insertPlant({
-			id,
-			slug,
+			id, slug,
 			name_local: formData.name_local,
 			name_latin: formData.name_latin,
 			name_english: formData.name_english || undefined,
@@ -120,31 +100,12 @@ export class PlantService {
 		});
 	}
 
-	static async moderatePlant(
-		plantId: string,
-		action: 'approve' | 'reject',
-		rejectionReason?: string
-	): Promise<boolean> {
-		const parsed = moderationReviewSchema.safeParse({
-			plant_id: plantId,
-			action,
-			rejection_reason: rejectionReason
-		});
-		if (!parsed.success) {
-			throw new Error(parsed.error.issues[0]?.message || 'Payload moderasi tidak valid');
-		}
-		return PlantRepository.updatePlantStatus(
-			plantId,
-			action === 'approve' ? 'approved' : 'rejected',
-			rejectionReason
-		);
+	static async moderatePlant(plantId: string, action: 'approve' | 'reject', rejectionReason?: string): Promise<boolean> {
+		const parsed = moderationReviewSchema.safeParse({ plant_id: plantId, action, rejection_reason: rejectionReason });
+		if (!parsed.success) throw new Error(parsed.error.issues[0]?.message || 'Payload moderasi tidak valid');
+		return PlantRepository.updatePlantStatus(plantId, action === 'approve' ? 'approved' : 'rejected', rejectionReason);
 	}
 
-	static async getModerationQueue(): Promise<Plant[]> {
-		return PlantRepository.getAllPlants('pending');
-	}
-
-	static async getAllPlants(): Promise<Plant[]> {
-		return PlantRepository.getAllPlants();
-	}
+	static async getModerationQueue(): Promise<Plant[]> { return PlantRepository.getAllPlants('pending'); }
+	static async getAllPlants(): Promise<Plant[]> { return PlantRepository.getAllPlants(); }
 }

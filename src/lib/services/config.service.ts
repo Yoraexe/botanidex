@@ -8,14 +8,7 @@
 // ==============================================================================
 
 import { ConfigRepository } from '../repositories/config.repository';
-import type {
-	AppConfig,
-	SchoolIdentityConfig,
-	GardenShowcasePhoto,
-	SpecimenShowcaseItem,
-	CategoryItemConfig,
-	AppDownloadConfig
-} from '../types/config.types';
+import type { AppConfig, SchoolIdentityConfig, GardenShowcasePhoto, SpecimenShowcaseItem, CategoryItemConfig, AppDownloadConfig } from '../types/config.types';
 
 const uid = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
@@ -24,101 +17,53 @@ export class ConfigService {
 		return ConfigRepository.saveConfig(mutator(this.getConfig()));
 	}
 
-	static getConfig(): AppConfig {
-		return ConfigRepository.getConfig();
-	}
+	static getConfig(): AppConfig { return ConfigRepository.getConfig(); }
 
 	static updateIdentity(data: Partial<SchoolIdentityConfig>): AppConfig {
 		return this.patch((c) => ({ ...c, identity: { ...c.identity, ...data } }));
 	}
 
 	static updateHeroHeadline(line1: string, line2: string): AppConfig {
-		return this.patch((c) => ({
-			...c,
-			hero: { ...c.hero, headlineLine1: line1.trim(), headlineLine2: line2.trim() }
-		}));
+		return this.patch((c) => ({ ...c, hero: { ...c.hero, headlineLine1: line1.trim(), headlineLine2: line2.trim() } }));
 	}
 
 	static addGardenPhoto(photo: Omit<GardenShowcasePhoto, 'id'>): AppConfig {
-		const item: GardenShowcasePhoto = {
-			id: uid('garden'),
-			url: photo.url.trim(),
-			title: photo.title.trim(),
-			badge: photo.badge.trim()
-		};
-		return this.patch((c) => ({
-			...c,
-			hero: { ...c.hero, gardenPhotos: [...c.hero.gardenPhotos, item] }
-		}));
+		const item: GardenShowcasePhoto = { id: uid('garden'), url: photo.url.trim(), title: photo.title.trim(), badge: photo.badge.trim() };
+		return this.patch((c) => ({ ...c, hero: { ...c.hero, gardenPhotos: [...c.hero.gardenPhotos, item] } }));
 	}
 
 	static updateGardenPhoto(id: string, patch: Partial<GardenShowcasePhoto>): AppConfig {
-		return this.patch((c) => ({
-			...c,
-			hero: {
-				...c.hero,
-				gardenPhotos: c.hero.gardenPhotos.map((p) => (p.id === id ? { ...p, ...patch } : p))
-			}
-		}));
+		return this.patch((c) => ({ ...c, hero: { ...c.hero, gardenPhotos: c.hero.gardenPhotos.map((p) => (p.id === id ? { ...p, ...patch } : p)) } }));
 	}
 
 	static removeGardenPhoto(id: string): AppConfig {
 		return this.patch((c) => {
-			if (c.hero.gardenPhotos.length <= 1) {
-				throw new Error('Minimal harus ada 1 foto kebun yang ditampilkan.');
-			}
-			return {
-				...c,
-				hero: { ...c.hero, gardenPhotos: c.hero.gardenPhotos.filter((p) => p.id !== id) }
-			};
+			if (c.hero.gardenPhotos.length <= 1) throw new Error('Minimal harus ada 1 foto kebun yang ditampilkan.');
+			return { ...c, hero: { ...c.hero, gardenPhotos: c.hero.gardenPhotos.filter((p) => p.id !== id) } };
 		});
 	}
 
 	static addSpecimen(specimen: Omit<SpecimenShowcaseItem, 'id'>): AppConfig {
-		const item: SpecimenShowcaseItem = {
-			id: uid('specimen'),
-			commonName: specimen.commonName.trim(),
-			latinName: specimen.latinName.trim(),
-			url: specimen.url.trim()
-		};
-		return this.patch((c) => ({
-			...c,
-			hero: { ...c.hero, specimens: [...c.hero.specimens, item] }
-		}));
+		const item: SpecimenShowcaseItem = { id: uid('specimen'), commonName: specimen.commonName.trim(), latinName: specimen.latinName.trim(), url: specimen.url.trim() };
+		return this.patch((c) => ({ ...c, hero: { ...c.hero, specimens: [...c.hero.specimens, item] } }));
 	}
 
 	static updateSpecimen(id: string, patch: Partial<SpecimenShowcaseItem>): AppConfig {
-		return this.patch((c) => ({
-			...c,
-			hero: {
-				...c.hero,
-				specimens: c.hero.specimens.map((s) => (s.id === id ? { ...s, ...patch } : s))
-			}
-		}));
+		return this.patch((c) => ({ ...c, hero: { ...c.hero, specimens: c.hero.specimens.map((s) => (s.id === id ? { ...s, ...patch } : s)) } }));
 	}
 
 	static removeSpecimen(id: string): AppConfig {
 		return this.patch((c) => {
-			if (c.hero.specimens.length <= 1) {
-				throw new Error('Minimal harus ada 1 spesimen tanaman yang dipamerkan.');
-			}
-			return {
-				...c,
-				hero: { ...c.hero, specimens: c.hero.specimens.filter((s) => s.id !== id) }
-			};
+			if (c.hero.specimens.length <= 1) throw new Error('Minimal harus ada 1 spesimen tanaman yang dipamerkan.');
+			return { ...c, hero: { ...c.hero, specimens: c.hero.specimens.filter((s) => s.id !== id) } };
 		});
 	}
 
 	static updateAppDownload(data: Partial<AppDownloadConfig>): AppConfig {
-		return this.patch((c) => ({
-			...c,
-			hero: { ...c.hero, appDownload: { ...c.hero.appDownload, ...data } }
-		}));
+		return this.patch((c) => ({ ...c, hero: { ...c.hero, appDownload: { ...c.hero.appDownload, ...data } } }));
 	}
 
-	static getCategories(): CategoryItemConfig[] {
-		return this.getConfig().categories;
-	}
+	static getCategories(): CategoryItemConfig[] { return this.getConfig().categories; }
 
 	static addCategory(category: CategoryItemConfig): AppConfig {
 		return this.patch((c) => {
@@ -130,25 +75,16 @@ export class ConfigService {
 	}
 
 	static updateCategory(id: string, patch: Partial<CategoryItemConfig>): AppConfig {
-		return this.patch((c) => ({
-			...c,
-			categories: c.categories.map((cat) => (cat.id === id ? { ...cat, ...patch } : cat))
-		}));
+		return this.patch((c) => ({ ...c, categories: c.categories.map((cat) => (cat.id === id ? { ...cat, ...patch } : cat)) }));
 	}
 
 	static removeCategory(id: string): AppConfig {
-		if (id === 'semua') {
-			throw new Error('Kategori "Semua" adalah kategori dasar sistem dan tidak dapat dihapus.');
-		}
+		if (id === 'semua') throw new Error('Kategori "Semua" adalah kategori dasar sistem dan tidak dapat dihapus.');
 		return this.patch((c) => {
-			if (c.categories.length <= 2) {
-				throw new Error('Minimal harus ada 2 kategori terdaftar.');
-			}
+			if (c.categories.length <= 2) throw new Error('Minimal harus ada 2 kategori terdaftar.');
 			return { ...c, categories: c.categories.filter((cat) => cat.id !== id) };
 		});
 	}
 
-	static resetToDefaults(): AppConfig {
-		return ConfigRepository.resetConfig();
-	}
+	static resetToDefaults(): AppConfig { return ConfigRepository.resetConfig(); }
 }
