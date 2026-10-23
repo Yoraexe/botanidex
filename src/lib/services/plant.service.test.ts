@@ -15,11 +15,8 @@ import { createPlantSlug } from '../utils/slug';
 describe('PlantService & Repository Mappers', () => {
 	it('mengembalikan seluruh katalog tanaman default', async () => {
 		const plants = await PlantService.getCatalog();
-		expect(plants).toBeDefined();
 		expect(plants.length).toBeGreaterThan(0);
-
 		const jahe = plants.find((p) => p.slug === 'jahe-merah');
-		expect(jahe).toBeDefined();
 		expect(jahe?.name_local).toBe('Jahe Merah');
 		expect(jahe?.category).toBe('obat');
 	});
@@ -27,67 +24,43 @@ describe('PlantService & Repository Mappers', () => {
 	it('memfilter tanaman berdasarkan kategori secara tepat', async () => {
 		const obatPlants = await PlantService.getCatalog({ category: 'obat' });
 		expect(obatPlants.length).toBeGreaterThan(0);
-		for (const p of obatPlants) {
-			expect(p.category).toBe('obat');
-		}
+		for (const p of obatPlants) expect(p.category).toBe('obat');
 
 		const panganPlants = await PlantService.getCatalog({ category: 'pangan' });
 		expect(panganPlants.length).toBeGreaterThan(0);
-		for (const p of panganPlants) {
-			expect(p.category).toBe('pangan');
-		}
+		for (const p of panganPlants) expect(p.category).toBe('pangan');
 	});
 
 	it('mencari tanaman berdasarkan nama lokal atau nama latin', async () => {
 		const searchLocal = await PlantService.getCatalog({ query: 'Jahe' });
-		expect(searchLocal.length).toBeGreaterThan(0);
 		expect(searchLocal[0].name_local).toContain('Jahe');
-
 		const searchLatin = await PlantService.getCatalog({ query: 'Zea mays' });
-		expect(searchLatin.length).toBeGreaterThan(0);
 		expect(searchLatin[0].name_latin).toContain('Zea mays');
 	});
 
 	it('mengambil tanaman detail berdasarkan slug', async () => {
 		const plant = await PlantService.getPlantBySlug('jahe-merah');
-		expect(plant).not.toBeNull();
 		expect(plant?.slug).toBe('jahe-merah');
 		expect(plant?.taxonomy.familia).toBe('Zingiberaceae');
 		expect(plant?.photos.length).toBeGreaterThan(0);
 	});
 
 	it('mengembalikan null jika slug tanaman tidak ditemukan', async () => {
-		const plant = await PlantService.getPlantBySlug('tanaman-fiktif-tidak-ada-999');
-		expect(plant).toBeNull();
+		expect(await PlantService.getPlantBySlug('tanaman-fiktif-tidak-ada-999')).toBeNull();
 	});
 
 	it('menghasilkan data URL QR code yang valid', async () => {
 		const qrDataUrl = await PlantService.generateQrDataUrl('jahe-merah');
-		expect(qrDataUrl).toBeDefined();
 		expect(qrDataUrl.startsWith('data:image/png;base64,')).toBe(true);
 	});
 
 	it('memetakan baris flat PostgreSQL ke objek Plant bersarang dengan benar (BUG-02 Regression)', () => {
 		const flatRow = {
-			id: '99999999-9999-9999-9999-999999999999',
-			slug: 'serai-wangi',
-			name_local: 'Serai Wangi',
-			name_latin: 'Cymbopogon nardus',
-			category: 'obat',
-			taxonomy_kingdom: 'Plantae',
-			taxonomy_divisio: 'Tracheophyta',
-			taxonomy_classis: 'Liliopsida',
-			taxonomy_ordo: 'Poales',
-			taxonomy_familia: 'Poaceae',
-			taxonomy_genus: 'Cymbopogon',
-			taxonomy_species: 'Cymbopogon nardus',
-			description: 'Tanaman penghasil minyak atsiri sitronela.',
-			status: 'approved',
-			contributor_name: 'Siswa Uji',
-			photos: [],
-			videos: []
+			id: '99999999-9999-9999-9999-999999999999', slug: 'serai-wangi', name_local: 'Serai Wangi', name_latin: 'Cymbopogon nardus',
+			category: 'obat', taxonomy_kingdom: 'Plantae', taxonomy_divisio: 'Tracheophyta', taxonomy_classis: 'Liliopsida',
+			taxonomy_ordo: 'Poales', taxonomy_familia: 'Poaceae', taxonomy_genus: 'Cymbopogon', taxonomy_species: 'Cymbopogon nardus',
+			description: 'Tanaman penghasil minyak atsiri sitronela.', status: 'approved', contributor_name: 'Siswa Uji', photos: [], videos: []
 		};
-
 		const mapped = mapDbRowToPlant(flatRow);
 		expect(mapped.taxonomy.familia).toBe('Poaceae');
 		expect(mapped.taxonomy.species).toBe('Cymbopogon nardus');
@@ -102,35 +75,19 @@ describe('PlantService & Repository Mappers', () => {
 	it('menyimpan tanaman baru beserta video pending lalu menyetujui status tanaman & videonya (BUG-05 Regression)', async () => {
 		const submitted = await PlantService.submitPlant(
 			{
-				name_local: 'Kunyit Putih',
-				name_latin: 'Curcuma zedoaria',
-				category: 'obat',
+				name_local: 'Kunyit Putih', name_latin: 'Curcuma zedoaria', category: 'obat',
 				description: 'Rimpang obat tradisional untuk praktikum fitofarmaka SMK.',
-				taxonomy_kingdom: 'Plantae',
-				taxonomy_familia: 'Zingiberaceae',
-				taxonomy_species: 'Curcuma zedoaria',
+				taxonomy_kingdom: 'Plantae', taxonomy_familia: 'Zingiberaceae', taxonomy_species: 'Curcuma zedoaria',
 				video_title: 'Penjelasan Kunyit Putih'
 			},
-			{
-				uploadedPhotos: ['https://example.com/kunyit.jpg'],
-				uploadedVideoUrl: 'https://example.com/kunyit.mp4',
-				videoDurationSeconds: 120,
-				contributorName: 'Siswa Tester',
-				isAdmin: false
-			}
+			{ uploadedPhotos: ['https://example.com/kunyit.jpg'], uploadedVideoUrl: 'https://example.com/kunyit.mp4', videoDurationSeconds: 120, contributorName: 'Siswa Tester', isAdmin: false }
 		);
-
 		expect(submitted.status).toBe('pending');
 		expect(submitted.taxonomy.species).toBe('Curcuma zedoaria');
 		expect(submitted.videos[0].status).toBe('pending');
 		expect(submitted.videos[0].duration_seconds).toBe(120);
 
-		// Menolak tanpa alasan harus gagal validasi
-		await expect(PlantService.moderatePlant(submitted.id, 'reject', '')).rejects.toThrowError(
-			'Alasan wajib diisi jika menolak kontribusi'
-		);
-
-		// Menyetujui tanaman juga harus mengubah status video menjadi approved
+		await expect(PlantService.moderatePlant(submitted.id, 'reject', '')).rejects.toThrowError('Alasan wajib diisi jika menolak kontribusi');
 		await PlantService.moderatePlant(submitted.id, 'approve');
 		const approved = await PlantService.getPlantBySlug(submitted.slug);
 		expect(approved?.status).toBe('approved');

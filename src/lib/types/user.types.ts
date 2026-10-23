@@ -1,9 +1,9 @@
 // ==============================================================================
 // Botanidex — User & Auth Domain Types
-// Tujuan: Mendefinisikan tipe profil pengguna, role otorisasi, dan sesi
-// Caller: Auth services, repositories, middleware hooks, and stores
+// Tujuan: Mendefinisikan tipe profil pengguna dan role otorisasi
+// Caller: Auth store and UI components
 // Dependensi: none
-// Main Functions: UserRole, UserProfile, AuthSession
+// Main Functions: UserRole, UserProfile
 // Side Effects: none (type-only definition)
 // ==============================================================================
 
@@ -14,12 +14,4 @@ export interface UserProfile {
 	email: string;
 	display_name: string;
 	role: UserRole;
-	avatar_url?: string;
-	created_at?: string;
-}
-
-export interface AuthState {
-	user: UserProfile | null;
-	isAuthenticated: boolean;
-	isLoading: boolean;
 }

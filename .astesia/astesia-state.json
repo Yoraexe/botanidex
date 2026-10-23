@@ -41,7 +41,6 @@
     "src/lib/services/plant.service.ts",
     "src/lib/services/plant.service.test.ts",
     "src/lib/repositories/plant.repository.ts",
-    "src/lib/repositories/map.repository.ts",
     "src/lib/services/storage.service.ts",
     "src/lib/components/plant/PlantVideoSection.svelte",
     "src/lib/components/plant/PlantCard.svelte",
@@ -55,7 +54,6 @@
     "src/lib/schemas/plant.schema.ts",
     "src/lib/schemas/plant.schema.test.ts",
     "src/lib/schemas/config.schema.ts",
-    "src/lib/schemas/contribution.schema.ts",
     "src/lib/utils/format.ts",
     "src/lib/utils/format.test.ts",
     "src/lib/data/default-config.ts",
@@ -144,6 +142,12 @@
       "layer": "quality",
       "action": "ponytail_clean_code_pass_3_oversized_files_passed",
       "agent_note": "Executed Ponytail Clean Code Pass #3 targeting the 10 largest files (322 insertions, 1052 deletions, net: -730 lines; cumulative net reduction: -3119 lines). Consolidated 16 separate $state variables into a single reactive form object + taxFields loop in kontribusi/tambah/+page.svelte (349 -> 263 lines), extracted identityFields loop & shared class constants in admin/pengaturan/+page.svelte (410 -> 266 lines), and compacted plant.repository.ts (296 -> 186 lines), +page.svelte (268 -> 211 lines), admin/moderasi/+page.svelte (259 -> 185 lines), katalog/[slug]/+page.svelte (243 -> 181 lines), QrScanner.svelte (187 -> 148 lines), SchoolMap.svelte (181 -> 126 lines), config.service.ts (154 -> 104 lines), and plant.service.ts (150 -> 111 lines). Total src/ codebase is now 4,628 lines across 53 files (avg 87 lines/file, max 266 lines). 0 svelte-check errors/warnings, 29/29 Vitest tests passing."
+    },
+    {
+      "timestamp": "2026-10-23T14:22:00+08:00",
+      "layer": "quality",
+      "action": "ponytail_anti_bloat_yagni_purge_passed",
+      "agent_note": "Executed Ponytail Anti-Bloat & YAGNI purge across 23 files (247 insertions, 795 deletions, net: -548 lines; cumulative net reduction: -3,667 lines). Deleted 3 YAGNI/dead files (src/lib/index.ts, src/lib/repositories/map.repository.ts, src/lib/schemas/contribution.schema.ts), removed dead methods (getPlantById, findSingleBy, getModerationQueue, updateGardenPhoto, updateSpecimen) and unused type properties (AuthState, PlantFilterOptions.family/location), deduplicated ConfigRepository.resetConfig() & StorageService.assertValidVideo(), and compacted format.ts, Navbar.svelte, katalog/+page.svelte, QrGenerator.svelte, PlantVideoSection.svelte, and unit test files. Total src/ codebase is now 4,080 lines across 50 files (avg 81 lines/file). 0 svelte-check errors/warnings, 29/29 Vitest tests passing."
     }
   ]
 }

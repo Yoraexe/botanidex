@@ -3,7 +3,7 @@
 // Tujuan: Business logic layer untuk pengelolaan pengaturan dinamis aplikasi
 // Caller: +page.svelte, admin/pengaturan, layout components
 // Dependensi: config.repository.ts, config.types.ts
-// Main Functions: getConfig, updateIdentity, updateHeroHeadline, addGardenPhoto, updateGardenPhoto, removeGardenPhoto, addSpecimen, updateSpecimen, removeSpecimen, updateAppDownload, getCategories, addCategory, updateCategory, removeCategory, resetToDefaults
+// Main Functions: getConfig, updateIdentity, updateHeroHeadline, addGardenPhoto, removeGardenPhoto, addSpecimen, removeSpecimen, updateAppDownload, getCategories, addCategory, updateCategory, removeCategory, resetToDefaults
 // Side Effects: Persists to ConfigRepository
 // ==============================================================================
 
@@ -18,6 +18,8 @@ export class ConfigService {
 	}
 
 	static getConfig(): AppConfig { return ConfigRepository.getConfig(); }
+	static getCategories(): CategoryItemConfig[] { return this.getConfig().categories; }
+	static resetToDefaults(): AppConfig { return ConfigRepository.resetConfig(); }
 
 	static updateIdentity(data: Partial<SchoolIdentityConfig>): AppConfig {
 		return this.patch((c) => ({ ...c, identity: { ...c.identity, ...data } }));
@@ -32,10 +34,6 @@ export class ConfigService {
 		return this.patch((c) => ({ ...c, hero: { ...c.hero, gardenPhotos: [...c.hero.gardenPhotos, item] } }));
 	}
 
-	static updateGardenPhoto(id: string, patch: Partial<GardenShowcasePhoto>): AppConfig {
-		return this.patch((c) => ({ ...c, hero: { ...c.hero, gardenPhotos: c.hero.gardenPhotos.map((p) => (p.id === id ? { ...p, ...patch } : p)) } }));
-	}
-
 	static removeGardenPhoto(id: string): AppConfig {
 		return this.patch((c) => {
 			if (c.hero.gardenPhotos.length <= 1) throw new Error('Minimal harus ada 1 foto kebun yang ditampilkan.');
@@ -48,10 +46,6 @@ export class ConfigService {
 		return this.patch((c) => ({ ...c, hero: { ...c.hero, specimens: [...c.hero.specimens, item] } }));
 	}
 
-	static updateSpecimen(id: string, patch: Partial<SpecimenShowcaseItem>): AppConfig {
-		return this.patch((c) => ({ ...c, hero: { ...c.hero, specimens: c.hero.specimens.map((s) => (s.id === id ? { ...s, ...patch } : s)) } }));
-	}
-
 	static removeSpecimen(id: string): AppConfig {
 		return this.patch((c) => {
 			if (c.hero.specimens.length <= 1) throw new Error('Minimal harus ada 1 spesimen tanaman yang dipamerkan.');
@@ -62,8 +56,6 @@ export class ConfigService {
 	static updateAppDownload(data: Partial<AppDownloadConfig>): AppConfig {
 		return this.patch((c) => ({ ...c, hero: { ...c.hero, appDownload: { ...c.hero.appDownload, ...data } } }));
 	}
-
-	static getCategories(): CategoryItemConfig[] { return this.getConfig().categories; }
 
 	static addCategory(category: CategoryItemConfig): AppConfig {
 		return this.patch((c) => {
@@ -85,6 +77,4 @@ export class ConfigService {
 			return { ...c, categories: c.categories.filter((cat) => cat.id !== id) };
 		});
 	}
-
-	static resetToDefaults(): AppConfig { return ConfigRepository.resetConfig(); }
 }

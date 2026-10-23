@@ -9,7 +9,6 @@
 
 export type CorePlantCategory = 'hias' | 'pangan' | 'obat' | 'kayu' | 'industri' | 'lainnya';
 export type PlantCategory = CorePlantCategory | (string & {});
-
 export type ContributionStatus = 'pending' | 'approved' | 'rejected';
 
 export interface PlantTaxonomy {
@@ -55,8 +54,8 @@ export interface Plant {
 	category: PlantCategory;
 	taxonomy: PlantTaxonomy;
 	description: string;
-	location_x?: number; // 0.0 - 100.0 (percentage on school map)
-	location_y?: number; // 0.0 - 100.0 (percentage on school map)
+	location_x?: number;
+	location_y?: number;
 	location_label?: string;
 	status: ContributionStatus;
 	contributor_id?: string;
@@ -72,6 +71,4 @@ export interface Plant {
 export interface PlantFilterOptions {
 	query?: string;
 	category?: PlantCategory | 'semua';
-	family?: string;
-	location?: string;
 }

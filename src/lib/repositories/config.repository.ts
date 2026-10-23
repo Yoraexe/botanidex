@@ -12,32 +12,23 @@ import { appConfigSchema } from '../schemas/config.schema';
 import type { AppConfig } from '../types/config.types';
 
 const CONFIG_STORAGE_KEY = 'botanidex_app_config_v1';
-
 let memoryConfig: AppConfig = structuredClone(DEFAULT_APP_CONFIG);
 
 export class ConfigRepository {
 	static getConfig(): AppConfig {
-		if (typeof window === 'undefined') {
-			return structuredClone(memoryConfig);
-		}
-
+		if (typeof window === 'undefined') return structuredClone(memoryConfig);
 		try {
 			const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
 			if (raw) {
 				const validation = appConfigSchema.safeParse(JSON.parse(raw));
-				if (validation.success) {
-					memoryConfig = validation.data;
-					return structuredClone(memoryConfig);
-				}
+				if (validation.success) return structuredClone((memoryConfig = validation.data));
 				console.warn('Validasi konfigurasi tersimpan gagal, memuat default:', validation.error);
 			}
 			localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(DEFAULT_APP_CONFIG));
 		} catch (err) {
 			console.warn('Gagal membaca localStorage konfigurasi:', err);
 		}
-
-		memoryConfig = structuredClone(DEFAULT_APP_CONFIG);
-		return structuredClone(memoryConfig);
+		return structuredClone((memoryConfig = structuredClone(DEFAULT_APP_CONFIG)));
 	}
 
 	static saveConfig(newConfig: AppConfig): AppConfig {
@@ -45,42 +36,21 @@ export class ConfigRepository {
 		if (!validation.success) {
 			throw new Error(`Konfigurasi tidak valid: ${validation.error.issues.map((i) => i.message).join(', ')}`);
 		}
-
-		const updatedConfig: AppConfig = {
-			...validation.data,
-			updatedAt: new Date().toISOString()
-		};
-
-		memoryConfig = structuredClone(updatedConfig);
+		const updated: AppConfig = { ...validation.data, updatedAt: new Date().toISOString() };
+		memoryConfig = structuredClone(updated);
 
 		if (typeof window !== 'undefined') {
 			try {
-				localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(updatedConfig));
-				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: structuredClone(updatedConfig) }));
+				localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(updated));
+				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: structuredClone(updated) }));
 			} catch (err) {
 				console.warn('Gagal menyimpan konfigurasi ke localStorage:', err);
 			}
 		}
-
-		return structuredClone(updatedConfig);
+		return structuredClone(updated);
 	}
 
 	static resetConfig(): AppConfig {
-		const reset: AppConfig = {
-			...structuredClone(DEFAULT_APP_CONFIG),
-			updatedAt: new Date().toISOString()
-		};
-		memoryConfig = structuredClone(reset);
-
-		if (typeof window !== 'undefined') {
-			try {
-				localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(reset));
-				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: structuredClone(reset) }));
-			} catch (err) {
-				console.warn('Gagal reset konfigurasi di localStorage:', err);
-			}
-		}
-
-		return structuredClone(reset);
+		return this.saveConfig(structuredClone(DEFAULT_APP_CONFIG));
 	}
 }

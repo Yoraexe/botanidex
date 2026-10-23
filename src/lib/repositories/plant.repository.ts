@@ -1,9 +1,9 @@
 // ==============================================================================
 // Botanidex — Plant Data Repository
 // Tujuan: Data access layer untuk entitas tanaman (Supabase query dengan mapper & offline fallback)
-// Caller: src/lib/services/plant.service.ts, src/lib/repositories/map.repository.ts
+// Caller: src/lib/services/plant.service.ts
 // Dependensi: src/lib/supabase.ts, src/lib/data/seed-plants.ts, src/lib/types/plant.types.ts
-// Main Functions: mapDbRowToPlant, mapPlantToDbRow, getApprovedPlants, getPlantBySlug, getPlantById, getAllPlants, insertPlant, updatePlantStatus
+// Main Functions: mapDbRowToPlant, mapPlantToDbRow, getApprovedPlants, getPlantBySlug, getAllPlants, insertPlant, updatePlantStatus
 // Side Effects: Read/write ke Supabase PostgreSQL atau browser localStorage fallback
 // ==============================================================================
 
@@ -29,27 +29,16 @@ export function mapDbRowToPlant(row: Record<string, any>): Plant {
 	};
 	const now = new Date().toISOString();
 	return {
-		id: String(row.id),
-		slug: String(row.slug),
-		name_local: String(row.name_local),
-		name_latin: String(row.name_latin),
-		name_english: row.name_english || undefined,
-		aliases: Array.isArray(row.aliases) ? row.aliases : [],
-		category: row.category || 'lainnya',
-		taxonomy,
-		description: String(row.description || ''),
+		id: String(row.id), slug: String(row.slug), name_local: String(row.name_local), name_latin: String(row.name_latin),
+		name_english: row.name_english || undefined, aliases: Array.isArray(row.aliases) ? row.aliases : [],
+		category: row.category || 'lainnya', taxonomy, description: String(row.description || ''),
 		location_x: typeof row.location_x === 'number' ? row.location_x : undefined,
 		location_y: typeof row.location_y === 'number' ? row.location_y : undefined,
-		location_label: row.location_label || undefined,
-		status: (row.status as ContributionStatus) || 'approved',
-		contributor_id: row.contributor_id || undefined,
-		contributor_name: row.contributor_name || undefined,
-		reviewed_by: row.reviewed_by || undefined,
-		rejection_reason: row.rejection_reason || undefined,
-		photos: Array.isArray(row.photos) ? row.photos : [],
-		videos: Array.isArray(row.videos) ? row.videos : [],
-		created_at: row.created_at || now,
-		updated_at: row.updated_at || now
+		location_label: row.location_label || undefined, status: (row.status as ContributionStatus) || 'approved',
+		contributor_id: row.contributor_id || undefined, contributor_name: row.contributor_name || undefined,
+		reviewed_by: row.reviewed_by || undefined, rejection_reason: row.rejection_reason || undefined,
+		photos: Array.isArray(row.photos) ? row.photos : [], videos: Array.isArray(row.videos) ? row.videos : [],
+		created_at: row.created_at || now, updated_at: row.updated_at || now
 	};
 }
 
@@ -92,18 +81,6 @@ function saveLocalPlants(plants: Plant[]): void {
 }
 
 export class PlantRepository {
-	private static async findSingleBy(column: 'slug' | 'id', value: string): Promise<Plant | null> {
-		if (isSupabaseConfigured()) {
-			try {
-				const { data, error } = await supabase.from('plants').select(PLANT_RELATIONS).eq(column, value).single();
-				if (!error && data) return mapDbRowToPlant(data);
-			} catch (err) {
-				console.warn(`Koneksi Supabase findSingleBy(${column}) gagal:`, err);
-			}
-		}
-		return loadLocalPlants().find((p) => p[column] === value) || null;
-	}
-
 	static async getApprovedPlants(filters?: PlantFilterOptions): Promise<Plant[]> {
 		if (isSupabaseConfigured()) {
 			try {
@@ -127,8 +104,17 @@ export class PlantRepository {
 		});
 	}
 
-	static async getPlantBySlug(slug: string): Promise<Plant | null> { return this.findSingleBy('slug', slug); }
-	static async getPlantById(id: string): Promise<Plant | null> { return this.findSingleBy('id', id); }
+	static async getPlantBySlug(slug: string): Promise<Plant | null> {
+		if (isSupabaseConfigured()) {
+			try {
+				const { data, error } = await supabase.from('plants').select(PLANT_RELATIONS).eq('slug', slug).single();
+				if (!error && data) return mapDbRowToPlant(data);
+			} catch (err) {
+				console.warn('Koneksi Supabase getPlantBySlug gagal:', err);
+			}
+		}
+		return loadLocalPlants().find((p) => p.slug === slug) || null;
+	}
 
 	static async getAllPlants(status?: ContributionStatus): Promise<Plant[]> {
 		if (isSupabaseConfigured()) {

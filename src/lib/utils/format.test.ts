@@ -8,18 +8,11 @@
 // ==============================================================================
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import {
-	getCategoryBadgeLabel,
-	getCategoryShortLabel,
-	formatDuration,
-	formatDateId
-} from './format';
+import { getCategoryBadgeLabel, getCategoryShortLabel, formatDuration, formatDateId } from './format';
 import { ConfigService } from '../services/config.service';
 
 describe('Format Utilities', () => {
-	beforeEach(() => {
-		ConfigService.resetToDefaults();
-	});
+	beforeEach(() => ConfigService.resetToDefaults());
 
 	it('memformat label kategori standar dan kategori kustom CMS dengan utuh (BUG-03 Regression)', () => {
 		expect(getCategoryBadgeLabel('obat')).toBe('Tanaman Obat / Herbal');
@@ -29,11 +22,7 @@ describe('Format Utilities', () => {
 		expect(getCategoryBadgeLabel('industri')).toBe('Tanaman Industri / Perkebunan');
 		expect(getCategoryBadgeLabel('kayu')).toBe('Tanaman Kayu / Hutan');
 
-		ConfigService.addCategory({
-			id: 'kultur-jaringan',
-			label: 'Kultur Jaringan',
-			dotColor: 'bg-cyan-500'
-		});
+		ConfigService.addCategory({ id: 'kultur-jaringan', label: 'Kultur Jaringan', dotColor: 'bg-cyan-500' });
 		expect(getCategoryBadgeLabel('kultur-jaringan')).toBe('Kultur Jaringan');
 		expect(getCategoryShortLabel('kultur-jaringan')).toBe('Kultur Jaringan');
 	});

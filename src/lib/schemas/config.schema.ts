@@ -11,18 +11,16 @@ import { z } from 'zod';
 
 const isValidImageSource = (val: string): boolean => {
 	const v = val.trim();
-	if (v.startsWith('/') && v.length > 1 && !v.startsWith('//')) return true;
-	if (v.startsWith('data:image/')) return true;
+	if ((v.startsWith('/') && v.length > 1 && !v.startsWith('//')) || v.startsWith('data:image/')) return true;
 	try {
-		const parsed = new URL(v);
-		return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+		const p = new URL(v).protocol;
+		return p === 'http:' || p === 'https:';
 	} catch {
 		return false;
 	}
 };
 
-export const imageSourceSchema = (message: string) =>
-	z.string().trim().min(2, { message }).refine(isValidImageSource, { message });
+export const imageSourceSchema = (message: string) => z.string().trim().min(2, { message }).refine(isValidImageSource, { message });
 
 export const schoolIdentitySchema = z.object({
 	appName: z.string().min(2).max(40),
