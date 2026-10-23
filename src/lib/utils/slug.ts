@@ -1,6 +1,6 @@
 // ==============================================================================
 // Botanidex — Slug Generator Utility
-// Tujuan: Menghasilkan slug URL yang bersih, ramah SEO, dan bebas karakter khusus
+// Tujuan: Menghasilkan slug URL yang bersih, ramah SEO, dan bebas karakter khusus dengan fallback aman
 // Caller: Plant form submission, plant repositories
 // Dependensi: none
 // Main Functions: createPlantSlug
@@ -8,9 +8,12 @@
 // ==============================================================================
 
 export function createPlantSlug(nameLocal: string, nameLatin?: string): string {
-	const base = nameLocal.trim() || nameLatin?.trim() || 'tanaman';
-	return base
-		.toLowerCase()
-		.replace(/[\s\W-]+/g, '-')
-		.replace(/^-+|-+$/g, '');
+	const clean = (str?: string) =>
+		(str || '')
+			.trim()
+			.toLowerCase()
+			.replace(/[\s\W-]+/g, '-')
+			.replace(/^-+|-+$/g, '');
+
+	return clean(nameLocal) || clean(nameLatin) || 'tanaman';
 }

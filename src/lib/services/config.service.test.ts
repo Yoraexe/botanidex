@@ -1,7 +1,10 @@
 // ==============================================================================
 // Botanidex — Config Service Unit Tests (Vitest)
-// Tujuan: Memastikan validasi dan logika bisnis pengelolaan konfigurasi CMS bekerja 100%
+// Tujuan: Memastikan validasi, immutability, dan logika bisnis pengelolaan konfigurasi CMS bekerja 100%
 // Caller: npm run test
+// Dependensi: vitest, ConfigService
+// Main Functions: describe('ConfigService')
+// Side Effects: Resets ConfigService state in beforeEach
 // ==============================================================================
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -48,14 +51,12 @@ describe('ConfigService', () => {
 		const addedPhoto = updated.hero.gardenPhotos[updated.hero.gardenPhotos.length - 1];
 		expect(addedPhoto.title).toBe('Lahan Riset Padi Aerob');
 
-		// Hapus kembali
 		const afterDelete = ConfigService.removeGardenPhoto(addedPhoto.id);
 		expect(afterDelete.hero.gardenPhotos.length).toBe(initialCount);
 	});
 
 	it('harus menolak penghapusan jika hanya tersisa 1 foto kebun', () => {
 		const config = ConfigService.getConfig();
-		// Sisakan 1 foto
 		for (let i = config.hero.gardenPhotos.length - 1; i >= 1; i--) {
 			ConfigService.removeGardenPhoto(config.hero.gardenPhotos[i].id);
 		}
@@ -77,11 +78,9 @@ describe('ConfigService', () => {
 		const updated = ConfigService.addCategory(newCategory);
 		expect(updated.categories.some((c) => c.id === 'hidroponik')).toBe(true);
 
-		// Update label
 		const updatedLabel = ConfigService.updateCategory('hidroponik', { label: 'Hidroponik Modern' });
 		expect(updatedLabel.categories.find((c) => c.id === 'hidroponik')?.label).toBe('Hidroponik Modern');
 
-		// Hapus
 		const afterDelete = ConfigService.removeCategory('hidroponik');
 		expect(afterDelete.categories.some((c) => c.id === 'hidroponik')).toBe(false);
 	});
@@ -98,5 +97,36 @@ describe('ConfigService', () => {
 
 		const reset = ConfigService.resetToDefaults();
 		expect(reset.hero.headlineLine1).toBe('KATALOG BOTANI');
+	});
+
+	it('menjaga immutability DEFAULT_APP_CONFIG saat objek hasil getConfig() dimutasi langsung (Pass #2 Regression)', () => {
+		const config = ConfigService.getConfig();
+		config.identity.appName = 'Mutasi Langsung Tanpa Save';
+		config.hero.headlineLine1 = 'HEADLINE RUSAK';
+
+		const fresh = ConfigService.getConfig();
+		expect(fresh.identity.appName).toBe('Botanidex');
+		expect(fresh.hero.headlineLine1).toBe('KATALOG BOTANI');
+
+		const reset = ConfigService.resetToDefaults();
+		expect(reset.identity.appName).toBe('Botanidex');
+	});
+
+	it('menerima URL gambar lokal (/...) maupun data URI pada foto kebun dan spesimen (Pass #2 Regression)', () => {
+		const afterGarden = ConfigService.addGardenPhoto({
+			title: 'Logo Kebun Lokal',
+			badge: 'ASET LOKAL',
+			url: '/SMK-Pertanian-Gorontalo.png'
+		});
+		expect(afterGarden.hero.gardenPhotos.some((p) => p.url === '/SMK-Pertanian-Gorontalo.png')).toBe(
+			true
+		);
+
+		const afterSpecimen = ConfigService.addSpecimen({
+			commonName: 'Spesimen Ikon Lokal',
+			latinName: 'Flora localis',
+			url: '/icons/icon-512.svg'
+		});
+		expect(afterSpecimen.hero.specimens.some((s) => s.url === '/icons/icon-512.svg')).toBe(true);
 	});
 });

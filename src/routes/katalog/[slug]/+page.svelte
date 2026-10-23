@@ -3,12 +3,11 @@
   Tujuan: Profil lengkap tanaman gaya Neo-Brutalist, galeri foto, taksonomi, video edukasi siswa, lokasi peta, dan QR generator
   Caller: Route '/katalog/[slug]'
   Dependensi: PlantService, format.ts, PlantGallery, PlantTaxonomy, PlantVideoSection, QrGenerator, toast
-  Main Functions: loadPlantDetail, handleShare
-  Side Effects: Mengambil data tanaman via PlantService dan menyalin tautan/membuka Web Share API
+  Main Functions: handleShare
+  Side Effects: Mengambil data tanaman secara reaktif via PlantService saat slug berubah dan menyalin tautan/membuka Web Share API
 -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { onMount } from 'svelte';
 	import { PlantService } from '#lib/services/plant.service';
 	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant } from '#lib/types/plant.types';
@@ -25,24 +24,23 @@
 	let showQrModal = $state(false);
 
 	$effect(() => {
-		if (slug && (!plant || plant.slug !== slug)) {
-			const initial = INITIAL_PLANTS_DATA.find((p) => p.slug === slug);
-			if (initial) plant = initial;
+		const currentSlug = slug;
+		if (!currentSlug) {
+			plant = null;
+			return;
 		}
+		const seedMatch = INITIAL_PLANTS_DATA.find((p) => p.slug === currentSlug);
+		if (seedMatch && (!plant || plant.slug !== currentSlug)) {
+			plant = seedMatch;
+		}
+		PlantService.getPlantBySlug(currentSlug)
+			.then((fetched) => {
+				if (slug === currentSlug) {
+					plant = fetched ?? seedMatch ?? null;
+				}
+			})
+			.catch((err) => console.warn('Gagal memuat detail tanaman:', err));
 	});
-
-	onMount(() => loadPlantDetail());
-
-	async function loadPlantDetail() {
-		try {
-			if (slug) {
-				const fetched = await PlantService.getPlantBySlug(slug);
-				if (fetched) plant = fetched;
-			}
-		} catch (err) {
-			console.warn('Gagal memuat detail tanaman:', err);
-		}
-	}
 
 	async function handleShare() {
 		if (typeof window === 'undefined' || !plant) return;

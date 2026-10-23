@@ -10,6 +10,7 @@
 import { describe, it, expect } from 'vitest';
 import { PlantService } from './plant.service';
 import { mapDbRowToPlant, mapPlantToDbRow } from '../repositories/plant.repository';
+import { createPlantSlug } from '../utils/slug';
 
 describe('PlantService & Repository Mappers', () => {
 	it('mengembalikan seluruh katalog tanaman default', async () => {
@@ -140,5 +141,10 @@ describe('PlantService & Repository Mappers', () => {
 		const mapData = await PlantService.getSchoolMapData();
 		expect(mapData.id).toBe('default-map');
 		expect(mapData.markers.length).toBeGreaterThan(0);
+	});
+
+	it('menghasilkan fallback slug aman saat input hanya berupa simbol/non-ASCII (Pass #2 Regression)', () => {
+		expect(createPlantSlug('??? !!!', '')).toBe('tanaman');
+		expect(createPlantSlug('🌱🌿', 'Zingiber officinale')).toBe('zingiber-officinale');
 	});
 });

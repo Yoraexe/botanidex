@@ -1,10 +1,10 @@
 // ==============================================================================
 // Botanidex — App Configuration Repository
-// Tujuan: Data access layer untuk persistensi konfigurasi dinamis aplikasi (SSR & LocalStorage)
+// Tujuan: Data access layer untuk persistensi konfigurasi dinamis aplikasi (SSR & LocalStorage) dengan deep-clone immutability
 // Caller: src/lib/services/config.service.ts
 // Dependensi: default-config.ts, config.types.ts, config.schema.ts
 // Main Functions: getConfig, saveConfig, resetConfig
-// Side Effects: Read/write ke browser localStorage
+// Side Effects: Read/write ke browser localStorage dan dispatch event flora:config-updated
 // ==============================================================================
 
 import { DEFAULT_APP_CONFIG } from '../data/default-config';
@@ -13,43 +13,33 @@ import type { AppConfig } from '../types/config.types';
 
 const CONFIG_STORAGE_KEY = 'botanidex_app_config_v1';
 
-// In-memory cache for SSR & client synchronization
-let memoryConfig: AppConfig = { ...DEFAULT_APP_CONFIG };
+let memoryConfig: AppConfig = structuredClone(DEFAULT_APP_CONFIG);
 
 export class ConfigRepository {
-	/**
-	 * Mengambil konfigurasi aplikasi saat ini (dengan validasi schema & fallback bawaan)
-	 */
 	static getConfig(): AppConfig {
 		if (typeof window === 'undefined') {
-			return memoryConfig;
+			return structuredClone(memoryConfig);
 		}
 
 		try {
 			const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
 			if (raw) {
-				const parsed = JSON.parse(raw);
-				const validation = appConfigSchema.safeParse(parsed);
+				const validation = appConfigSchema.safeParse(JSON.parse(raw));
 				if (validation.success) {
 					memoryConfig = validation.data;
-					return memoryConfig;
-				} else {
-					console.warn('Validasi konfigurasi tersimpan gagal, memuat default:', validation.error);
+					return structuredClone(memoryConfig);
 				}
+				console.warn('Validasi konfigurasi tersimpan gagal, memuat default:', validation.error);
 			}
-			// Inisialisasi awal ke localStorage jika belum ada
 			localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(DEFAULT_APP_CONFIG));
 		} catch (err) {
 			console.warn('Gagal membaca localStorage konfigurasi:', err);
 		}
 
-		memoryConfig = { ...DEFAULT_APP_CONFIG };
-		return memoryConfig;
+		memoryConfig = structuredClone(DEFAULT_APP_CONFIG);
+		return structuredClone(memoryConfig);
 	}
 
-	/**
-	 * Menyimpan pembaruan konfigurasi aplikasi
-	 */
 	static saveConfig(newConfig: AppConfig): AppConfig {
 		const validation = appConfigSchema.safeParse(newConfig);
 		if (!validation.success) {
@@ -61,40 +51,36 @@ export class ConfigRepository {
 			updatedAt: new Date().toISOString()
 		};
 
-		memoryConfig = updatedConfig;
+		memoryConfig = structuredClone(updatedConfig);
 
 		if (typeof window !== 'undefined') {
 			try {
 				localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(updatedConfig));
-				// Dispatch custom event for real-time reactivity across components/tabs
-				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: updatedConfig }));
+				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: structuredClone(updatedConfig) }));
 			} catch (err) {
 				console.warn('Gagal menyimpan konfigurasi ke localStorage:', err);
 			}
 		}
 
-		return updatedConfig;
+		return structuredClone(updatedConfig);
 	}
 
-	/**
-	 * Mengembalikan seluruh pengaturan ke preset pabrik bawaan
-	 */
 	static resetConfig(): AppConfig {
-		const reset = {
-			...DEFAULT_APP_CONFIG,
+		const reset: AppConfig = {
+			...structuredClone(DEFAULT_APP_CONFIG),
 			updatedAt: new Date().toISOString()
 		};
-		memoryConfig = reset;
+		memoryConfig = structuredClone(reset);
 
 		if (typeof window !== 'undefined') {
 			try {
 				localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(reset));
-				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: reset }));
+				window.dispatchEvent(new CustomEvent('flora:config-updated', { detail: structuredClone(reset) }));
 			} catch (err) {
 				console.warn('Gagal reset konfigurasi di localStorage:', err);
 			}
 		}
 
-		return reset;
+		return structuredClone(reset);
 	}
 }

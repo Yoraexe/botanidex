@@ -2,28 +2,32 @@
   Botanidex — Plant Photo Gallery Component (Svelte 5 Runes)
   Tujuan: Menampilkan galeri foto multi-sudut tanaman gaya Neo-Brutalist (habitus, daun, bunga, buah)
   Caller: Plant detail page
+  Dependensi: PlantPhoto type, @lucide/svelte
+  Main Functions: PlantGallery component
+  Side Effects: Reset selectedIndex secara reaktif saat daftar foto tanaman berganti
 -->
 <script lang="ts">
 	import type { PlantPhoto } from '#lib/types/plant.types';
 	import { Image as ImageIcon } from '@lucide/svelte';
 
-	interface Props {
-		photos: PlantPhoto[];
-		plantName: string;
-	}
-
-	let { photos, plantName }: Props = $props();
+	let { photos, plantName }: { photos: PlantPhoto[]; plantName: string } = $props();
 
 	let selectedIndex = $state(0);
 
-	const activePhoto = $derived(photos[selectedIndex] || photos[0] || {
-		storage_path: '/icons/icon-512.svg',
-		label: 'Foto Tanaman'
+	$effect(() => {
+		photos;
+		selectedIndex = 0;
 	});
+
+	const activePhoto = $derived(
+		photos[selectedIndex] || photos[0] || {
+			storage_path: '/icons/icon-512.svg',
+			label: 'Foto Tanaman'
+		}
+	);
 </script>
 
 <div class="flex flex-col gap-3">
-	<!-- Active Photo Frame -->
 	<div class="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-stone-900 border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D]">
 		<img
 			src={activePhoto.storage_path}
@@ -39,7 +43,6 @@
 		{/if}
 	</div>
 
-	<!-- Thumbnail Selector Strip (if > 1 photo) -->
 	{#if photos.length > 1}
 		<div class="flex items-center gap-2.5 overflow-x-auto pb-1 no-scrollbar">
 			{#each photos as photo, i}

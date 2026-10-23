@@ -19,6 +19,10 @@
 	);
 
 	let activeVideoIndex = $state(0);
+	$effect(() => {
+		videos;
+		activeVideoIndex = 0;
+	});
 	const activeVideo = $derived(visibleVideos[activeVideoIndex] || visibleVideos[0]);
 </script>
 

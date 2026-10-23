@@ -10,18 +10,16 @@
     "devops": "pending"
   },
   "blocking_issues": [
-    "[HIGH] ConfigRepository shallow copy mutation corrupts DEFAULT_APP_CONFIG during in-place binding edits, breaking factory reset",
-    "[HIGH] config.schema.ts z.string().url() rejects local/relative image paths (e.g. /SMK-Pertanian-Gorontalo.png) despite CMS UI advertising local URL support",
-    "[MEDIUM] /katalog/[slug] route navigation only checks INITIAL_PLANTS_DATA in $effect and fails to fetch newly contributed plants on client-side slug changes; PlantGallery/PlantVideoSection/QrGenerator do not reactively reset on plant prop change",
-    "[MEDIUM] Supabase PostgREST .or() search filter in PlantRepository does not sanitize commas/parentheses, causing PGRST100 syntax errors or filter injection",
-    "[MEDIUM] createPlantSlug returns empty string when input contains only non-ASCII/symbol characters, breaking /katalog/[slug] routing",
-    "[LOW] Input.svelte uses Math.random() for default id prop, causing SSR hydration ID mismatch instead of using Svelte 5 $props.id()"
+    "[HIGH] Public visitors can view unapproved (pending/rejected) plants via direct /katalog/[slug] URL in local/offline mode, violating BRD F5 & AC2.4",
+    "[MEDIUM] CMS identity fields schoolName and headerBadge are editable in /admin/pengaturan but hardcoded in Navbar, Footer (+layout.svelte), and QrGenerator, while tagline is rendered in Navbar but missing from CMS form",
+    "[MEDIUM] /katalog/+page.svelte only reads ?q= and ?cat= URL searchParams once in onMount instead of reactively via $effect",
+    "[LOW] Navbar.svelte user profile dropdown (isDropdownOpen) stays open across client-side route transitions"
   ],
   "retry_count": {
     "product": 0,
     "design": 0,
     "engineering": 0,
-    "quality": 1,
+    "quality": 2,
     "devops": 0
   },
   "completed_artifacts": [

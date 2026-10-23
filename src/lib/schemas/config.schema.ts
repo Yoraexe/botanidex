@@ -1,13 +1,28 @@
 // ==============================================================================
 // Botanidex — App Configuration Zod Schema
-// Tujuan: Validasi integritas data pengaturan dinamis CMS aplikasi
+// Tujuan: Validasi integritas data pengaturan dinamis CMS aplikasi (mendukung URL absolut, data URI, dan path lokal)
 // Caller: config.service.ts, admin/pengaturan
 // Dependensi: zod
-// Main Functions: appConfigSchema, heroConfigSchema, schoolIdentitySchema
+// Main Functions: imageSourceSchema, appConfigSchema, heroConfigSchema, schoolIdentitySchema
 // Side Effects: none
 // ==============================================================================
 
 import { z } from 'zod';
+
+const isValidImageSource = (val: string): boolean => {
+	const v = val.trim();
+	if (v.startsWith('/') && v.length > 1 && !v.startsWith('//')) return true;
+	if (v.startsWith('data:image/')) return true;
+	try {
+		const parsed = new URL(v);
+		return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+	} catch {
+		return false;
+	}
+};
+
+export const imageSourceSchema = (message: string) =>
+	z.string().trim().min(2, { message }).refine(isValidImageSource, { message });
 
 export const schoolIdentitySchema = z.object({
 	appName: z.string().min(2).max(40),
@@ -18,7 +33,7 @@ export const schoolIdentitySchema = z.object({
 
 export const gardenPhotoSchema = z.object({
 	id: z.string().min(1),
-	url: z.string().url({ message: 'URL gambar kebun harus valid' }),
+	url: imageSourceSchema('URL gambar kebun harus valid (http/https atau path lokal /...)'),
 	title: z.string().min(2).max(80),
 	badge: z.string().min(2).max(40)
 });
@@ -27,7 +42,7 @@ export const specimenItemSchema = z.object({
 	id: z.string().min(1),
 	commonName: z.string().min(2).max(60),
 	latinName: z.string().min(2).max(80),
-	url: z.string().url({ message: 'URL gambar spesimen harus valid' })
+	url: imageSourceSchema('URL gambar spesimen harus valid (http/https atau path lokal /...)')
 });
 
 export const categoryItemSchema = z.object({

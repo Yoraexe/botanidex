@@ -143,10 +143,12 @@ export class PlantRepository {
 					query = query.eq('category', filters.category);
 				}
 				if (filters?.query?.trim()) {
-					const s = filters.query.trim();
-					query = query.or(
-						`name_local.ilike.%${s}%,name_latin.ilike.%${s}%,name_english.ilike.%${s}%,taxonomy_familia.ilike.%${s}%`
-					);
+					const s = filters.query.replace(/[,()%*\\]/g, ' ').trim();
+					if (s) {
+						query = query.or(
+							`name_local.ilike.%${s}%,name_latin.ilike.%${s}%,name_english.ilike.%${s}%,taxonomy_familia.ilike.%${s}%`
+						);
+					}
 				}
 				const { data, error } = await query;
 				if (!error && data) return data.map(mapDbRowToPlant);

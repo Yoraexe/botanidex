@@ -1,7 +1,10 @@
 <!--
   Botanidex — Input UI Primitive (Svelte 5 Runes)
-  Tujuan: Form input gaya Neo-Brutalist dengan border tegas dan shadow taktil
+  Tujuan: Form input gaya Neo-Brutalist dengan border tegas, shadow taktil, dan ID deterministik SSR-safe
   Caller: Form kontribusi tanaman, pencarian, dan login
+  Dependensi: svelte/elements
+  Main Functions: Input component
+  Side Effects: none
 -->
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
@@ -13,12 +16,14 @@
 		value?: string | number;
 	}
 
+	const uid = $props.id();
+
 	let {
 		label,
 		error,
 		hint,
 		value = $bindable(''),
-		id = Math.random().toString(36).substring(2, 7),
+		id = uid,
 		class: className = '',
 		...restProps
 	}: Props = $props();
