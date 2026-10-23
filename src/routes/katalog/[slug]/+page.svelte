@@ -93,7 +93,13 @@
 				<p class="text-xs sm:text-sm text-stone-600 font-semibold mt-1 max-w-md mx-auto">Dokumentasi tanaman ini berstatus <strong>{plant.status}</strong> dan belum dipublikasikan ke katalog umum. Masuk sebagai Guru Pembimbing untuk meninjau pengajuan ini.</p>
 			</div>
 			<div class="flex flex-wrap items-center justify-center gap-3 mt-2">
-				<Button variant="primary" onclick={() => authUser.loginAsDemo('admin')}><ShieldCheck class="w-4 h-4 stroke-[2.5]" /> Masuk sebagai Guru / Admin</Button>
+				<a
+					href="/login?redirectTo=/katalog/{plant.slug}"
+					class="px-5 py-2.5 rounded-xl border-2 border-[#0D0D0D] bg-[#D4F469] text-xs font-black text-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:shadow-[4px_4px_0px_#0D0D0D] flex items-center gap-2"
+				>
+					<ShieldCheck class="w-4 h-4 stroke-[2.5]" />
+					<span>Masuk sebagai Guru / Admin</span>
+				</a>
 				<a href="/katalog" class="px-4 py-2.5 rounded-xl border-2 border-[#0D0D0D] bg-white text-xs font-black text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#F3F6ED]">Lihat Katalog Publik</a>
 			</div>
 		</div>

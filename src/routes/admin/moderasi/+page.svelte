@@ -82,8 +82,16 @@
 				<p class="text-xs sm:text-sm text-stone-600 font-semibold mt-1 max-w-md mx-auto">Halaman moderasi katalog tanaman hanya dapat diakses oleh akun Guru Pembimbing / Administrator SMK PPN Gorontalo.</p>
 			</div>
 			<div class="flex flex-wrap items-center justify-center gap-3 mt-2">
-				<Button variant="primary" onclick={() => authUser.loginAsDemo('admin')}><ShieldCheck class="w-4 h-4 stroke-[2.5]" /> Masuk sebagai Guru / Admin</Button>
-				<a href="/" class="px-4 py-2.5 rounded-xl border-2 border-[#0D0D0D] bg-white text-xs font-black text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#F3F6ED]">Kembali ke Beranda</a>
+				<a
+					href="/login?redirectTo=/admin/moderasi"
+					class="px-5 py-2.5 rounded-xl border-2 border-[#0D0D0D] bg-[#D4F469] text-xs font-black text-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:shadow-[4px_4px_0px_#0D0D0D] flex items-center gap-2"
+				>
+					<ShieldCheck class="w-4 h-4 stroke-[2.5]" />
+					<span>Masuk Portal Guru</span>
+				</a>
+				<a href="/" class="px-4 py-2 rounded-xl border-2 border-[#0D0D0D] bg-white text-xs font-black text-stone-700 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#F3F6ED]">
+					Kembali ke Beranda
+				</a>
 			</div>
 		</div>
 	{:else}

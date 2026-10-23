@@ -137,8 +137,16 @@
 				<p class="text-xs sm:text-sm text-stone-600 font-semibold mt-1 max-w-md mx-auto">Silakan masuk sebagai Siswa Kontributor atau Guru Pembimbing untuk menambahkan dokumentasi tanaman baru ke katalog SMK PPN Gorontalo.</p>
 			</div>
 			<div class="flex flex-wrap items-center justify-center gap-3 mt-2">
-				<Button variant="primary" onclick={() => authUser.loginAsDemo('contributor')}><PlusCircle class="w-4 h-4 stroke-[2.5]" /> Masuk sebagai Siswa</Button>
-				<Button variant="secondary" onclick={() => authUser.loginAsDemo('admin')}><ShieldCheck class="w-4 h-4 stroke-[2.5]" /> Masuk sebagai Guru / Admin</Button>
+				<a
+					href="/login?redirectTo=/kontribusi/tambah"
+					class="px-5 py-2.5 rounded-xl border-2 border-[#0D0D0D] bg-[#D4F469] text-xs font-black text-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:shadow-[4px_4px_0px_#0D0D0D] flex items-center gap-2"
+				>
+					<PlusCircle class="w-4 h-4 stroke-[2.5]" />
+					<span>Masuk Akun Sekarang</span>
+				</a>
+				<a href="/" class="px-4 py-2 rounded-xl border-2 border-[#0D0D0D] bg-white text-xs font-black text-stone-700 shadow-[2px_2px_0px_#0D0D0D] hover:bg-[#F3F6ED]">
+					Kembali ke Beranda
+				</a>
 			</div>
 		</div>
 	{:else}

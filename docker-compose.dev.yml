@@ -1,0 +1,29 @@
+# ==============================================================================
+# Flora SMK — Docker Compose (Local Development)
+# Standards: Astesia DevOps Phase 5
+# ==============================================================================
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    ports:
+      - "${PORT:-5173}:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.svelte-kit
+    environment:
+      - NODE_ENV=development
+      - PORT=5173
+      - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL:-https://mock-supabase.local}
+      - PUBLIC_SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY:-mock-anon-key-local}
+    restart: unless-stopped
+    networks:
+      - flora-network
+
+networks:
+  flora-network:
+    driver: bridge

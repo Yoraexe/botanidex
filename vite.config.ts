@@ -12,11 +12,29 @@ import { defineConfig } from 'vitest/config';
 import tailwindcss from '@tailwindcss/vite';
 import adapterAuto from '@sveltejs/adapter-auto';
 import adapterVercel from '@sveltejs/adapter-vercel';
+import adapterNode from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
 
-const isWindowsLocal = process.platform === 'win32' && !process.env.VERCEL;
+function resolveAdapter() {
+	if (process.env.ADAPTER === 'node') {
+		return adapterNode({ out: 'build' });
+	}
+	if (process.env.VERCEL) {
+		return adapterVercel();
+	}
+	if (process.platform === 'win32') {
+		return adapterAuto();
+	}
+	return adapterVercel();
+}
 
 export default defineConfig({
+	server: {
+		allowedHosts: true
+	},
+	preview: {
+		allowedHosts: true
+	},
 	resolve: {
 		alias: {
 			$lib: path.resolve('./src/lib')
@@ -29,7 +47,7 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: isWindowsLocal ? adapterAuto() : adapterVercel()
+			adapter: resolveAdapter()
 		})
 	],
 	test: {

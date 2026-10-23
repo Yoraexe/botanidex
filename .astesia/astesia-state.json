@@ -7,7 +7,7 @@
     "design": "done",
     "engineering": "done",
     "quality": "done",
-    "devops": "pending"
+    "devops": "done"
   },
   "blocking_issues": [],
   "retry_count": {
@@ -21,7 +21,8 @@
     "brd-flora-smk.md",
     "design-system-flora-smk.md",
     "architecture-flora-smk.md",
-    "quality-audit-flora-smk.md"
+    "quality-audit-flora-smk.md",
+    "deployment.md"
   ],
   "completed_files": [
     ".astesia/brd-flora-smk.md",
@@ -61,8 +62,22 @@
     "src/lib/services/config.service.ts",
     "src/lib/services/config.service.test.ts",
     "supabase/migrations/001_initial_schema.sql",
+    "src/lib/types/auth.types.ts",
+    "src/lib/schemas/auth.schema.ts",
+    "src/lib/schemas/auth.schema.test.ts",
+    "src/lib/repositories/auth.repository.ts",
+    "src/lib/services/auth.service.ts",
+    "src/lib/services/auth.service.test.ts",
+    "src/routes/login/+page.svelte",
     "vite.config.ts",
-    "package.json"
+    "package.json",
+    "Dockerfile",
+    ".dockerignore",
+    "docker-compose.dev.yml",
+    "docker-compose.prod.yml",
+    ".github/workflows/ci.yml",
+    "src/routes/health/+server.ts",
+    ".astesia/deployment.md"
   ],
   "active_skills": [
     "sveltekit-frontend",
@@ -74,7 +89,10 @@
     "ponytail-audit",
     "ponytail-review",
     "anti-silent-failure",
-    "budget-circuit-breaker"
+    "budget-circuit-breaker",
+    "docker-optimization",
+    "docker-compose",
+    "github-actions"
   ],
   "history": [
     {
@@ -148,6 +166,12 @@
       "layer": "quality",
       "action": "ponytail_anti_bloat_yagni_purge_passed",
       "agent_note": "Executed Ponytail Anti-Bloat & YAGNI purge across 23 files (247 insertions, 795 deletions, net: -548 lines; cumulative net reduction: -3,667 lines). Deleted 3 YAGNI/dead files (src/lib/index.ts, src/lib/repositories/map.repository.ts, src/lib/schemas/contribution.schema.ts), removed dead methods (getPlantById, findSingleBy, getModerationQueue, updateGardenPhoto, updateSpecimen) and unused type properties (AuthState, PlantFilterOptions.family/location), deduplicated ConfigRepository.resetConfig() & StorageService.assertValidVideo(), and compacted format.ts, Navbar.svelte, katalog/+page.svelte, QrGenerator.svelte, PlantVideoSection.svelte, and unit test files. Total src/ codebase is now 4,080 lines across 50 files (avg 81 lines/file). 0 svelte-check errors/warnings, 29/29 Vitest tests passing."
+    },
+    {
+      "timestamp": "2026-10-23T21:18:00+08:00",
+      "layer": "devops",
+      "action": "devops_live_deployment_and_infrastructure_completed",
+      "agent_note": "DevOps Layer completed. Verified 46 Vitest unit tests pass and 0 svelte-check diagnostics. Implemented multi-stage non-root Alpine Dockerfile, docker-compose.dev.yml & docker-compose.prod.yml, .github/workflows/ci.yml with dual Vercel/Node build validation, and dedicated GET /health observability endpoint. Provisioned active live public Cloudflare edge tunnel at https://forums-rebound-marc-bent.trycloudflare.com with allowedHosts enabled in vite.config.ts. Astesia pipeline fully complete."
     }
   ]
 }
