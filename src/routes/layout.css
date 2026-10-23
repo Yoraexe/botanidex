@@ -1,134 +1,51 @@
 /* ==============================================================================
  * Botanidex — Neo-Brutalist Botanical Theme (Tailwind CSS v4)
- * Visual Style: Option A - Fresh Modern Agronomy / Neo-Brutalist
- * Inpirasi: Crisp borders, tactile drop shadows, clean ivory paper, sprout green accents
+ * Tujuan: Definisi font families, background grid retro, dan scrollbar utility
  * Caller: src/routes/+layout.svelte
+ * Dependensi: tailwindcss v4
+ * Main Functions: .font-latin, .font-display, .retro-grid-bg, .no-scrollbar
+ * Side Effects: Global CSS styling
  * ============================================================================== */
 
 @import 'tailwindcss';
 
 @theme {
-  --color-neo-bg: #F8F9F5;
-  --color-neo-card: #FFFFFF;
-  --color-neo-surface: #F3F6ED;
-  --color-neo-ink: #0D0D0D;
-  
-  --color-neo-sprout: #D4F469;
-  --color-neo-forest: #0F3E2E;
-  --color-neo-forest-light: #166534;
-  --color-neo-green: #D4F469;
-  --color-neo-coral: #E07A5F;
-  --color-neo-yellow: #FBBF24;
-  --color-neo-purple: #CDB4DB;
-  --color-neo-blue: #93C5FD;
-
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Bebas Neue', 'Plus Jakarta Sans', sans-serif;
-  --font-latin: 'Lora', Georgia, serif;
-}
-
-:root {
-  --bg-page: #F8F9F5;
-  --color-text-primary: #0D0D0D;
+	--font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+	--font-display: 'Bebas Neue', 'Plus Jakarta Sans', sans-serif;
+	--font-latin: 'Lora', Georgia, serif;
 }
 
 body {
-  background-color: var(--bg-page);
-  color: var(--color-text-primary);
-  font-family: var(--font-sans);
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
+	background-color: #f8f9f5;
+	color: #0d0d0d;
+	font-family: var(--font-sans);
+	margin: 0;
+	padding: 0;
+	-webkit-font-smoothing: antialiased;
 }
 
-/* Neo-brutalist tactile shadows */
-.neo-box {
-  background-color: #FFFFFF;
-  border: 2px solid #0D0D0D;
-  box-shadow: 4px 4px 0px #0D0D0D;
-  border-radius: 1rem;
-}
-
-.neo-box-sm {
-  background-color: #FFFFFF;
-  border: 2px solid #0D0D0D;
-  box-shadow: 2.5px 2.5px 0px #0D0D0D;
-  border-radius: 0.75rem;
-}
-
-.neo-box-lg {
-  background-color: #FFFFFF;
-  border: 2.5px solid #0D0D0D;
-  box-shadow: 6px 6px 0px #0D0D0D;
-  border-radius: 1.25rem;
-}
-
-/* Neo-brutalist interactive button */
-.neo-btn {
-  border: 2px solid #0D0D0D;
-  box-shadow: 3px 3px 0px #0D0D0D;
-  transition: transform 100ms ease, box-shadow 100ms ease;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.neo-btn:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px #0D0D0D;
-}
-
-.neo-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #0D0D0D;
-}
-
-/* Sticker badge effect */
-.neo-badge {
-  border: 1.5px solid #0D0D0D;
-  box-shadow: 2px 2px 0px #0D0D0D;
-  font-weight: 800;
-}
-
-/* Latin botanical typography */
 .font-latin {
-  font-family: var(--font-latin);
-  font-style: italic;
+	font-family: var(--font-latin);
+	font-style: italic;
 }
 
-/* Condensed display headline */
 .font-display {
-  font-family: var(--font-display);
-  letter-spacing: 0.02em;
+	font-family: var(--font-display);
+	letter-spacing: 0.02em;
 }
 
-/* Slow spin for Memphis seal/stamp */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 25s linear infinite;
-}
-
-/* Grid background texture */
 .retro-grid-bg {
-  background-color: #F8F9F5;
-  background-image: 
-    linear-gradient(to right, rgba(13, 13, 13, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(13, 13, 13, 0.04) 1px, transparent 1px);
-  background-size: 24px 24px;
+	background-color: #f8f9f5;
+	background-image:
+		linear-gradient(to right, rgba(13, 13, 13, 0.04) 1px, transparent 1px),
+		linear-gradient(to bottom, rgba(13, 13, 13, 0.04) 1px, transparent 1px);
+	background-size: 24px 24px;
 }
 
-/* Hide scrollbars */
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }

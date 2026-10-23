@@ -2,6 +2,9 @@
   Botanidex — Offline Status Banner (Svelte 5 Runes)
   Tujuan: Menampilkan banner informatif gaya Neo-Brutalist saat pengguna sedang luring (offline)
   Caller: src/routes/+layout.svelte
+  Dependensi: svelte, @lucide/svelte
+  Main Functions: OfflineBanner component
+  Side Effects: Window online/offline event listeners
 -->
 <script lang="ts">
 	import { WifiOff } from '@lucide/svelte';
@@ -11,20 +14,13 @@
 
 	onMount(() => {
 		isOnline = navigator.onLine;
-
-		const handleOnline = () => {
-			isOnline = true;
-		};
-		const handleOffline = () => {
-			isOnline = false;
-		};
-
-		window.addEventListener('online', handleOnline);
-		window.addEventListener('offline', handleOffline);
-
+		const setOnline = () => (isOnline = true);
+		const setOffline = () => (isOnline = false);
+		window.addEventListener('online', setOnline);
+		window.addEventListener('offline', setOffline);
 		return () => {
-			window.removeEventListener('online', handleOnline);
-			window.removeEventListener('offline', handleOffline);
+			window.removeEventListener('online', setOnline);
+			window.removeEventListener('offline', setOffline);
 		};
 	});
 </script>

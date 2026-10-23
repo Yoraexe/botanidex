@@ -33,12 +33,8 @@ self.addEventListener('install', (event) => {
 	event.waitUntil(
 		caches
 			.open(CACHE_NAME)
-			.then(async (cache) => {
-				await cache.addAll(ASSETS_TO_CACHE);
-			})
-			.then(() => {
-				self.skipWaiting();
-			})
+			.then((cache) => cache.addAll(ASSETS_TO_CACHE))
+			.then(() => self.skipWaiting())
 	);
 });
 
@@ -46,16 +42,8 @@ self.addEventListener('activate', (event) => {
 	event.waitUntil(
 		caches
 			.keys()
-			.then(async (keys) => {
-				for (const key of keys) {
-					if (key !== CACHE_NAME) {
-						await caches.delete(key);
-					}
-				}
-			})
-			.then(() => {
-				self.clients.claim();
-			})
+			.then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))))
+			.then(() => self.clients.claim())
 	);
 });
 
@@ -67,7 +55,6 @@ self.addEventListener('fetch', (event) => {
 		return;
 	}
 
-	// Hanya intercept protokol http/https, metode GET, dan bukan internal Vite/Supabase Auth
 	if (
 		(url.protocol !== 'http:' && url.protocol !== 'https:') ||
 		event.request.method !== 'GET' ||
@@ -83,35 +70,27 @@ self.addEventListener('fetch', (event) => {
 	}
 
 	event.respondWith(
-		caches.match(event.request).then((cachedResponse) => {
-			if (cachedResponse) {
-				return cachedResponse;
-			}
-
-			return fetch(event.request)
-				.then((networkResponse) => {
-					if (
-						networkResponse &&
-						networkResponse.status === 200 &&
-						networkResponse.type === 'basic'
-					) {
-						const responseToCache = networkResponse.clone();
-						caches.open(CACHE_NAME).then((cache) => {
-							cache.put(event.request, responseToCache);
+		caches.match(event.request).then(
+			(cached) =>
+				cached ||
+				fetch(event.request)
+					.then((res) => {
+						if (res && res.status === 200 && res.type === 'basic') {
+							const copy = res.clone();
+							caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+						}
+						return res;
+					})
+					.catch(async () => {
+						if (event.request.headers.get('accept')?.includes('text/html')) {
+							const fallback = await caches.match('/');
+							if (fallback) return fallback;
+						}
+						return new Response('Offline: Konten belum di-cache', {
+							status: 503,
+							statusText: 'Service Unavailable'
 						});
-					}
-					return networkResponse;
-				})
-				.catch(async () => {
-					if (event.request.headers.get('accept')?.includes('text/html')) {
-						const fallback = await caches.match('/');
-						if (fallback) return fallback;
-					}
-					return new Response('Offline: Konten belum di-cache', {
-						status: 503,
-						statusText: 'Service Unavailable'
-					});
-				});
-		})
+					})
+		)
 	);
 });

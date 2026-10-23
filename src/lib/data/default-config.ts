@@ -3,6 +3,8 @@
 // Tujuan: Preset bawaan resmi saat aplikasi pertama kali dijalankan atau di-reset
 // Caller: config.repository.ts, config.service.ts
 // Dependensi: config.types.ts
+// Main Functions: DEFAULT_APP_CONFIG
+// Side Effects: none (static configuration preset)
 // ==============================================================================
 
 import type { AppConfig } from '#lib/types/config.types';
@@ -68,35 +70,11 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
 		}
 	},
 	categories: [
-		{
-			id: 'semua',
-			label: 'Semua',
-			dotColor: 'bg-stone-800'
-		},
-		{
-			id: 'obat',
-			label: 'Obat (TOGA)',
-			dotColor: 'bg-emerald-500'
-		},
-		{
-			id: 'pangan',
-			label: 'Pangan',
-			dotColor: 'bg-amber-500'
-		},
-		{
-			id: 'hias',
-			label: 'Hias',
-			dotColor: 'bg-pink-500'
-		},
-		{
-			id: 'industri',
-			label: 'Perkebunan',
-			dotColor: 'bg-amber-800'
-		},
-		{
-			id: 'kayu',
-			label: 'Kayu',
-			dotColor: 'bg-lime-700'
-		}
+		{ id: 'semua', label: 'Semua', dotColor: 'bg-stone-800' },
+		{ id: 'obat', label: 'Obat (TOGA)', dotColor: 'bg-emerald-500' },
+		{ id: 'pangan', label: 'Pangan', dotColor: 'bg-amber-500' },
+		{ id: 'hias', label: 'Hias', dotColor: 'bg-pink-500' },
+		{ id: 'industri', label: 'Perkebunan', dotColor: 'bg-amber-800' },
+		{ id: 'kayu', label: 'Kayu', dotColor: 'bg-lime-700' }
 	]
 };

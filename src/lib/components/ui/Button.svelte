@@ -2,6 +2,9 @@
   Botanidex — Button UI Primitive (Svelte 5 Runes)
   Tujuan: Komponen tombol standar Neo-Brutalist dengan varian Fresh Modern Agronomy
   Caller: Seluruh form, navbar, card, dan modal
+  Dependensi: svelte/elements
+  Main Functions: Button component
+  Side Effects: none
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -27,18 +30,13 @@
 	}: Props = $props();
 
 	const baseStyles = 'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-100 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none';
-
-	const sizeStyles = {
-		sm: 'text-xs px-3 py-1.5 gap-1.5',
-		md: 'text-sm px-4 py-2.5 gap-2',
-		lg: 'text-base px-6 py-3.5 gap-2.5'
-	};
-
+	const tactile = 'border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4px_4px_0px_#0D0D0D] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#0D0D0D]';
+	const sizeStyles = { sm: 'text-xs px-3 py-1.5 gap-1.5', md: 'text-sm px-4 py-2.5 gap-2', lg: 'text-base px-6 py-3.5 gap-2.5' };
 	const variantStyles = {
-		primary: 'bg-[#D4F469] text-[#0D0D0D] border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:bg-[#c5e855] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4px_4px_0px_#0D0D0D] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#0D0D0D]',
-		secondary: 'bg-[#0F3E2E] text-white border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:bg-[#16513d] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4px_4px_0px_#0D0D0D] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#0D0D0D]',
-		outline: 'bg-white text-[#0D0D0D] border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:bg-[#F3F6ED] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4px_4px_0px_#0D0D0D] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#0D0D0D]',
-		danger: 'bg-[#E07A5F] text-white border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] hover:bg-[#d0684c] hover:-translate-x-[1px] hover:-translate-y-[1px] hover:shadow-[4px_4px_0px_#0D0D0D] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#0D0D0D]',
+		primary: `bg-[#D4F469] text-[#0D0D0D] hover:bg-[#c5e855] ${tactile}`,
+		secondary: `bg-[#0F3E2E] text-white hover:bg-[#16513d] ${tactile}`,
+		outline: `bg-white text-[#0D0D0D] hover:bg-[#F3F6ED] ${tactile}`,
+		danger: `bg-[#E07A5F] text-white hover:bg-[#d0684c] ${tactile}`,
 		ghost: 'text-[#0D0D0D] hover:bg-[#F3F6ED] border-2 border-transparent active:translate-y-[1px]'
 	};
 </script>
@@ -54,7 +52,5 @@
 			<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
 		</svg>
 	{/if}
-	{#if children}
-		{@render children()}
-	{/if}
+	{#if children}{@render children()}{/if}
 </button>

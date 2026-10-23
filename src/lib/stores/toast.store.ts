@@ -3,7 +3,7 @@
 // Tujuan: State manager untuk menampilkan alert toast melayang (sukses, error, info)
 // Caller: UI components, form submitters, error catchers
 // Dependensi: svelte/store
-// Main Functions: toastStore, showToast, showSuccess, showError
+// Main Functions: toast
 // Side Effects: Timer-based auto-dismissal
 // ==============================================================================
 
@@ -21,23 +21,13 @@ export interface ToastItem {
 
 function createToastStore() {
 	const { subscribe, update } = writable<ToastItem[]>([]);
-
-	function remove(id: string) {
-		update((items) => items.filter((item) => item.id !== id));
-	}
+	const remove = (id: string) => update((items) => items.filter((item) => item.id !== id));
 
 	function add(toast: Omit<ToastItem, 'id'>) {
 		const id = Math.random().toString(36).substring(2, 9);
-		const newItem: ToastItem = { ...toast, id };
 		const duration = toast.duration ?? 4500;
-
-		update((items) => [...items, newItem]);
-
-		if (duration > 0 && typeof window !== 'undefined') {
-			setTimeout(() => {
-				remove(id);
-			}, duration);
-		}
+		update((items) => [...items, { ...toast, id }]);
+		if (duration > 0 && typeof window !== 'undefined') setTimeout(() => remove(id), duration);
 		return id;
 	}
 

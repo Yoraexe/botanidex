@@ -2,25 +2,24 @@
   Botanidex — Plant Taxonomy Component (Svelte 5 Runes)
   Tujuan: Menampilkan hierarki klasifikasi ilmiah botani secara terstruktur gaya Neo-Brutalist (Option A)
   Caller: Plant detail page
+  Dependensi: PlantTaxonomy type, @lucide/svelte
+  Main Functions: PlantTaxonomy component
+  Side Effects: none
 -->
 <script lang="ts">
 	import type { PlantTaxonomy } from '#lib/types/plant.types';
 	import { Dna } from '@lucide/svelte';
 
-	interface Props {
-		taxonomy: PlantTaxonomy;
-	}
-
-	let { taxonomy }: Props = $props();
+	let { taxonomy }: { taxonomy: PlantTaxonomy } = $props();
 
 	const ranks = $derived([
-		{ rank: 'Kingdom', label: 'Kerajaan', value: taxonomy.kingdom || 'Plantae', isLatin: true },
-		{ rank: 'Divisio', label: 'Divisi', value: taxonomy.divisio, isLatin: true },
-		{ rank: 'Classis', label: 'Kelas', value: taxonomy.classis, isLatin: true },
-		{ rank: 'Ordo', label: 'Bangsa', value: taxonomy.ordo, isLatin: true },
-		{ rank: 'Familia', label: 'Famili', value: taxonomy.familia, isLatin: true, isHighlight: true, color: 'bg-[#D4F469]' },
-		{ rank: 'Genus', label: 'Marga', value: taxonomy.genus, isLatin: true },
-		{ rank: 'Species', label: 'Spesies', value: taxonomy.species, isLatin: true, isHighlight: true, color: 'bg-[#D4F469]' }
+		{ rank: 'Kingdom', label: 'Kerajaan', value: taxonomy.kingdom || 'Plantae', color: '' },
+		{ rank: 'Divisio', label: 'Divisi', value: taxonomy.divisio, color: '' },
+		{ rank: 'Classis', label: 'Kelas', value: taxonomy.classis, color: '' },
+		{ rank: 'Ordo', label: 'Bangsa', value: taxonomy.ordo, color: '' },
+		{ rank: 'Familia', label: 'Famili', value: taxonomy.familia, color: 'bg-[#D4F469]' },
+		{ rank: 'Genus', label: 'Marga', value: taxonomy.genus, color: '' },
+		{ rank: 'Species', label: 'Spesies', value: taxonomy.species, color: 'bg-[#D4F469]' }
 	].filter((item) => Boolean(item.value)));
 </script>
 
@@ -39,9 +38,7 @@
 					<span>{item.rank}</span>
 					<span class="text-[10px] text-stone-600 font-semibold">({item.label})</span>
 				</div>
-				<span class="font-black {item.isLatin ? 'font-latin italic' : ''} text-[#0D0D0D] text-sm">
-					{item.value}
-				</span>
+				<span class="font-black font-latin italic text-[#0D0D0D] text-sm">{item.value}</span>
 			</div>
 		{/each}
 	</div>

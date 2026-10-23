@@ -13,69 +13,36 @@ export interface CompressionOptions {
 	quality?: number;
 }
 
-export async function compressImageFile(
-	file: File,
-	options: CompressionOptions = {}
-): Promise<File> {
-	// Jika bukan browser environment atau bukan gambar, kembalikan file asli
-	if (typeof window === 'undefined' || !file.type.startsWith('image/')) {
-		return file;
-	}
-
+export async function compressImageFile(file: File, options: CompressionOptions = {}): Promise<File> {
+	if (typeof window === 'undefined' || !file.type.startsWith('image/')) return file;
 	const { maxWidth = 1600, maxHeight = 1600, quality = 0.82 } = options;
 
 	return new Promise((resolve) => {
 		const img = new Image();
 		const reader = new FileReader();
-
-		reader.onload = (e) => {
-			img.src = e.target?.result as string;
-		};
-
+		reader.onload = (e) => { img.src = e.target?.result as string; };
+		img.onerror = () => resolve(file);
 		img.onload = () => {
 			let { width, height } = img;
-
 			if (width > maxWidth || height > maxHeight) {
 				const ratio = Math.min(maxWidth / width, maxHeight / height);
 				width = Math.round(width * ratio);
 				height = Math.round(height * ratio);
 			}
-
 			const canvas = document.createElement('canvas');
 			canvas.width = width;
 			canvas.height = height;
-
 			const ctx = canvas.getContext('2d');
-			if (!ctx) {
-				resolve(file);
-				return;
-			}
+			if (!ctx) return resolve(file);
 
 			ctx.drawImage(img, 0, 0, width, height);
-
 			const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
-
 			canvas.toBlob(
-				(blob) => {
-					if (!blob) {
-						resolve(file);
-						return;
-					}
-					const compressedFile = new File([blob], file.name, {
-						type: outputType,
-						lastModified: Date.now()
-					});
-					resolve(compressedFile);
-				},
+				(blob) => resolve(blob ? new File([blob], file.name, { type: outputType, lastModified: Date.now() }) : file),
 				outputType,
 				quality
 			);
 		};
-
-		img.onerror = () => {
-			resolve(file);
-		};
-
 		reader.readAsDataURL(file);
 	});
 }
