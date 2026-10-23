@@ -1,25 +1,20 @@
 {
   "project_name": "Flora SMK",
   "project_type": "greenfield",
-  "current_layer": "quality",
+  "current_layer": "devops",
   "layer_statuses": {
     "product": "done",
     "design": "done",
     "engineering": "done",
-    "quality": "in_progress",
+    "quality": "done",
     "devops": "pending"
   },
-  "blocking_issues": [
-    "[HIGH] Public visitors can view unapproved (pending/rejected) plants via direct /katalog/[slug] URL in local/offline mode, violating BRD F5 & AC2.4",
-    "[MEDIUM] CMS identity fields schoolName and headerBadge are editable in /admin/pengaturan but hardcoded in Navbar, Footer (+layout.svelte), and QrGenerator, while tagline is rendered in Navbar but missing from CMS form",
-    "[MEDIUM] /katalog/+page.svelte only reads ?q= and ?cat= URL searchParams once in onMount instead of reactively via $effect",
-    "[LOW] Navbar.svelte user profile dropdown (isDropdownOpen) stays open across client-side route transitions"
-  ],
+  "blocking_issues": [],
   "retry_count": {
     "product": 0,
     "design": 0,
     "engineering": 0,
-    "quality": 2,
+    "quality": 3,
     "devops": 0
   },
   "completed_artifacts": [

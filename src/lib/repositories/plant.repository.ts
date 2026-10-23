@@ -14,7 +14,7 @@ import type { Plant, PlantFilterOptions, ContributionStatus, PlantTaxonomy } fro
 const LOCAL_STORAGE_KEY = 'flora_smk_plants_store_v4';
 const PLANT_RELATIONS = '*, photos:plant_photos(*), videos:plant_videos(*)';
 
-let memoryPlants: Plant[] = [...INITIAL_PLANTS_DATA];
+let memoryPlants: Plant[] = structuredClone(INITIAL_PLANTS_DATA);
 
 export function mapDbRowToPlant(row: Record<string, any>): Plant {
 	const src = row.taxonomy || {};

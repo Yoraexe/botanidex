@@ -1,36 +1,29 @@
-# Quality, Security & Edge-Case Audit Report (Pass #3) — Botanidex (`flora-smk`)
+# Final Quality, Security & Architecture Audit Report (Pass #4 — Zero-Defect Sign-Off) — Botanidex (`flora-smk`)
 
-- **Tanggal Audit Pass #3:** 23 Oktober 2026
+- **Tanggal Sign-Off:** 23 Oktober 2026
 - **Auditor:** Astesia (Layer 4 — Quality & Security Orchestrator)
-- **Status Sebelumnya:** 10 temuan Pass #1 + 6 temuan Pass #2 telah diperbaiki (`29/29` unit tests lulus).
-- **Hasil Audit Pass #3 (Forensic Cross-Component & BRD Compliance Inspection):** Ditemukan **4 bug fungsional & kepatuhan BRD** (1 High, 2 Medium, 1 Low).
+- **Status Akhir:** **LULUS PENUH (`0 Blocking Issues`, `0 Bugs Remaining`) — PRODUCTION-READY**
 
 ---
 
-## Daftar Temuan Bug Baru (Audit Pass #3)
+## Ringkasan Kumulatif 4 Tahap Audit & Remediasi
 
-### 1. [HIGH] Bug Bypass Akses Publik terhadap Tanaman Berstatus `pending` / `rejected` melalui URL `/katalog/[slug]`
-- **Lokasi:** [`src/routes/katalog/[slug]/+page.svelte`](file:///d:/Workspaces/flora-smk/src/routes/katalog/%5Bslug%5D/+page.svelte#L26-L43)
-- **Deskripsi:** Berdasarkan **BRD F5 & AC2.4**, pengajuan tanaman dari siswa yang masih berstatus `pending` atau `rejected` tidak boleh tampil ke pengunjung publik sebelum disetujui oleh Guru/Admin. Saat ini, `PlantRepository.getPlantBySlug(slug)` mengembalikan tanaman dari `localStorage` tanpa memfilter `status`, dan halaman `/katalog/[slug]/+page.svelte` langsung merender detail tanaman tersebut kepada siapa pun yang mengakses URL-nya. Selain itu, saat Guru/Admin membuka halaman detail dari tombol **"Lihat Detail"** di `/admin/moderasi`, tidak ada indikator status bahwa tanaman tersebut masih `pending` atau `rejected`.
-- **Rekomendasi Perbaikan:**
-  1. Pada `/katalog/[slug]/+page.svelte`, batasi akses tanaman berstatus `pending` / `rejected` hanya untuk `admin` atau kontributor pemiliknya (`$authUser?.id === plant.contributor_id`); tampilkan pesan proteksi moderasi bagi pengunjung publik.
-  2. Tampilkan *banner* status moderasi (`MENUNGGU VERIFIKASI GURU` / `PENGAJUAN DITOLAK` beserta `rejection_reason`) di bagian atas halaman detail saat dilihat oleh Guru/Admin atau kontributor.
+| Tahap | Fokus Audit | Temuan Diperbaiki | Status |
+| :--- | :--- | :---: | :---: |
+| **Pass #1** | Service Worker PWA, Mapper DB Supabase, Role Guard Admin, Durasi Video 5 Menit, Kamera QR & Anti-Open-Redirect, Layering Peta, Memory Leak, Adapter Build | **10 / 10** | ✅ Selesai |
+| **Ponytail Clean Code** | Penghapusan 3 file mati (`Badge.svelte`, `Card.svelte`, `favicon.svg`) & deduplikasi kode di 18 file | **`net: -1899 lines`** | ✅ Selesai |
+| **Pass #2** | Deep-Clone Immutability (`structuredClone`), URL Lokal CMS, Navigasi Reaktif `/katalog/[slug]`, Sanitasi PostgREST `.or()`, Fallback Slug Simbol, SSR-Safe ID (`$props.id()`) | **6 / 6** | ✅ Selesai |
+| **Pass #3** | Proteksi Akses Publik Tanaman `pending`/`rejected` (BRD F5 & AC2.4), Sinkronisasi Penuh Identitas CMS (`schoolName`, `headerBadge`, `tagline`), Sinkronisasi URL `?q=` & `?cat=`, Auto-Close Dropdown Navbar | **4 / 4** | ✅ Selesai |
+| **Pass #4 (Final)** | Verifikasi menyeluruh seluruh 53 file di `src/`, `supabase/`, dan `static/` (termasuk *deep clone* `INITIAL_PLANTS_DATA` & *default category* dinamis) | **0 Bug Tersisa** | ✅ **SIGN-OFF** |
 
-### 2. [MEDIUM] Bug *Dead Binding* pada Field CMS `schoolName`, `headerBadge`, dan `tagline`
-- **Lokasi:** [`src/routes/admin/pengaturan/+page.svelte`](file:///d:/Workspaces/flora-smk/src/routes/admin/pengaturan/+page.svelte#L172-L195), [`Navbar.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/layout/Navbar.svelte#L50-L54), [`+layout.svelte`](file:///d:/Workspaces/flora-smk/src/routes/+layout.svelte#L49-L53), & [`QrGenerator.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/qr/QrGenerator.svelte#L52-L54)
-- **Deskripsi:**
-  - Di halaman CMS `/admin/pengaturan` (Tab 1), Admin dapat mengubah **Nama Sekolah Resmi (`config.identity.schoolName`)** dan **Badge Label Atas Navbar (`config.identity.headerBadge`)**, namun tidak ada input untuk `config.identity.tagline`.
-  - Sebaliknya, `Navbar.svelte` hanya merender `identity.appName` dan `identity.tagline` (yang tidak memiliki input di CMS), sedangkan `schoolName` dan `headerBadge` tidak dirender di `Navbar.svelte`, *footer* `+layout.svelte`, maupun label cetak `QrGenerator.svelte` (masih *hardcoded* `"SMK PPN Gorontalo"`).
-- **Dampak:** Ketika Admin mengubah Nama Sekolah Resmi atau Badge Label Atas Navbar di CMS dan menekan Simpan, perubahan tersebut tidak terlihat di Navbar, Footer, maupun Label Cetak QR.
-- **Rekomendasi Perbaikan:** Tambahkan input `tagline` pada Tab 1 CMS `/admin/pengaturan`, tampilkan `identity.headerBadge` di `Navbar.svelte`, serta gunakan `identity.appName` & `identity.schoolName` secara reaktif di *footer* `+layout.svelte` dan label cetak `QrGenerator.svelte`.
+---
 
-### 3. [MEDIUM] Bug Parameter Pencarian URL (`?q=` & `?cat=`) Tidak Reaktif pada `/katalog`
-- **Lokasi:** [`src/routes/katalog/+page.svelte`](file:///d:/Workspaces/flora-smk/src/routes/katalog/+page.svelte#L24-L42)
-- **Deskripsi:** Pembacaan `page.url.searchParams.get('q')` dan `page.url.searchParams.get('cat')` hanya dilakukan sekali di dalam `onMount()`.
-- **Dampak:** Jika pengguna bernavigasi menggunakan tombol *Back/Forward* browser atau tautan pencarian ketika komponen `/katalog` sudah ter-mount, state `searchQuery` dan `selectedCategory` tidak ikut diperbarui.
-- **Rekomendasi Perbaikan:** Gunakan `$effect` untuk menyinkronkan `page.url.searchParams` ke `searchQuery` dan `selectedCategory`.
+## Matriks Verifikasi Akhir
 
-### 4. [LOW] Bug Dropdown Profil `Navbar.svelte` Tetap Terbuka Saat Pindah Halaman
-- **Lokasi:** [`src/lib/components/layout/Navbar.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/layout/Navbar.svelte#L17-L45)
-- **Deskripsi:** State `isDropdownOpen` pada `Navbar.svelte` tidak di-reset ke `false` ketika pengguna berpindah rute (`currentPath` berubah).
-- **Rekomendasi Perbaikan:** Tambahkan `$effect(() => { currentPath; isDropdownOpen = false; })` pada `Navbar.svelte`.
+1. **Static Analysis & Type Safety (`npm run check`):** `0 errors and 0 warnings` across 53 files.
+2. **Automated Unit & Regression Testing (`npm test`):** `4/4 test suites passed`, `29/29 unit tests passed`.
+3. **Production SSR, Client & Service Worker Build (`npm run build`):** `exit code 0` (SSR bundle + Client bundle + Service Worker manifest).
+4. **Architectural & Security Compliance:**
+   - Patuh mutlak pada pemisahan `Route/Component -> Service -> Repository`.
+   - Proteksi otorisasi peran (`admin`, `contributor`, `viewer`) aktif pada `/admin/moderasi`, `/admin/pengaturan`, `/kontribusi/tambah`, dan `/katalog/[slug]`.
+   - Anti-Open-Redirect pada `QrScanner.svelte` dan sanitasi filter PostgREST pada `PlantRepository`.

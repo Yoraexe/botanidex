@@ -21,15 +21,16 @@
 	import Input from '#lib/components/ui/Input.svelte';
 	import { PlusCircle, Image as ImageIcon, Video, UploadCloud, AlertCircle, Dna, CheckCircle2, ShieldCheck, X } from '@lucide/svelte';
 
+	const initialCategories = ConfigService.getCategories().filter((c) => c.id !== 'semua');
 	let isSubmitting = $state(false);
 	let errors = $state<Record<string, string>>({});
-	let availableCategories = $state(ConfigService.getCategories().filter((c) => c.id !== 'semua'));
+	let availableCategories = $state(initialCategories);
 
 	let nameLocal = $state('');
 	let nameLatin = $state('');
 	let nameEnglish = $state('');
 	let aliasesRaw = $state('');
-	let category = $state<PlantCategory>('obat');
+	let category = $state<PlantCategory>(initialCategories[0]?.id || 'obat');
 	let description = $state('');
 	let locationLabel = $state('');
 	let locationX = $state(50);

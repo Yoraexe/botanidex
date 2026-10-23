@@ -208,9 +208,13 @@
 						<label for="schoolName" class="text-xs font-black text-[#0D0D0D]">Nama Sekolah Resmi</label>
 						<input id="schoolName" bind:value={config.identity.schoolName} class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none" placeholder="Contoh: SMK PPN Gorontalo" />
 					</div>
-					<div class="flex flex-col gap-1.5 md:col-span-2">
+					<div class="flex flex-col gap-1.5">
+						<label for="tagline" class="text-xs font-black text-[#0D0D0D]">Tagline / Sub-Judul Brand</label>
+						<input id="tagline" bind:value={config.identity.tagline} class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none" placeholder="Contoh: Katalog Botani Digital SMK PPN Gorontalo" />
+					</div>
+					<div class="flex flex-col gap-1.5">
 						<label for="headerBadge" class="text-xs font-black text-[#0D0D0D]">Badge Label Atas Navbar</label>
-						<input id="headerBadge" bind:value={config.identity.headerBadge} class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none" placeholder="Contoh: Katalog Botani Digital SMK PPN Gorontalo" />
+						<input id="headerBadge" bind:value={config.identity.headerBadge} class="px-3.5 py-2.5 rounded-xl border-2 border-[#0D0D0D] text-sm font-bold bg-[#F8F9F5] outline-none" placeholder="Contoh: SMK PPN GORONTALO" />
 					</div>
 					<div class="flex flex-col gap-1.5">
 						<label for="headlineLine1" class="text-xs font-black text-[#0D0D0D]">Headline Baris 1 (Besar)</label>

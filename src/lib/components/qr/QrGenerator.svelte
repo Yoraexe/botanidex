@@ -1,14 +1,16 @@
 <!--
   Botanidex — Printable QR Plant Tag Generator (Svelte 5 Runes)
-  Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah gaya Neo-Brutalist
+  Tujuan: Menghasilkan label fisik siap cetak berukuran standar untuk tanaman sekolah gaya Neo-Brutalist dengan nama sekolah dinamis CMS
   Caller: Halaman detail tanaman, panel admin
-  Dependensi: PlantService, Button.svelte, @lucide/svelte
+  Dependensi: PlantService, ConfigService, Button.svelte, @lucide/svelte
   Main Functions: handlePrint, handleDownload
   Side Effects: Menghasilkan QR Data URL secara reaktif saat plant.slug berubah dan membuka dialog cetak
 -->
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Plant } from '#lib/types/plant.types';
 	import { PlantService } from '#lib/services/plant.service';
+	import { ConfigService } from '#lib/services/config.service';
 	import { Printer, Download, QrCode } from '@lucide/svelte';
 	import Button from '../ui/Button.svelte';
 
@@ -16,6 +18,15 @@
 
 	let qrDataUrl = $state<string | null>(null);
 	let isLoading = $state(true);
+	let schoolName = $state(ConfigService.getConfig().identity.schoolName);
+
+	onMount(() => {
+		const syncConfig = (e?: any) => {
+			schoolName = e?.detail?.identity?.schoolName ?? ConfigService.getConfig().identity.schoolName;
+		};
+		window.addEventListener('flora:config-updated', syncConfig);
+		return () => window.removeEventListener('flora:config-updated', syncConfig);
+	});
 
 	$effect(() => {
 		const currentSlug = plant.slug;
@@ -51,7 +62,7 @@
 
 	<div id="printable-tag" class="w-68 p-4 rounded-xl border-2 border-[#0D0D0D] bg-white shadow-[3px_3px_0px_#0D0D0D] flex flex-col items-center text-[#0D0D0D] my-2">
 		<p class="text-[10px] font-black uppercase tracking-widest text-[#0D0D0D] border-b-2 border-[#0D0D0D] pb-1 w-full text-center bg-[#D4F469] py-1 rounded-md">
-			SMK PPN GORONTALO • KOLEKSI BOTANI
+			{schoolName.toUpperCase()} • KOLEKSI BOTANI
 		</p>
 
 		{#if qrDataUrl}

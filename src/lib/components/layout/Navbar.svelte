@@ -1,10 +1,10 @@
 <!--
   Botanidex — Global Header / Navbar (Svelte 5 Runes)
-  Tujuan: Navigasi utama atas gaya Neo-Brutalist Fresh Modern Agronomy dengan profil peran pengguna
+  Tujuan: Navigasi utama atas gaya Neo-Brutalist Fresh Modern Agronomy dengan profil peran pengguna & sinkronisasi identitas CMS
   Caller: src/routes/+layout.svelte
   Dependensi: $app/state, auth.store.ts, ConfigService, Button.svelte
   Main Functions: handleSwitchRole, handleLogout
-  Side Effects: Mengubah sesi akun demo dan mendengarkan event flora:config-updated
+  Side Effects: Mengubah sesi akun demo, menutup dropdown saat pindah rute, dan mendengarkan event flora:config-updated
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -18,6 +18,11 @@
 	const currentPath = $derived(page.url.pathname);
 	let identity = $state(ConfigService.getConfig().identity);
 
+	$effect(() => {
+		currentPath;
+		isDropdownOpen = false;
+	});
+
 	const navClass = (prefix: string, darkActive = false) =>
 		`px-3.5 py-2 rounded-xl border-2 transition-all flex items-center gap-2 ${
 			currentPath.startsWith(prefix)
@@ -28,11 +33,15 @@
 		}`;
 
 	onMount(() => {
-		const handleConfigChange = (e: any) => {
-			if (e.detail?.identity) identity = e.detail.identity;
+		const syncIdentity = (e?: any) => {
+			identity = e?.detail?.identity ?? ConfigService.getConfig().identity;
 		};
-		window.addEventListener('flora:config-updated', handleConfigChange);
-		return () => window.removeEventListener('flora:config-updated', handleConfigChange);
+		window.addEventListener('flora:config-updated', syncIdentity);
+		window.addEventListener('storage', syncIdentity);
+		return () => {
+			window.removeEventListener('flora:config-updated', syncIdentity);
+			window.removeEventListener('storage', syncIdentity);
+		};
 	});
 
 	function handleSwitchRole(role: 'admin' | 'contributor' | 'viewer') {
@@ -50,10 +59,17 @@
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
 		<a href="/" class="flex items-center gap-3 group">
 			<div class="w-11 h-11 rounded-xl bg-white border-2 border-[#0D0D0D] shadow-[2.5px_2.5px_0px_#0D0D0D] p-1 flex items-center justify-center shrink-0 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
-				<img src="/SMK-Pertanian-Gorontalo.png" alt="Logo SMK PPN Gorontalo" class="w-full h-full object-contain" />
+				<img src="/SMK-Pertanian-Gorontalo.png" alt="Logo {identity.schoolName}" class="w-full h-full object-contain" />
 			</div>
 			<div>
-				<div class="font-black text-xl leading-none tracking-tight text-[#0D0D0D]">{identity.appName}</div>
+				<div class="flex items-center gap-2">
+					<span class="font-black text-xl leading-none tracking-tight text-[#0D0D0D]">{identity.appName}</span>
+					{#if identity.headerBadge}
+						<span class="hidden sm:inline-block px-2 py-0.5 rounded-md bg-[#D4F469] border border-[#0D0D0D] text-[9px] font-black uppercase tracking-wider text-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D]">
+							{identity.headerBadge}
+						</span>
+					{/if}
+				</div>
 				<p class="hidden lg:block text-[11px] text-stone-600 font-bold mt-0.5">{identity.tagline}</p>
 			</div>
 		</a>

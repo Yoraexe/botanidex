@@ -22,16 +22,18 @@
 	let selectedCategory = $state<string>('semua');
 	let categories = $state(ConfigService.getCategories());
 
+	$effect(() => {
+		const q = page.url.searchParams.get('q');
+		const cat = page.url.searchParams.get('cat');
+		if (q !== null) searchQuery = q;
+		if (cat !== null) selectedCategory = cat;
+	});
+
 	onMount(() => {
 		const handleConfigChange = (e: any) => {
 			if (e.detail?.categories) categories = e.detail.categories;
 		};
 		window.addEventListener('flora:config-updated', handleConfigChange);
-
-		const q = page.url.searchParams.get('q');
-		const cat = page.url.searchParams.get('cat');
-		if (q) searchQuery = q;
-		if (cat) selectedCategory = cat;
 
 		PlantService.getCatalog()
 			.then((updated) => {
