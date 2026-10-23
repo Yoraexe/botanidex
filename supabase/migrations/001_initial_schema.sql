@@ -1,24 +1,17 @@
 -- ==============================================================================
 -- Flora SMK — Database Schema & Initial Migrations
--- Tujuan: Definisi tabel, relasi, RLS policies, indexing, dan seed data tanaman
+-- Tujuan: Definisi tabel, relasi, RLS policies, indexing, dan fungsi pencarian
 -- Caller: Supabase CLI / Supabase SQL Editor
 -- Dependensi: PostgreSQL 14+, uuid-ossp extension
+-- Main Functions: search_plants
 -- Side Effects: Membuat tabel public.profiles, public.plants, public.plant_photos,
---               public.plant_videos, public.school_maps
+--               public.plant_videos, public.school_maps beserta RLS policies
 -- ==============================================================================
 
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Enum types
-DO $$ BEGIN
-  CREATE TYPE plant_category AS ENUM (
-    'hias', 'pangan', 'obat', 'kayu', 'industri', 'lainnya'
-  );
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END $$;
-
 DO $$ BEGIN
   CREATE TYPE contribution_status AS ENUM (
     'pending', 'approved', 'rejected'
@@ -45,7 +38,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- 2. Plants Table
+-- 2. Plants Table (mendukung kategori standar & kategori dinamis CMS)
 CREATE TABLE IF NOT EXISTS public.plants (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   slug TEXT UNIQUE NOT NULL,
@@ -53,8 +46,8 @@ CREATE TABLE IF NOT EXISTS public.plants (
   name_latin TEXT NOT NULL,
   name_english TEXT,
   aliases TEXT[] DEFAULT '{}',
-  category plant_category NOT NULL DEFAULT 'lainnya',
-  -- Taxonomy
+  category TEXT NOT NULL DEFAULT 'lainnya',
+  -- Taxonomy (Flat Columns — dipetakan oleh PlantRepository mapper)
   taxonomy_kingdom TEXT DEFAULT 'Plantae',
   taxonomy_divisio TEXT,
   taxonomy_classis TEXT,
@@ -71,6 +64,7 @@ CREATE TABLE IF NOT EXISTS public.plants (
   -- Meta & Moderation
   status contribution_status NOT NULL DEFAULT 'approved',
   contributor_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  contributor_name TEXT,
   reviewed_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   rejection_reason TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -96,7 +90,8 @@ CREATE TABLE IF NOT EXISTS public.plant_videos (
   title TEXT NOT NULL,
   duration_seconds INT,
   uploaded_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
-  status contribution_status NOT NULL DEFAULT 'approved',
+  uploaded_by_name TEXT,
+  status contribution_status NOT NULL DEFAULT 'pending',
   reviewed_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   rejection_reason TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -189,6 +184,10 @@ CREATE POLICY "Approved videos viewable by everyone" ON public.plant_videos
 DROP POLICY IF EXISTS "Auth users can insert videos" ON public.plant_videos;
 CREATE POLICY "Auth users can insert videos" ON public.plant_videos
   FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+
+DROP POLICY IF EXISTS "Admins can update videos" ON public.plant_videos;
+CREATE POLICY "Admins can update videos" ON public.plant_videos
+  FOR UPDATE USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin'));
 
 DROP POLICY IF EXISTS "Maps viewable by everyone" ON public.school_maps;
 CREATE POLICY "Maps viewable by everyone" ON public.school_maps FOR SELECT USING (true);

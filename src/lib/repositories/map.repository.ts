@@ -1,10 +1,10 @@
 // ==============================================================================
 // Botanidex — School Map Repository
 // Tujuan: Data access layer untuk denah sekolah dan koordinat lokasi tanaman
-// Caller: src/lib/services/map.service.ts
+// Caller: src/lib/services/plant.service.ts
 // Dependensi: src/lib/repositories/plant.repository.ts, src/lib/types/map.types.ts
-// Main Functions: getSchoolMapData, updatePlantMarkerLocation
-// Side Effects: Read/write koordinat tanaman
+// Main Functions: getSchoolMapData
+// Side Effects: Read data tanaman approved dari PlantRepository
 // ==============================================================================
 
 import { PlantRepository } from './plant.repository';

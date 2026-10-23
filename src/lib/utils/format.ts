@@ -1,22 +1,57 @@
 // ==============================================================================
 // Botanidex — Formatting & Localization Utilities (Neo-Brutalist Theme)
-// Tujuan: Format teks kategori, tanggal Indonesia, durasi, dan token warna botani
-// Caller: PlantCard, PlantDetail, Moderation Dashboard
-// Dependensi: PlantCategory
+// Tujuan: Format teks kategori (statis & dinamis CMS), tanggal Indonesia, durasi, dan token warna botani
+// Caller: PlantCard, PlantDetail, SchoolMap, Moderation Dashboard
+// Dependensi: src/lib/types/plant.types.ts, src/lib/services/config.service.ts
+// Main Functions: getCategoryBadgeLabel, getCategoryShortLabel, getCategoryColorClass, formatDateId, formatDuration
+// Side Effects: Membaca konfigurasi kategori aktif dari ConfigService untuk kategori kustom
 // ==============================================================================
 
 import type { PlantCategory } from '../types/plant.types';
+import { ConfigService } from '../services/config.service';
+
+const DEFAULT_BADGE_LABELS: Record<string, string> = {
+	hias: 'Tanaman Hias',
+	pangan: 'Tanaman Pangan',
+	obat: 'Tanaman Obat / Herbal',
+	kayu: 'Tanaman Kayu / Hutan',
+	industri: 'Tanaman Industri / Perkebunan',
+	lainnya: 'Lainnya'
+};
+
+const DEFAULT_SHORT_LABELS: Record<string, string> = {
+	hias: 'Hias',
+	pangan: 'Pangan',
+	obat: 'Obat',
+	kayu: 'Kayu',
+	industri: 'Industri',
+	lainnya: 'Lainnya'
+};
 
 export function getCategoryBadgeLabel(category: PlantCategory): string {
-	const labels: Record<PlantCategory, string> = {
-		hias: 'Tanaman Hias',
-		pangan: 'Tanaman Pangan',
-		obat: 'Tanaman Obat / Herbal',
-		kayu: 'Tanaman Kayu / Hutan',
-		industri: 'Tanaman Industri / Perkebunan',
-		lainnya: 'Lainnya'
-	};
-	return labels[category] || category;
+	if (DEFAULT_BADGE_LABELS[category]) {
+		return DEFAULT_BADGE_LABELS[category];
+	}
+	try {
+		const found = ConfigService.getCategories().find((c) => c.id === category);
+		if (found) return found.label;
+	} catch {
+		// ignore fallback
+	}
+	return category;
+}
+
+export function getCategoryShortLabel(category: PlantCategory): string {
+	if (DEFAULT_SHORT_LABELS[category]) {
+		return DEFAULT_SHORT_LABELS[category];
+	}
+	try {
+		const found = ConfigService.getCategories().find((c) => c.id === category);
+		if (found) return found.label;
+	} catch {
+		// ignore fallback
+	}
+	return category;
 }
 
 export function getCategoryColorClass(category: PlantCategory): {
@@ -69,11 +104,11 @@ export function getCategoryColorClass(category: PlantCategory): {
 			};
 		default:
 			return {
-				bg: 'bg-[#E5E7EB]',
+				bg: 'bg-[#D4F469]',
 				text: 'text-[#0D0D0D]',
 				border: 'border-2 border-[#0D0D0D]',
 				dot: '#0D0D0D',
-				accentHex: '#E5E7EB'
+				accentHex: '#D4F469'
 			};
 	}
 }

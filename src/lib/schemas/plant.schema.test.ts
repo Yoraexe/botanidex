@@ -1,15 +1,22 @@
 // ==============================================================================
 // Botanidex — Unit Tests for PlantForm Schema Validation
-// Tujuan: Memvalidasi boundary input data formulir tanaman dengan Zod
+// Tujuan: Memvalidasi boundary input data formulir tanaman, kategori dinamis CMS, dan batas durasi video
 // Caller: npm run test (Vitest)
-// Dependensi: vitest, plantFormSchema
+// Dependensi: vitest, plantFormSchema, ConfigService
+// Main Functions: describe('plantFormSchema')
+// Side Effects: none
 // ==============================================================================
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { plantFormSchema } from './plant.schema';
+import { ConfigService } from '../services/config.service';
 
 describe('plantFormSchema', () => {
-	it('menerima payload tanaman yang valid dan lengkap', () => {
+	beforeEach(() => {
+		ConfigService.resetToDefaults();
+	});
+
+	it('menerima payload tanaman yang valid dan lengkap beserta taksonomi species', () => {
 		const payload = {
 			name_local: 'Kumis Kucing',
 			name_latin: 'Orthosiphon aristatus',
@@ -18,11 +25,44 @@ describe('plantFormSchema', () => {
 			description: 'Tanaman herbal untuk melancarkan saluran kemih dan anti inflamasi.',
 			taxonomy_kingdom: 'Plantae',
 			taxonomy_familia: 'Lamiaceae',
-			location_label: 'Kebun TOGA Bedeng C-1'
+			taxonomy_species: 'Orthosiphon aristatus',
+			location_label: 'Kebun TOGA Bedeng C-1',
+			video_duration_seconds: 180
 		};
 
 		const result = plantFormSchema.safeParse(payload);
 		expect(result.success).toBe(true);
+	});
+
+	it('menerima kategori kustom yang ditambahkan lewat CMS ConfigService (BUG-03 Regression)', () => {
+		ConfigService.addCategory({
+			id: 'kultur-jaringan',
+			label: 'Kultur Jaringan',
+			dotColor: 'bg-cyan-500'
+		});
+
+		const payload = {
+			name_local: 'Pisang Cavendish Kultur',
+			name_latin: 'Musa acuminata',
+			category: 'kultur-jaringan',
+			description: 'Planlet pisang hasil perbanyakan laboratorium kultur jaringan.'
+		};
+
+		const result = plantFormSchema.safeParse(payload);
+		expect(result.success).toBe(true);
+	});
+
+	it('menolak jika durasi video melebihi 5 menit / 300 detik (BUG-05 Regression)', () => {
+		const payload = {
+			name_local: 'Kumis Kucing',
+			name_latin: 'Orthosiphon aristatus',
+			category: 'obat',
+			description: 'Deskripsi tanaman yang cukup panjang lebih dari 10 karakter.',
+			video_duration_seconds: 305
+		};
+
+		const result = plantFormSchema.safeParse(payload);
+		expect(result.success).toBe(false);
 	});
 
 	it('menolak jika nama lokal kurang dari 2 karakter', () => {
@@ -55,11 +95,11 @@ describe('plantFormSchema', () => {
 		}
 	});
 
-	it('menolak kategori tanaman yang di luar enum', () => {
+	it('menolak kategori tanaman yang tidak terdaftar di sistem maupun CMS', () => {
 		const payload = {
 			name_local: 'Tanaman Aneh',
 			name_latin: 'Alienum botanicum',
-			category: 'kategori_palsu',
+			category: 'kategori_palsu_tidak_ada',
 			description: 'Deskripsi tanaman yang cukup panjang lebih dari 10 karakter.'
 		};
 

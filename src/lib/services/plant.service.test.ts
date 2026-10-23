@@ -1,20 +1,22 @@
 // ==============================================================================
-// Botanidex — Unit Tests for PlantService
-// Tujuan: Memvalidasi fungsi pencarian, filter kategori, detail, dan QR generator
+// Botanidex — Unit Tests for PlantService & PlantRepository Mappers
+// Tujuan: Memvalidasi pencarian, filter, QR generator, moderasi tanaman/video, peta sekolah, dan mapper DB Supabase
 // Caller: npm run test (Vitest)
-// Dependensi: vitest, PlantService
+// Dependensi: vitest, PlantService, mapDbRowToPlant, mapPlantToDbRow
+// Main Functions: describe('PlantService & Repository Mappers')
+// Side Effects: In-memory store state changes during tests
 // ==============================================================================
 
 import { describe, it, expect } from 'vitest';
 import { PlantService } from './plant.service';
+import { mapDbRowToPlant, mapPlantToDbRow } from '../repositories/plant.repository';
 
-describe('PlantService', () => {
+describe('PlantService & Repository Mappers', () => {
 	it('mengembalikan seluruh katalog tanaman default', async () => {
 		const plants = await PlantService.getCatalog();
 		expect(plants).toBeDefined();
 		expect(plants.length).toBeGreaterThan(0);
 
-		// Harus memiliki minimal 1 tanaman obat (misal Jahe Merah)
 		const jahe = plants.find((p) => p.slug === 'jahe-merah');
 		expect(jahe).toBeDefined();
 		expect(jahe?.name_local).toBe('Jahe Merah');
@@ -62,5 +64,81 @@ describe('PlantService', () => {
 		const qrDataUrl = await PlantService.generateQrDataUrl('jahe-merah');
 		expect(qrDataUrl).toBeDefined();
 		expect(qrDataUrl.startsWith('data:image/png;base64,')).toBe(true);
+	});
+
+	it('memetakan baris flat PostgreSQL ke objek Plant bersarang dengan benar (BUG-02 Regression)', () => {
+		const flatRow = {
+			id: '99999999-9999-9999-9999-999999999999',
+			slug: 'serai-wangi',
+			name_local: 'Serai Wangi',
+			name_latin: 'Cymbopogon nardus',
+			category: 'obat',
+			taxonomy_kingdom: 'Plantae',
+			taxonomy_divisio: 'Tracheophyta',
+			taxonomy_classis: 'Liliopsida',
+			taxonomy_ordo: 'Poales',
+			taxonomy_familia: 'Poaceae',
+			taxonomy_genus: 'Cymbopogon',
+			taxonomy_species: 'Cymbopogon nardus',
+			description: 'Tanaman penghasil minyak atsiri sitronela.',
+			status: 'approved',
+			contributor_name: 'Siswa Uji',
+			photos: [],
+			videos: []
+		};
+
+		const mapped = mapDbRowToPlant(flatRow);
+		expect(mapped.taxonomy.familia).toBe('Poaceae');
+		expect(mapped.taxonomy.species).toBe('Cymbopogon nardus');
+		expect(mapped.contributor_name).toBe('Siswa Uji');
+
+		const backToRow = mapPlantToDbRow(mapped);
+		expect(backToRow.taxonomy_familia).toBe('Poaceae');
+		expect(backToRow.taxonomy_species).toBe('Cymbopogon nardus');
+		expect(backToRow.taxonomy).toBeUndefined();
+	});
+
+	it('menyimpan tanaman baru beserta video pending lalu menyetujui status tanaman & videonya (BUG-05 Regression)', async () => {
+		const submitted = await PlantService.submitPlant(
+			{
+				name_local: 'Kunyit Putih',
+				name_latin: 'Curcuma zedoaria',
+				category: 'obat',
+				description: 'Rimpang obat tradisional untuk praktikum fitofarmaka SMK.',
+				taxonomy_kingdom: 'Plantae',
+				taxonomy_familia: 'Zingiberaceae',
+				taxonomy_species: 'Curcuma zedoaria',
+				video_title: 'Penjelasan Kunyit Putih'
+			},
+			{
+				uploadedPhotos: ['https://example.com/kunyit.jpg'],
+				uploadedVideoUrl: 'https://example.com/kunyit.mp4',
+				videoDurationSeconds: 120,
+				contributorName: 'Siswa Tester',
+				isAdmin: false
+			}
+		);
+
+		expect(submitted.status).toBe('pending');
+		expect(submitted.taxonomy.species).toBe('Curcuma zedoaria');
+		expect(submitted.videos[0].status).toBe('pending');
+		expect(submitted.videos[0].duration_seconds).toBe(120);
+
+		// Menolak tanpa alasan harus gagal validasi
+		await expect(PlantService.moderatePlant(submitted.id, 'reject', '')).rejects.toThrowError(
+			'Alasan wajib diisi jika menolak kontribusi'
+		);
+
+		// Menyetujui tanaman juga harus mengubah status video menjadi approved
+		await PlantService.moderatePlant(submitted.id, 'approve');
+		const approved = await PlantService.getPlantBySlug(submitted.slug);
+		expect(approved?.status).toBe('approved');
+		expect(approved?.videos[0]?.status).toBe('approved');
+	});
+
+	it('mengambil data peta kebun sekolah melalui PlantService (BUG-07 Regression)', async () => {
+		const mapData = await PlantService.getSchoolMapData();
+		expect(mapData.id).toBe('default-map');
+		expect(mapData.markers.length).toBeGreaterThan(0);
 	});
 });

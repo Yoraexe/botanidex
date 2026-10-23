@@ -1,22 +1,31 @@
 // ==============================================================================
 // Botanidex — Plant Zod Validation Schema
-// Tujuan: Validasi input data botani, taksonomi, dan sanitasi batasan teks
-// Caller: Plant forms, API endpoints, server load functions
-// Dependensi: zod
-// Main Functions: plantFormSchema, plantSearchSchema
-// Side Effects: none (schema validation only)
+// Tujuan: Validasi input data botani, taksonomi, kategori dinamis CMS, dan durasi video
+// Caller: Plant forms, PlantService, unit tests
+// Dependensi: zod, src/lib/services/config.service.ts
+// Main Functions: plantCategorySchema, plantFormSchema
+// Side Effects: Membaca daftar kategori aktif dari ConfigService saat validasi
 // ==============================================================================
 
 import { z } from 'zod';
+import { ConfigService } from '../services/config.service';
 
-export const plantCategorySchema = z.enum([
-	'hias',
-	'pangan',
-	'obat',
-	'kayu',
-	'industri',
-	'lainnya'
-]);
+const CORE_CATEGORIES = ['hias', 'pangan', 'obat', 'kayu', 'industri', 'lainnya'] as const;
+
+export const plantCategorySchema = z
+	.string()
+	.min(2, { message: 'Kategori tanaman wajib dipilih' })
+	.max(40)
+	.trim()
+	.refine(
+		(val) => {
+			if (val === 'semua') return false;
+			if ((CORE_CATEGORIES as readonly string[]).includes(val)) return true;
+			const dynamicCategories = ConfigService.getCategories();
+			return dynamicCategories.some((c) => c.id === val && c.id !== 'semua');
+		},
+		{ message: 'Kategori tanaman tidak terdaftar dalam sistem' }
+	);
 
 export const plantFormSchema = z.object({
 	name_local: z
@@ -43,11 +52,16 @@ export const plantFormSchema = z.object({
 	taxonomy_ordo: z.string().max(60).optional().or(z.literal('')),
 	taxonomy_familia: z.string().max(60).optional().or(z.literal('')),
 	taxonomy_genus: z.string().max(60).optional().or(z.literal('')),
-	taxonomy_species: z.string().max(60).optional().or(z.literal('')),
+	taxonomy_species: z.string().max(80).optional().or(z.literal('')),
 	location_label: z.string().max(120).optional().or(z.literal('')),
 	location_x: z.number().min(0).max(100).optional(),
 	location_y: z.number().min(0).max(100).optional(),
-	video_title: z.string().max(150).optional().or(z.literal(''))
+	video_title: z.string().max(150).optional().or(z.literal('')),
+	video_duration_seconds: z
+		.number()
+		.min(0)
+		.max(300, { message: 'Durasi video maksimal 5 menit (300 detik)' })
+		.optional()
 });
 
 export type PlantFormValues = z.infer<typeof plantFormSchema>;

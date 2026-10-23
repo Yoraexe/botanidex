@@ -2,11 +2,13 @@
   Botanidex — Plant Card Component (Svelte 5 Runes)
   Tujuan: Menampilkan ringkasan tanaman dalam format card grid Neo-Brutalist (Option A - Fresh Modern Agronomy)
   Caller: Halaman Katalog, Landing Page, Search Results
-  Dependensi: Plant type, format utils
+  Dependensi: Plant type, format utils (@lucide/svelte)
+  Main Functions: PlantCard component
+  Side Effects: Navigasi ke /katalog/[slug]
 -->
 <script lang="ts">
 	import type { Plant } from '#lib/types/plant.types';
-	import { getCategoryBadgeLabel, getCategoryColorClass } from '#lib/utils/format';
+	import { getCategoryShortLabel, getCategoryColorClass } from '#lib/utils/format';
 	import { MapPin, Video, ArrowUpRight } from '@lucide/svelte';
 
 	interface Props {
@@ -16,8 +18,11 @@
 	let { plant }: Props = $props();
 
 	const colorClass = $derived(getCategoryColorClass(plant.category));
-	const categoryLabel = $derived(getCategoryBadgeLabel(plant.category));
+	const categoryShortLabel = $derived(getCategoryShortLabel(plant.category));
 	const thumbnail = $derived(plant.photos[0]?.storage_path || '/icons/icon-192.svg');
+	const hasApprovedVideo = $derived(
+		Boolean(plant.videos && plant.videos.some((v) => v.status === 'approved'))
+	);
 </script>
 
 <a
@@ -39,23 +44,25 @@
 				class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] {colorClass.bg} text-[#0D0D0D]"
 			>
 				<span class="w-1.5 h-1.5 rounded-full bg-[#0D0D0D]"></span>
-				{categoryLabel.split(' ')[1] || categoryLabel}
+				{categoryShortLabel}
 			</span>
 		</div>
 
 		<!-- Video & Photo Indicators -->
 		<div class="absolute bottom-2.5 right-2.5 flex items-center gap-1.5">
-			{#if plant.videos && plant.videos.length > 0}
+			{#if hasApprovedVideo}
 				<span
 					class="px-2 py-0.5 rounded-lg bg-[#D4F469] text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D] text-[10px] font-black flex items-center gap-1"
-					title="Ada video edukasi siswa"
+					title="Ada video edukasi siswa terverifikasi"
 				>
 					<Video class="w-3 h-3 stroke-[2.5]" />
 					<span>Video</span>
 				</span>
 			{/if}
 			{#if plant.photos.length > 1}
-				<span class="px-2 py-0.5 rounded-lg bg-white text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D] text-[10px] font-black">
+				<span
+					class="px-2 py-0.5 rounded-lg bg-white text-[#0D0D0D] border border-[#0D0D0D] shadow-[1px_1px_0px_#0D0D0D] text-[10px] font-black"
+				>
 					{plant.photos.length} Foto
 				</span>
 			{/if}
@@ -65,7 +72,9 @@
 	<!-- Card Content -->
 	<div class="p-4 flex-1 flex flex-col justify-between">
 		<div>
-			<h3 class="text-base sm:text-lg font-black text-[#0D0D0D] group-hover:text-emerald-800 transition-colors line-clamp-1 leading-snug">
+			<h3
+				class="text-base sm:text-lg font-black text-[#0D0D0D] group-hover:text-emerald-800 transition-colors line-clamp-1 leading-snug"
+			>
 				{plant.name_local}
 			</h3>
 			<p class="text-xs text-stone-700 font-latin italic font-semibold line-clamp-1 mt-0.5">
@@ -78,7 +87,9 @@
 				<MapPin class="w-3.5 h-3.5 text-[#0D0D0D] shrink-0" />
 				<span class="truncate text-[11px]">{plant.location_label || 'Kebun Sekolah'}</span>
 			</div>
-			<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D4F469] text-[#0D0D0D] border border-[#0D0D0D] font-black text-[10px] shadow-[1px_1px_0px_#0D0D0D] group-hover:translate-x-0.5 transition-transform">
+			<span
+				class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D4F469] text-[#0D0D0D] border border-[#0D0D0D] font-black text-[10px] shadow-[1px_1px_0px_#0D0D0D] group-hover:translate-x-0.5 transition-transform"
+			>
 				Lihat
 				<ArrowUpRight class="w-3 h-3 stroke-[3]" />
 			</span>

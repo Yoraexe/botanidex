@@ -3,11 +3,12 @@
 // Tujuan: Mendefinisikan tipe data botani, taksonomi, foto, video, dan status katalog
 // Caller: Plant repositories, services, schemas, and UI components
 // Dependensi: none
-// Main Functions: Plant, PlantPhoto, PlantVideo, PlantCategory, PlantTaxonomy
+// Main Functions: Plant, PlantPhoto, PlantVideo, PlantCategory, PlantTaxonomy, PlantFilterOptions
 // Side Effects: none (type-only definition)
 // ==============================================================================
 
-export type PlantCategory = 'hias' | 'pangan' | 'obat' | 'kayu' | 'industri' | 'lainnya';
+export type CorePlantCategory = 'hias' | 'pangan' | 'obat' | 'kayu' | 'industri' | 'lainnya';
+export type PlantCategory = CorePlantCategory | (string & {});
 
 export type ContributionStatus = 'pending' | 'approved' | 'rejected';
 

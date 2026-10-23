@@ -1,16 +1,19 @@
 // ==============================================================================
 // Botanidex — Plant Service
-// Tujuan: Business logic untuk katalog botani, pencarian, QR code generation, dan moderasi
-// Caller: Route handlers, UI pages, forms
-// Dependensi: src/lib/repositories/plant.repository.ts, src/lib/utils/slug.ts, qrcode
-// Main Functions: getApprovedCatalog, getPlantDetail, submitNewPlant, reviewPlantSubmission, generateQrDataUrl
-// Side Effects: Panggil repository tanaman, generate QR canvas
+// Tujuan: Business logic untuk katalog botani, pencarian, peta sekolah, QR code generation, dan moderasi
+// Caller: Route pages (/katalog, /peta, /kontribusi/tambah, /admin/moderasi), QrGenerator
+// Dependensi: plant.repository.ts, map.repository.ts, contribution.schema.ts, slug.ts, qrcode
+// Main Functions: getCatalog, getPlantBySlug, getSchoolMapData, generateQrDataUrl, submitPlant, moderatePlant, getModerationQueue, getAllPlants
+// Side Effects: Panggil repository tanaman & peta, validasi moderasi, generate QR data URL
 // ==============================================================================
 
 import QRCode from 'qrcode';
 import { PlantRepository } from '../repositories/plant.repository';
+import { MapRepository } from '../repositories/map.repository';
+import { moderationReviewSchema } from '../schemas/contribution.schema';
 import { createPlantSlug } from '../utils/slug';
 import type { Plant, PlantFilterOptions, ContributionStatus } from '../types/plant.types';
+import type { SchoolMapInfo } from '../types/map.types';
 import type { PlantFormValues } from '../schemas/plant.schema';
 
 export class PlantService {
@@ -30,6 +33,13 @@ export class PlantService {
 	}
 
 	/**
+	 * Mengambil data denah kebun sekolah beserta marker tanaman yang sudah disetujui
+	 */
+	static async getSchoolMapData(): Promise<SchoolMapInfo> {
+		return MapRepository.getSchoolMapData();
+	}
+
+	/**
 	 * Menghasilkan Data URL gambar QR Code untuk ditempel pada tanaman fisik
 	 */
 	static async generateQrDataUrl(slugOrUrl: string): Promise<string> {
@@ -41,7 +51,7 @@ export class PlantService {
 			width: 320,
 			margin: 2,
 			color: {
-				dark: '#14532d', // green-900
+				dark: '#14532d',
 				light: '#ffffff'
 			},
 			errorCorrectionLevel: 'M'
@@ -56,6 +66,7 @@ export class PlantService {
 		options: {
 			uploadedPhotos: string[];
 			uploadedVideoUrl?: string;
+			videoDurationSeconds?: number;
 			contributorName?: string;
 			contributorId?: string;
 			isAdmin?: boolean;
@@ -63,7 +74,9 @@ export class PlantService {
 	): Promise<Plant> {
 		const baseSlug = createPlantSlug(formData.name_local, formData.name_latin);
 		const existingWithSlug = await PlantRepository.getPlantBySlug(baseSlug);
-		const finalSlug = existingWithSlug ? `${baseSlug}-${Math.random().toString(36).substring(2, 6)}` : baseSlug;
+		const finalSlug = existingWithSlug
+			? `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`
+			: baseSlug;
 
 		const aliases = (formData.aliases_raw || '')
 			.split(',')
@@ -88,10 +101,15 @@ export class PlantService {
 						id: crypto.randomUUID(),
 						plant_id: plantId,
 						storage_path: options.uploadedVideoUrl,
+						thumbnail_path: photos[0]?.storage_path,
 						title: formData.video_title || `Penjelasan Edukasi: ${formData.name_local}`,
+						duration_seconds:
+							options.videoDurationSeconds ?? formData.video_duration_seconds,
 						uploaded_by_name: options.contributorName || 'Siswa SMK PPN Gorontalo',
 						uploaded_by: options.contributorId,
-						status: options.isAdmin ? ('approved' as ContributionStatus) : ('pending' as ContributionStatus),
+						status: options.isAdmin
+							? ('approved' as ContributionStatus)
+							: ('pending' as ContributionStatus),
 						created_at: now
 					}
 				]
@@ -131,13 +149,21 @@ export class PlantService {
 	}
 
 	/**
-	 * Melakukan moderasi terhadap submission tanaman
+	 * Melakukan moderasi terhadap submission tanaman (divalidasi dengan moderationReviewSchema)
 	 */
 	static async moderatePlant(
 		plantId: string,
 		action: 'approve' | 'reject',
 		rejectionReason?: string
 	): Promise<boolean> {
+		const parsed = moderationReviewSchema.safeParse({
+			plant_id: plantId,
+			action,
+			rejection_reason: rejectionReason
+		});
+		if (!parsed.success) {
+			throw new Error(parsed.error.issues[0]?.message || 'Payload moderasi tidak valid');
+		}
 		const status: ContributionStatus = action === 'approve' ? 'approved' : 'rejected';
 		return PlantRepository.updatePlantStatus(plantId, status, rejectionReason);
 	}

@@ -2,11 +2,13 @@
   Botanidex — School Botanical Map Page (Svelte 5 Runes)
   Tujuan: Menampilkan denah interaktif area SMK Pertanian dengan lokasi seluruh tanaman gaya Neo-Brutalist (Option A)
   Caller: Route '/peta'
-  BRD Ref: F4 (Peta Lokasi Tanaman)
+  Dependensi: PlantService, SchoolMap.svelte
+  Main Functions: Peta page component
+  Side Effects: Memuat data peta kebun melalui PlantService
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { MapRepository } from '#lib/repositories/map.repository';
+	import { PlantService } from '#lib/services/plant.service';
 	import type { SchoolMapInfo } from '#lib/types/map.types';
 	import SchoolMap from '#lib/components/map/SchoolMap.svelte';
 	import { Map, ArrowLeft } from '@lucide/svelte';
@@ -16,7 +18,7 @@
 
 	onMount(async () => {
 		try {
-			mapData = await MapRepository.getSchoolMapData();
+			mapData = await PlantService.getSchoolMapData();
 		} catch (err) {
 			console.warn('Gagal memuat denah sekolah:', err);
 		} finally {
@@ -31,8 +33,12 @@
 
 <div class="flex flex-col gap-5">
 	<div class="flex items-center justify-between gap-4">
-		<h1 class="text-2xl sm:text-3xl font-black text-[#0D0D0D] tracking-tight flex items-center gap-2.5">
-			<div class="w-9 h-9 rounded-xl bg-[#D4F469] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center justify-center text-[#0D0D0D] shrink-0">
+		<h1
+			class="text-2xl sm:text-3xl font-black text-[#0D0D0D] tracking-tight flex items-center gap-2.5"
+		>
+			<div
+				class="w-9 h-9 rounded-xl bg-[#D4F469] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center justify-center text-[#0D0D0D] shrink-0"
+			>
 				<Map class="w-5 h-5 stroke-[2.5]" />
 			</div>
 			<span>Peta Zonasi Kebun</span>
@@ -49,7 +55,9 @@
 
 	<!-- Interactive Map Component -->
 	{#if isLoading}
-		<div class="w-full h-96 bg-white rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] animate-pulse flex items-center justify-center text-stone-400 font-bold text-sm">
+		<div
+			class="w-full h-96 bg-white rounded-2xl border-2 border-[#0D0D0D] shadow-[4px_4px_0px_#0D0D0D] animate-pulse flex items-center justify-center text-stone-400 font-bold text-sm"
+		>
 			Memuat denah kebun sekolah...
 		</div>
 	{:else if mapData}

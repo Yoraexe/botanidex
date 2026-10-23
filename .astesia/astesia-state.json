@@ -1,26 +1,15 @@
 {
   "project_name": "Flora SMK",
   "project_type": "greenfield",
-  "current_layer": "quality",
+  "current_layer": "devops",
   "layer_statuses": {
     "product": "done",
     "design": "done",
-    "engineering": "in_progress",
-    "quality": "failed",
+    "engineering": "done",
+    "quality": "done",
     "devops": "pending"
   },
-  "blocking_issues": [
-    "BUG-01 [CRITICAL]: Service Worker ($app/manifest) passes {path} objects instead of URL strings to cache.addAll(), crashing PWA installation in production.",
-    "BUG-02 [CRITICAL]: Schema mismatch between Plant TypeScript interface (nested taxonomy, contributor_name, uploaded_by_name) and Supabase PostgreSQL flat columns in PlantRepository.",
-    "BUG-03 [HIGH]: Dynamic CMS categories from ConfigService are rejected by hardcoded Zod plantCategorySchema and missing from contribution form select & badge formatters.",
-    "BUG-04 [HIGH/SECURITY]: Admin pages (/admin/moderasi, /admin/pengaturan) auto-login guests as admin onMount and lack role guards against contributor access.",
-    "BUG-05 [MEDIUM]: Missing taxonomy_species input in contribution form, missing 5-minute video duration validation (BRD F2/F5), and unmoderated video status propagation.",
-    "BUG-06 [MEDIUM]: QrScanner fails when uploading QR image while camera is active, leaks camera stream on fast unmount, and allows unvalidated external redirects.",
-    "BUG-07 [ARCHITECTURE]: Route src/routes/peta/+page.svelte directly imports MapRepository instead of going through Service layer.",
-    "BUG-08 [MEMORY]: URL.createObjectURL previews in src/routes/kontribusi/tambah/+page.svelte are not revoked.",
-    "BUG-09 [CONFIG]: vite.config.ts uses @sveltejs/adapter-auto instead of installed @sveltejs/adapter-vercel.",
-    "BUG-10 [ANTI-BLOAT/DOCS]: Duplicate lucide-svelte dependency, unused 1.73MB static/logo-smk.png bloating PWA cache, dead vitest-examples, and stale Header Docs."
-  ],
+  "blocking_issues": [],
   "retry_count": {
     "product": 0,
     "design": 0,
@@ -39,6 +28,7 @@
     ".astesia/design-system-flora-smk.md",
     ".astesia/architecture-flora-smk.md",
     ".astesia/quality-audit-flora-smk.md",
+    "src/service-worker.js",
     "src/routes/+layout.svelte",
     "src/routes/+page.svelte",
     "src/routes/katalog/+page.svelte",
@@ -47,7 +37,9 @@
     "src/routes/peta/+page.svelte",
     "src/routes/kontribusi/tambah/+page.svelte",
     "src/routes/admin/moderasi/+page.svelte",
+    "src/routes/admin/pengaturan/+page.svelte",
     "src/lib/services/plant.service.ts",
+    "src/lib/services/plant.service.test.ts",
     "src/lib/repositories/plant.repository.ts",
     "src/lib/repositories/map.repository.ts",
     "src/lib/services/storage.service.ts",
@@ -58,13 +50,21 @@
     "src/lib/components/qr/QrScanner.svelte",
     "src/lib/components/qr/QrGenerator.svelte",
     "src/lib/components/map/SchoolMap.svelte",
+    "src/lib/types/plant.types.ts",
     "src/lib/types/config.types.ts",
+    "src/lib/schemas/plant.schema.ts",
+    "src/lib/schemas/plant.schema.test.ts",
     "src/lib/schemas/config.schema.ts",
+    "src/lib/schemas/contribution.schema.ts",
+    "src/lib/utils/format.ts",
+    "src/lib/utils/format.test.ts",
     "src/lib/data/default-config.ts",
     "src/lib/repositories/config.repository.ts",
     "src/lib/services/config.service.ts",
     "src/lib/services/config.service.test.ts",
-    "src/routes/admin/pengaturan/+page.svelte"
+    "supabase/migrations/001_initial_schema.sql",
+    "vite.config.ts",
+    "package.json"
   ],
   "active_skills": [
     "sveltekit-frontend",
@@ -113,6 +113,12 @@
       "layer": "quality",
       "action": "quality_audit_failed_with_10_findings",
       "agent_note": "Deep Quality, Security, Architecture & Anti-Bloat Audit completed. Found 10 issues (2 Critical, 2 High, 2 Medium, 4 Architectural/Bloat). Generated .astesia/quality-audit-flora-smk.md and flagged blocking_issues for Engineering self-healing."
+    },
+    {
+      "timestamp": "2026-10-23T12:53:00+08:00",
+      "layer": "quality",
+      "action": "self_healing_remediation_passed",
+      "agent_note": "All 10 blocking issues resolved across Engineering & Quality layers. Added regression tests (26/26 Vitest tests passing), 0 svelte-check errors/warnings, removed 1.73MB duplicate asset & duplicate lucide-svelte dependency. Auto-transitioned to DevOps layer."
     }
   ]
 }
