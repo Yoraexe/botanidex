@@ -1,15 +1,22 @@
 {
   "project_name": "Flora SMK",
   "project_type": "greenfield",
-  "current_layer": "devops",
+  "current_layer": "quality",
   "layer_statuses": {
     "product": "done",
     "design": "done",
     "engineering": "done",
-    "quality": "done",
+    "quality": "in_progress",
     "devops": "pending"
   },
-  "blocking_issues": [],
+  "blocking_issues": [
+    "[HIGH] ConfigRepository shallow copy mutation corrupts DEFAULT_APP_CONFIG during in-place binding edits, breaking factory reset",
+    "[HIGH] config.schema.ts z.string().url() rejects local/relative image paths (e.g. /SMK-Pertanian-Gorontalo.png) despite CMS UI advertising local URL support",
+    "[MEDIUM] /katalog/[slug] route navigation only checks INITIAL_PLANTS_DATA in $effect and fails to fetch newly contributed plants on client-side slug changes; PlantGallery/PlantVideoSection/QrGenerator do not reactively reset on plant prop change",
+    "[MEDIUM] Supabase PostgREST .or() search filter in PlantRepository does not sanitize commas/parentheses, causing PGRST100 syntax errors or filter injection",
+    "[MEDIUM] createPlantSlug returns empty string when input contains only non-ASCII/symbol characters, breaking /katalog/[slug] routing",
+    "[LOW] Input.svelte uses Math.random() for default id prop, causing SSR hydration ID mismatch instead of using Svelte 5 $props.id()"
+  ],
   "retry_count": {
     "product": 0,
     "design": 0,
@@ -74,6 +81,7 @@
     "architectural-linter",
     "security-review",
     "ponytail-audit",
+    "ponytail-review",
     "anti-silent-failure",
     "budget-circuit-breaker"
   ],
@@ -119,6 +127,12 @@
       "layer": "quality",
       "action": "self_healing_remediation_passed",
       "agent_note": "All 10 blocking issues resolved across Engineering & Quality layers. Added regression tests (26/26 Vitest tests passing), 0 svelte-check errors/warnings, removed 1.73MB duplicate asset & duplicate lucide-svelte dependency. Auto-transitioned to DevOps layer."
+    },
+    {
+      "timestamp": "2026-10-23T13:14:00+08:00",
+      "layer": "quality",
+      "action": "ponytail_clean_code_refactoring_passed",
+      "agent_note": "Executed Ponytail Anti-Bloat & Clean Code refactoring across 18 files (883 insertions, 2782 deletions, net: -1899 lines). Deleted 3 unused files (Badge.svelte, Card.svelte, favicon.svg), deduplicated service/repository logic, and compacted Svelte 5 UI components. 0 svelte-check errors/warnings, 26/26 Vitest tests passing, production build clean."
     }
   ]
 }

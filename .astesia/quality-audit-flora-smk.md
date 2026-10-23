@@ -1,34 +1,48 @@
-# Quality & Security Audit Report — Flora SMK (Botanidex)
+# Quality, Security & Edge-Case Audit Report (Pass #2) — Botanidex (`flora-smk`)
 
-**Layer:** Quality Layer (`/astesia-quality`)  
-**Status Audit:** ✅ **PASSED (10/10 Temuan Telah Diperbaiki & Terverifikasi)**  
-**Tanggal Audit & Remediation:** 2026-10-23  
-**Verifikasi Akhir:** `svelte-check` (0 error, 0 warning), `vitest` (26/26 unit & regression tests pass), `vite build` (sukses kompilasi dengan `@sveltejs/adapter-vercel` dan Service Worker URL tervalidasi).
-
----
-
-## Ringkasan Eksekutif & Status Remediation
-
-Seluruh **10 temuan bug, celah keamanan, pelanggaran arsitektur, dan bloat** yang terdeteksi pada putaran audit pertama telah diselesaikan melalui siklus *Engineering Self-Healing* dan diverifikasi ulang oleh Quality Layer:
-
-| ID | Kategori & Severity | Deskripsi Masalah | Status & Bukti Perbaikan |
-|---|---|---|---|
-| **BUG-01** | 🔴 Critical (PWA) | `src/service-worker.js` mengirim objek `{path}` mentah dari `$app/manifest` ke `cache.addAll()` sehingga gagal install (`/[object Object]` 404), serta belum memfilter protokol non-HTTP. | ✅ **FIXED** — Menambahkan normalizer `toUrlPath()` di `src/service-worker.js` serta filter protokol `http:`/`https:`. |
-| **BUG-02** | 🔴 Critical (DB) | Mismatch antara tipe bersarang `Plant.taxonomy` + `contributor_name` / `uploaded_by_name` di TypeScript dengan kolom *flat* pada tabel PostgreSQL `public.plants`. | ✅ **FIXED** — Mengimplementasikan `mapDbRowToPlant()` & `mapPlantToDbRow()` di `src/lib/repositories/plant.repository.ts`, memperbarui `001_initial_schema.sql`, dan menguji *roundtrip* pada Vitest. |
-| **BUG-03** | 🔴 High (CMS) | Kategori kustom yang ditambah lewat CMS `/admin/pengaturan` ditolak oleh `plantCategorySchema`, tidak muncul di `<select>` form kontribusi, dan terpotong di `PlantCard.svelte`. | ✅ **FIXED** — Mengintegrasikan `ConfigService.getCategories()` ke `plant.schema.ts`, form `/kontribusi/tambah`, dan `getCategoryShortLabel()` di `format.ts` + `PlantCard.svelte`. |
-| **BUG-04** | 🔴 High (Security) | Halaman `/admin/moderasi` & `/admin/pengaturan` memiliki *backdoor* `onMount` yang otomatis me-login pengunjung *guest* sebagai Admin dan tidak memblokir role `contributor` (Siswa). | ✅ **FIXED** — Menghapus auto-login di `onMount` dan memasang *Role Guard* (`$authUser?.role !== 'admin'`) di `/admin/moderasi`, `/admin/pengaturan`, serta guard login di `/kontribusi/tambah`. |
-| **BUG-05** | 🟠 Medium (BRD F2/F5) | Input `taxonomySpecies` hilang dari template HTML form kontribusi; durasi video maks. 5 menit (300 detik) belum divalidasi; status video tidak ikut berubah saat tanaman di-approve; video belum difilter `status === 'approved'`. | ✅ **FIXED** — Menambahkan input `Species` di form, membuat `StorageService.validateVideoFile()` (batas 50MB & 300 detik), meng-update status `plant_videos` saat moderasi, dan memfilter `visibleVideos` di `PlantVideoSection.svelte`. |
-| **BUG-06** | 🟠 Medium (QR Scanner) | `QrScanner.svelte` gagal memindai file foto QR ketika kamera aktif, berpotensi membocorkan *camera stream* saat *unmount* cepat, dan mengizinkan *Open Redirect* ke domain eksternal. | ✅ **FIXED** — Memanggil `await stopScanner()` sebelum `scanFile()`, menjaga flag `isMounted`, dan membatasi *redirect* hanya untuk *same-origin* atau path `/katalog/[slug]`. |
-| **BUG-07** | 🟡 Architecture (Rule #7) | `src/routes/peta/+page.svelte` mengimpor `MapRepository` secara langsung dari layer UI. | ✅ **FIXED** — Menambahkan `PlantService.getSchoolMapData()` dan memanggilnya dari `src/routes/peta/+page.svelte`. |
-| **BUG-08** | 🟡 Memory Leak | Preview foto `URL.createObjectURL(file)` di `/kontribusi/tambah` tidak pernah di-*revoke*. | ✅ **FIXED** — Memanggil `URL.revokeObjectURL()` pada `removePhoto()` dan `onDestroy()`. |
-| **BUG-09** | 🟡 Config | `vite.config.ts` memakai `@sveltejs/adapter-auto` sehingga memunculkan warning environment saat build. | ✅ **FIXED** — Beralih ke `@sveltejs/adapter-vercel` di `vite.config.ts`. |
-| **BUG-10** | 🟡 Anti-Bloat & Docs | Duplikasi paket `lucide-svelte`, duplikasi aset `static/logo-smk.png` (1.73 MB) yang membebani cache PWA, file contoh `vitest-examples`, schema moderasi belum dipakai, dan Header Docs tidak sinkron. | ✅ **FIXED** — Menghapus `lucide-svelte`, `static/logo-smk.png`, `src/lib/vitest-examples/`, `contribution.types.ts`, mengaktifkan `moderationReviewSchema` di `PlantService.moderatePlant()`, dan menyinkronkan seluruh Header Docs. |
+- **Tanggal Audit Pass #2:** 23 Oktober 2026
+- **Auditor:** Astesia (Layer 4 — Quality & Security Orchestrator)
+- **Status Baseline:** 10 temuan Audit Pass #1 telah selesai diperbaiki dan kode telah dirampingkan (`net: -1899 lines`).
+- **Hasil Audit Pass #2:** Ditemukan **6 bug logika & *edge-case* mendalam** (2 High, 3 Medium, 1 Low) yang lolos dari pemeriksaan tipe statis (`svelte-check`).
 
 ---
 
-## Hasil Pengujian Regresi (Vitest)
-- `src/lib/schemas/plant.schema.test.ts` — **6 passed** (termasuk regresi kategori dinamis CMS & batas durasi video 300 detik)
-- `src/lib/services/config.service.test.ts` — **8 passed**
-- `src/lib/utils/format.test.ts` — **3 passed** (termasuk regresi label kategori kustom multi-kata)
-- `src/lib/services/plant.service.test.ts` — **9 passed** (termasuk regresi mapper PostgreSQL flat row ↔ `Plant`, propagasi status moderasi video, validasi alasan penolakan, dan `getSchoolMapData`)
-- **Total:** **26/26 Tests Passed (100%)**
+## Daftar Temuan Bug Baru (Audit Pass #2)
+
+### 1. [HIGH] Bug Mutasi *Shallow Copy* pada `DEFAULT_APP_CONFIG` yang Merusak Fitur *Factory Reset*
+- **Lokasi:** [`src/lib/repositories/config.repository.ts`](file:///d:/Workspaces/flora-smk/src/lib/repositories/config.repository.ts#L17-L88)
+- **Deskripsi:** `ConfigRepository` menyalin `DEFAULT_APP_CONFIG` menggunakan *shallow spread* (`{ ...DEFAULT_APP_CONFIG }`). Objek bersarang seperti `identity`, `hero`, `appDownload`, dan `categories` tetap merujuk ke alamat memori yang sama dengan konstanta `DEFAULT_APP_CONFIG`.
+- **Dampak:** Saat admin mengedit *input* yang terikat dengan `bind:value={config.identity.appName}` atau `config.hero.headlineLine1` di [`src/routes/admin/pengaturan/+page.svelte`](file:///d:/Workspaces/flora-smk/src/routes/admin/pengaturan/+page.svelte), referensi asli di dalam `DEFAULT_APP_CONFIG` ikut termutasi di memori. Akibatnya, tombol **Reset ke Bawaan Pabrik** (`resetConfig()`) gagal mengembalikan nilai asli apabila terjadi mutasi pada referensi memori.
+- **Rekomendasi Perbaikan:** Gunakan `structuredClone(DEFAULT_APP_CONFIG)` saat membaca, menginisialisasi, dan me-reset konfigurasi.
+
+### 2. [HIGH] Bug Penolakan URL Gambar Lokal pada Validasi Zod CMS (`config.schema.ts`)
+- **Lokasi:** [`src/lib/schemas/config.schema.ts`](file:///d:/Workspaces/flora-smk/src/lib/schemas/config.schema.ts#L19-L31) & [`src/routes/admin/pengaturan/+page.svelte`](file:///d:/Workspaces/flora-smk/src/routes/admin/pengaturan/+page.svelte#L229)
+- **Deskripsi:** Form CMS pada tab Foto Kebun memiliki *placeholder* `"URL Gambar (Unsplash / Imgur / Lokal)"`, namun `gardenPhotoSchema` dan `specimenItemSchema` menggunakan `z.string().url()`. Di Zod, `.url()` menolak *relative path* lokal seperti `/SMK-Pertanian-Gorontalo.png` atau `/icons/icon-512.svg`.
+- **Dampak:** Guru/Admin tidak bisa menggunakan aset gambar lokal dari folder `static/` karena selalu ditolak oleh validasi Zod.
+- **Rekomendasi Perbaikan:** Buat validator URL fleksibel (`http://`, `https://`, `data:image/`, atau *path* lokal yang diawali `/`) pada `config.schema.ts`.
+
+### 3. [MEDIUM] Bug Navigasi Dinamis `/katalog/[slug]` Tidak Memuat Tanaman Kontribusi Baru
+- **Lokasi:** [`src/routes/katalog/[slug]/+page.svelte`](file:///d:/Workspaces/flora-smk/src/routes/katalog/%5Bslug%5D/+page.svelte#L26-L44), [`PlantGallery.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/plant/PlantGallery.svelte#L17-L22), [`PlantVideoSection.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/plant/PlantVideoSection.svelte#L21-L22), & [`QrGenerator.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/qr/QrGenerator.svelte#L23-L31)
+- **Deskripsi:**
+  1. Pada `src/routes/katalog/[slug]/+page.svelte`, `loadPlantDetail()` hanya dipanggil di dalam `onMount()`, sedangkan `$effect` hanya mencari dari `INITIAL_PLANTS_DATA`. Jika pengguna berpindah antar-tanaman tanpa *full page reload* ke tanaman hasil kontribusi baru (yang hanya ada di `localStorage` / Supabase), data tanaman tidak dimuat ulang dari `PlantService.getPlantBySlug(slug)`.
+  2. `QrGenerator.svelte` hanya men-generate QR di `onMount()`, sehingga jika `plant.slug` berubah secara reaktif, QR Code tidak diperbarui.
+  3. `selectedIndex` pada `PlantGallery.svelte` dan `activeVideoIndex` pada `PlantVideoSection.svelte` tidak di-reset ke `0` saat berpindah tanaman.
+- **Rekomendasi Perbaikan:** Pindahkan pemanggilan `PlantService.getPlantBySlug(slug)` ke efek reaktif yang memantau perubahan `slug`, serta gunakan `$effect` untuk sinkronisasi QR dan *index* media.
+
+### 4. [MEDIUM] Bug *PostgREST Filter Syntax Error / Injection* pada Pencarian Supabase
+- **Lokasi:** [`src/lib/repositories/plant.repository.ts`](file:///d:/Workspaces/flora-smk/src/lib/repositories/plant.repository.ts#L140-L145)
+- **Deskripsi:** Nilai pencarian `filters.query` disisipkan langsung ke ekspresi `.or(\`name_local.ilike.%${s}%,...\`)`. Dalam PostgREST, karakter koma (`,`) dan tanda kurung (`(`, `)`) adalah pembatas sintaks logika.
+- **Dampak:** Jika pengguna mengetik kueri yang mengandung koma atau tanda kurung (misal: `"Jahe, Kunyit"` atau `"Zingiber (Merah)"`), *query* Supabase gagal dengan *syntax error* `PGRST100`.
+- **Rekomendasi Perbaikan:** Sanitasi karakter pembatas PostgREST (`[,()%*\\]`) pada string pencarian sebelum dimasukkan ke `.or()`.
+
+### 5. [MEDIUM] Bug *Empty Slug* pada `createPlantSlug` untuk Input Karakter Non-Alfanumerik
+- **Lokasi:** [`src/lib/utils/slug.ts`](file:///d:/Workspaces/flora-smk/src/lib/utils/slug.ts#L10-L16)
+- **Deskripsi:** Fungsi `createPlantSlug(nameLocal, nameLatin)` menghapus seluruh karakter `\W` dengan `.replace(/[\s\W-]+/g, '-').replace(/^-+|-+$/g, '')`. Jika input hanya berisi simbol atau karakter non-Latin (misal `"???"` atau emoji), hasil akhirnya adalah string kosong `""`.
+- **Dampak:** Tanaman tersimpan dengan `slug: ""` sehingga URL `/katalog/` gagal membuka halaman detail tanaman.
+- **Rekomendasi Perbaikan:** Tambahkan *fallback* `|| 'tanaman'` setelah proses *regex replace* selesai.
+
+### 6. [LOW] Bug *SSR Hydration Mismatch* akibat `Math.random()` pada Default Prop `Input.svelte`
+- **Lokasi:** [`src/lib/components/ui/Input.svelte`](file:///d:/Workspaces/flora-smk/src/lib/components/ui/Input.svelte#L21)
+- **Deskripsi:** Properti `id` menggunakan nilai bawaan `Math.random().toString(36).substring(2, 7)`. Saat SSR dijalankan di server dan kemudian di-hidrasi di browser, nilai `id` pada `<label for={id}>` dan `<input {id}>` berbeda antara server dan klien.
+- **Dampak:** Memicu *hydration mismatch* di SvelteKit dan berpotensi merusak asosiasi aksesibilitas `<label>` dengan `<input>` sebelum hidrasi selesai.
+- **Rekomendasi Perbaikan:** Gunakan rune bawaan Svelte 5 `$props.id()` sebagai *fallback* deterministik yang aman untuk SSR.

@@ -17,50 +17,29 @@ import type { SchoolMapInfo } from '../types/map.types';
 import type { PlantFormValues } from '../schemas/plant.schema';
 
 export class PlantService {
-	/**
-	 * Mengambil katalog tanaman approved dengan filter dan pencarian
-	 */
 	static async getCatalog(filters?: PlantFilterOptions): Promise<Plant[]> {
 		return PlantRepository.getApprovedPlants(filters);
 	}
 
-	/**
-	 * Mengambil detail tanaman lengkap berdasarkan slug URL
-	 */
 	static async getPlantBySlug(slug: string): Promise<Plant | null> {
-		if (!slug) return null;
-		return PlantRepository.getPlantBySlug(slug);
+		return slug ? PlantRepository.getPlantBySlug(slug) : null;
 	}
 
-	/**
-	 * Mengambil data denah kebun sekolah beserta marker tanaman yang sudah disetujui
-	 */
 	static async getSchoolMapData(): Promise<SchoolMapInfo> {
 		return MapRepository.getSchoolMapData();
 	}
 
-	/**
-	 * Menghasilkan Data URL gambar QR Code untuk ditempel pada tanaman fisik
-	 */
 	static async generateQrDataUrl(slugOrUrl: string): Promise<string> {
-		const targetUrl = slugOrUrl.startsWith('http')
-			? slugOrUrl
-			: `${typeof window !== 'undefined' ? window.location.origin : 'https://botanidex.app'}/katalog/${slugOrUrl}`;
-
+		const origin = typeof window !== 'undefined' ? window.location.origin : 'https://botanidex.app';
+		const targetUrl = slugOrUrl.startsWith('http') ? slugOrUrl : `${origin}/katalog/${slugOrUrl}`;
 		return QRCode.toDataURL(targetUrl, {
 			width: 320,
 			margin: 2,
-			color: {
-				dark: '#14532d',
-				light: '#ffffff'
-			},
+			color: { dark: '#14532d', light: '#ffffff' },
 			errorCorrectionLevel: 'M'
 		});
 	}
 
-	/**
-	 * Mengajukan entitas tanaman baru (dari siswa atau guru)
-	 */
 	static async submitPlant(
 		formData: PlantFormValues,
 		options: {
@@ -73,25 +52,23 @@ export class PlantService {
 		}
 	): Promise<Plant> {
 		const baseSlug = createPlantSlug(formData.name_local, formData.name_latin);
-		const existingWithSlug = await PlantRepository.getPlantBySlug(baseSlug);
-		const finalSlug = existingWithSlug
-			? `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`
-			: baseSlug;
-
+		const exists = await PlantRepository.getPlantBySlug(baseSlug);
+		const slug = exists ? `${baseSlug}-${Math.random().toString(36).substring(2, 6)}` : baseSlug;
 		const aliases = (formData.aliases_raw || '')
 			.split(',')
 			.map((a) => a.trim())
 			.filter(Boolean);
 
 		const now = new Date().toISOString();
-		const plantId = crypto.randomUUID();
+		const id = crypto.randomUUID();
+		const status: ContributionStatus = options.isAdmin ? 'approved' : 'pending';
 
-		const photos = options.uploadedPhotos.map((path, idx) => ({
+		const photos = options.uploadedPhotos.map((storage_path, sort_order) => ({
 			id: crypto.randomUUID(),
-			plant_id: plantId,
-			storage_path: path,
-			label: idx === 0 ? 'Habitus / Foto Utama' : `Dokumentasi ${idx + 1}`,
-			sort_order: idx,
+			plant_id: id,
+			storage_path,
+			label: sort_order === 0 ? 'Habitus / Foto Utama' : `Dokumentasi ${sort_order + 1}`,
+			sort_order,
 			created_at: now
 		}));
 
@@ -99,25 +76,22 @@ export class PlantService {
 			? [
 					{
 						id: crypto.randomUUID(),
-						plant_id: plantId,
+						plant_id: id,
 						storage_path: options.uploadedVideoUrl,
 						thumbnail_path: photos[0]?.storage_path,
 						title: formData.video_title || `Penjelasan Edukasi: ${formData.name_local}`,
-						duration_seconds:
-							options.videoDurationSeconds ?? formData.video_duration_seconds,
+						duration_seconds: options.videoDurationSeconds ?? formData.video_duration_seconds,
 						uploaded_by_name: options.contributorName || 'Siswa SMK PPN Gorontalo',
 						uploaded_by: options.contributorId,
-						status: options.isAdmin
-							? ('approved' as ContributionStatus)
-							: ('pending' as ContributionStatus),
+						status,
 						created_at: now
 					}
 				]
 			: [];
 
-		const newPlant: Plant = {
-			id: plantId,
-			slug: finalSlug,
+		return PlantRepository.insertPlant({
+			id,
+			slug,
 			name_local: formData.name_local,
 			name_latin: formData.name_latin,
 			name_english: formData.name_english || undefined,
@@ -136,21 +110,16 @@ export class PlantService {
 			location_x: formData.location_x,
 			location_y: formData.location_y,
 			location_label: formData.location_label || undefined,
-			status: options.isAdmin ? 'approved' : 'pending',
+			status,
 			contributor_id: options.contributorId,
 			contributor_name: options.contributorName || 'Kontributor Siswa',
 			photos,
 			videos,
 			created_at: now,
 			updated_at: now
-		};
-
-		return PlantRepository.insertPlant(newPlant);
+		});
 	}
 
-	/**
-	 * Melakukan moderasi terhadap submission tanaman (divalidasi dengan moderationReviewSchema)
-	 */
 	static async moderatePlant(
 		plantId: string,
 		action: 'approve' | 'reject',
@@ -164,20 +133,17 @@ export class PlantService {
 		if (!parsed.success) {
 			throw new Error(parsed.error.issues[0]?.message || 'Payload moderasi tidak valid');
 		}
-		const status: ContributionStatus = action === 'approve' ? 'approved' : 'rejected';
-		return PlantRepository.updatePlantStatus(plantId, status, rejectionReason);
+		return PlantRepository.updatePlantStatus(
+			plantId,
+			action === 'approve' ? 'approved' : 'rejected',
+			rejectionReason
+		);
 	}
 
-	/**
-	 * Mengambil daftar pengajuan untuk dashboard moderasi guru
-	 */
 	static async getModerationQueue(): Promise<Plant[]> {
 		return PlantRepository.getAllPlants('pending');
 	}
 
-	/**
-	 * Mengambil seluruh tanaman terdaftar
-	 */
 	static async getAllPlants(): Promise<Plant[]> {
 		return PlantRepository.getAllPlants();
 	}

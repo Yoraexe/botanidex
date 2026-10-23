@@ -10,7 +10,7 @@
 import type { PlantCategory } from '../types/plant.types';
 import { ConfigService } from '../services/config.service';
 
-const DEFAULT_BADGE_LABELS: Record<string, string> = {
+const BADGE_LABELS: Record<string, string> = {
 	hias: 'Tanaman Hias',
 	pangan: 'Tanaman Pangan',
 	obat: 'Tanaman Obat / Herbal',
@@ -19,7 +19,7 @@ const DEFAULT_BADGE_LABELS: Record<string, string> = {
 	lainnya: 'Lainnya'
 };
 
-const DEFAULT_SHORT_LABELS: Record<string, string> = {
+const SHORT_LABELS: Record<string, string> = {
 	hias: 'Hias',
 	pangan: 'Pangan',
 	obat: 'Obat',
@@ -28,100 +28,49 @@ const DEFAULT_SHORT_LABELS: Record<string, string> = {
 	lainnya: 'Lainnya'
 };
 
-export function getCategoryBadgeLabel(category: PlantCategory): string {
-	if (DEFAULT_BADGE_LABELS[category]) {
-		return DEFAULT_BADGE_LABELS[category];
-	}
+const CATEGORY_COLORS: Record<string, { bg: string; accentHex: string }> = {
+	obat: { bg: 'bg-[#A7D7C5]', accentHex: '#A7D7C5' },
+	pangan: { bg: 'bg-[#FBBF24]', accentHex: '#FBBF24' },
+	hias: { bg: 'bg-[#E9D5FF]', accentHex: '#E9D5FF' },
+	kayu: { bg: 'bg-[#FED7AA]', accentHex: '#FED7AA' },
+	industri: { bg: 'bg-[#BAE6FD]', accentHex: '#BAE6FD' }
+};
+
+function resolveDynamicLabel(category: string): string {
 	try {
-		const found = ConfigService.getCategories().find((c) => c.id === category);
-		if (found) return found.label;
+		return ConfigService.getCategories().find((c) => c.id === category)?.label || category;
 	} catch {
-		// ignore fallback
+		return category;
 	}
-	return category;
+}
+
+export function getCategoryBadgeLabel(category: PlantCategory): string {
+	return BADGE_LABELS[category] || resolveDynamicLabel(category);
 }
 
 export function getCategoryShortLabel(category: PlantCategory): string {
-	if (DEFAULT_SHORT_LABELS[category]) {
-		return DEFAULT_SHORT_LABELS[category];
-	}
-	try {
-		const found = ConfigService.getCategories().find((c) => c.id === category);
-		if (found) return found.label;
-	} catch {
-		// ignore fallback
-	}
-	return category;
+	return SHORT_LABELS[category] || resolveDynamicLabel(category);
 }
 
-export function getCategoryColorClass(category: PlantCategory): {
-	bg: string;
-	text: string;
-	border: string;
-	dot: string;
-	accentHex: string;
-} {
-	switch (category) {
-		case 'obat':
-			return {
-				bg: 'bg-[#A7D7C5]',
-				text: 'text-[#0D0D0D]',
-				border: 'border-2 border-[#0D0D0D]',
-				dot: '#0D0D0D',
-				accentHex: '#A7D7C5'
-			};
-		case 'pangan':
-			return {
-				bg: 'bg-[#FBBF24]',
-				text: 'text-[#0D0D0D]',
-				border: 'border-2 border-[#0D0D0D]',
-				dot: '#0D0D0D',
-				accentHex: '#FBBF24'
-			};
-		case 'hias':
-			return {
-				bg: 'bg-[#E9D5FF]',
-				text: 'text-[#0D0D0D]',
-				border: 'border-2 border-[#0D0D0D]',
-				dot: '#0D0D0D',
-				accentHex: '#E9D5FF'
-			};
-		case 'kayu':
-			return {
-				bg: 'bg-[#FED7AA]',
-				text: 'text-[#0D0D0D]',
-				border: 'border-2 border-[#0D0D0D]',
-				dot: '#0D0D0D',
-				accentHex: '#FED7AA'
-			};
-		case 'industri':
-			return {
-				bg: 'bg-[#BAE6FD]',
-				text: 'text-[#0D0D0D]',
-				border: 'border-2 border-[#0D0D0D]',
-				dot: '#0D0D0D',
-				accentHex: '#BAE6FD'
-			};
-		default:
-			return {
-				bg: 'bg-[#D4F469]',
-				text: 'text-[#0D0D0D]',
-				border: 'border-2 border-[#0D0D0D]',
-				dot: '#0D0D0D',
-				accentHex: '#D4F469'
-			};
-	}
+export function getCategoryColorClass(category: PlantCategory) {
+	const theme = CATEGORY_COLORS[category] || { bg: 'bg-[#D4F469]', accentHex: '#D4F469' };
+	return {
+		bg: theme.bg,
+		text: 'text-[#0D0D0D]',
+		border: 'border-2 border-[#0D0D0D]',
+		dot: '#0D0D0D',
+		accentHex: theme.accentHex
+	};
 }
 
 export function formatDateId(isoString: string): string {
 	if (!isoString) return '-';
 	try {
-		const date = new Date(isoString);
 		return new Intl.DateTimeFormat('id-ID', {
 			day: 'numeric',
 			month: 'long',
 			year: 'numeric'
-		}).format(date);
+		}).format(new Date(isoString));
 	} catch {
 		return isoString;
 	}

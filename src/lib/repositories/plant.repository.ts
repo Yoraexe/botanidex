@@ -12,33 +12,21 @@ import { INITIAL_PLANTS_DATA } from '../data/seed-plants';
 import type { Plant, PlantFilterOptions, ContributionStatus, PlantTaxonomy } from '../types/plant.types';
 
 const LOCAL_STORAGE_KEY = 'flora_smk_plants_store_v4';
+const PLANT_RELATIONS = '*, photos:plant_photos(*), videos:plant_videos(*)';
 
-// In-memory cache for SSR & offline synchronization
 let memoryPlants: Plant[] = [...INITIAL_PLANTS_DATA];
 
-/**
- * Memetakan baris tabel PostgreSQL (flat taxonomy columns) menjadi objek domain Plant
- */
 export function mapDbRowToPlant(row: Record<string, any>): Plant {
-	const nestedTaxonomy: PlantTaxonomy = row.taxonomy
-		? {
-				kingdom: row.taxonomy.kingdom || 'Plantae',
-				divisio: row.taxonomy.divisio || undefined,
-				classis: row.taxonomy.classis || undefined,
-				ordo: row.taxonomy.ordo || undefined,
-				familia: row.taxonomy.familia || undefined,
-				genus: row.taxonomy.genus || undefined,
-				species: row.taxonomy.species || undefined
-			}
-		: {
-				kingdom: row.taxonomy_kingdom || 'Plantae',
-				divisio: row.taxonomy_divisio || undefined,
-				classis: row.taxonomy_classis || undefined,
-				ordo: row.taxonomy_ordo || undefined,
-				familia: row.taxonomy_familia || undefined,
-				genus: row.taxonomy_genus || undefined,
-				species: row.taxonomy_species || undefined
-			};
+	const src = row.taxonomy || {};
+	const taxonomy: PlantTaxonomy = {
+		kingdom: src.kingdom || row.taxonomy_kingdom || 'Plantae',
+		divisio: src.divisio || row.taxonomy_divisio || undefined,
+		classis: src.classis || row.taxonomy_classis || undefined,
+		ordo: src.ordo || row.taxonomy_ordo || undefined,
+		familia: src.familia || row.taxonomy_familia || undefined,
+		genus: src.genus || row.taxonomy_genus || undefined,
+		species: src.species || row.taxonomy_species || undefined
+	};
 
 	return {
 		id: String(row.id),
@@ -48,7 +36,7 @@ export function mapDbRowToPlant(row: Record<string, any>): Plant {
 		name_english: row.name_english || undefined,
 		aliases: Array.isArray(row.aliases) ? row.aliases : [],
 		category: row.category || 'lainnya',
-		taxonomy: nestedTaxonomy,
+		taxonomy,
 		description: String(row.description || ''),
 		location_x: typeof row.location_x === 'number' ? row.location_x : undefined,
 		location_y: typeof row.location_y === 'number' ? row.location_y : undefined,
@@ -65,10 +53,8 @@ export function mapDbRowToPlant(row: Record<string, any>): Plant {
 	};
 }
 
-/**
- * Memetakan objek domain Plant menjadi struktur kolom flat untuk tabel public.plants di Supabase
- */
 export function mapPlantToDbRow(plant: Plant): Record<string, any> {
+	const t = plant.taxonomy;
 	return {
 		id: plant.id,
 		slug: plant.slug,
@@ -77,13 +63,13 @@ export function mapPlantToDbRow(plant: Plant): Record<string, any> {
 		name_english: plant.name_english ?? null,
 		aliases: plant.aliases ?? [],
 		category: plant.category,
-		taxonomy_kingdom: plant.taxonomy?.kingdom || 'Plantae',
-		taxonomy_divisio: plant.taxonomy?.divisio ?? null,
-		taxonomy_classis: plant.taxonomy?.classis ?? null,
-		taxonomy_ordo: plant.taxonomy?.ordo ?? null,
-		taxonomy_familia: plant.taxonomy?.familia ?? null,
-		taxonomy_genus: plant.taxonomy?.genus ?? null,
-		taxonomy_species: plant.taxonomy?.species ?? null,
+		taxonomy_kingdom: t?.kingdom || 'Plantae',
+		taxonomy_divisio: t?.divisio ?? null,
+		taxonomy_classis: t?.classis ?? null,
+		taxonomy_ordo: t?.ordo ?? null,
+		taxonomy_familia: t?.familia ?? null,
+		taxonomy_genus: t?.genus ?? null,
+		taxonomy_species: t?.species ?? null,
 		description: plant.description,
 		location_x: plant.location_x ?? null,
 		location_y: plant.location_y ?? null,
@@ -99,9 +85,7 @@ export function mapPlantToDbRow(plant: Plant): Record<string, any> {
 }
 
 function loadLocalPlants(): Plant[] {
-	if (typeof window === 'undefined') {
-		return memoryPlants;
-	}
+	if (typeof window === 'undefined') return memoryPlants;
 	try {
 		const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
 		if (raw) {
@@ -130,185 +114,95 @@ function saveLocalPlants(plants: Plant[]): void {
 }
 
 export class PlantRepository {
-	/**
-	 * Mengambil daftar seluruh tanaman yang berstatus approved
-	 */
+	private static async findSingleBy(column: 'slug' | 'id', value: string): Promise<Plant | null> {
+		if (isSupabaseConfigured()) {
+			try {
+				const { data, error } = await supabase
+					.from('plants')
+					.select(PLANT_RELATIONS)
+					.eq(column, value)
+					.single();
+				if (!error && data) return mapDbRowToPlant(data);
+			} catch (err) {
+				console.warn(`Koneksi Supabase findSingleBy(${column}) gagal:`, err);
+			}
+		}
+		return loadLocalPlants().find((p) => p[column] === value) || null;
+	}
+
 	static async getApprovedPlants(filters?: PlantFilterOptions): Promise<Plant[]> {
 		if (isSupabaseConfigured()) {
 			try {
 				let query = supabase
 					.from('plants')
-					.select(
-						`
-						*,
-						photos:plant_photos(*),
-						videos:plant_videos(*)
-					`
-					)
+					.select(PLANT_RELATIONS)
 					.eq('status', 'approved')
 					.order('name_local', { ascending: true });
 
 				if (filters?.category && filters.category !== 'semua') {
 					query = query.eq('category', filters.category);
 				}
-
-				if (filters?.query && filters.query.trim().length > 0) {
-					const search = filters.query.trim();
+				if (filters?.query?.trim()) {
+					const s = filters.query.trim();
 					query = query.or(
-						`name_local.ilike.%${search}%,name_latin.ilike.%${search}%,name_english.ilike.%${search}%,taxonomy_familia.ilike.%${search}%`
+						`name_local.ilike.%${s}%,name_latin.ilike.%${s}%,name_english.ilike.%${s}%,taxonomy_familia.ilike.%${s}%`
 					);
 				}
-
 				const { data, error } = await query;
-				if (!error && data) {
-					return data.map(mapDbRowToPlant);
-				}
-				console.warn('Supabase query error, fallback ke local storage:', error?.message);
+				if (!error && data) return data.map(mapDbRowToPlant);
 			} catch (err) {
 				console.warn('Koneksi Supabase gagal, fallback ke offline store:', err);
 			}
 		}
 
-		// Fallback offline store
-		const allPlants = loadLocalPlants();
-		return allPlants.filter((plant) => {
-			if (plant.status !== 'approved') return false;
-
-			if (
-				filters?.category &&
-				filters.category !== 'semua' &&
-				plant.category !== filters.category
-			) {
+		const q = filters?.query?.toLowerCase().trim();
+		return loadLocalPlants().filter((p) => {
+			if (p.status !== 'approved') return false;
+			if (filters?.category && filters.category !== 'semua' && p.category !== filters.category) {
 				return false;
 			}
-
-			if (filters?.query && filters.query.trim().length > 0) {
-				const q = filters.query.toLowerCase().trim();
-				const matchName = plant.name_local.toLowerCase().includes(q);
-				const matchLatin = plant.name_latin.toLowerCase().includes(q);
-				const matchEn = plant.name_english?.toLowerCase().includes(q);
-				const matchAlias = plant.aliases.some((a) => a.toLowerCase().includes(q));
-				const matchFamily = plant.taxonomy.familia?.toLowerCase().includes(q);
-				if (!matchName && !matchLatin && !matchEn && !matchAlias && !matchFamily) {
-					return false;
-				}
+			if (q) {
+				const fields = [p.name_local, p.name_latin, p.name_english, p.taxonomy.familia, ...p.aliases];
+				return fields.some((f) => f?.toLowerCase().includes(q));
 			}
-
 			return true;
 		});
 	}
 
-	/**
-	 * Mengambil tanaman berdasarkan slug URL
-	 */
 	static async getPlantBySlug(slug: string): Promise<Plant | null> {
-		if (isSupabaseConfigured()) {
-			try {
-				const { data, error } = await supabase
-					.from('plants')
-					.select(
-						`
-						*,
-						photos:plant_photos(*),
-						videos:plant_videos(*)
-					`
-					)
-					.eq('slug', slug)
-					.single();
-
-				if (!error && data) {
-					return mapDbRowToPlant(data);
-				}
-			} catch (err) {
-				console.warn('Koneksi Supabase getPlantBySlug gagal:', err);
-			}
-		}
-
-		const plants = loadLocalPlants();
-		const found = plants.find((p) => p.slug === slug);
-		return found || null;
+		return this.findSingleBy('slug', slug);
 	}
 
-	/**
-	 * Mengambil tanaman berdasarkan ID
-	 */
 	static async getPlantById(id: string): Promise<Plant | null> {
-		if (isSupabaseConfigured()) {
-			try {
-				const { data, error } = await supabase
-					.from('plants')
-					.select(
-						`
-						*,
-						photos:plant_photos(*),
-						videos:plant_videos(*)
-					`
-					)
-					.eq('id', id)
-					.single();
-
-				if (!error && data) {
-					return mapDbRowToPlant(data);
-				}
-			} catch (err) {
-				console.warn('Koneksi Supabase getPlantById gagal:', err);
-			}
-		}
-
-		const plants = loadLocalPlants();
-		const found = plants.find((p) => p.id === id);
-		return found || null;
+		return this.findSingleBy('id', id);
 	}
 
-	/**
-	 * Mengambil seluruh tanaman untuk keperluan moderasi/admin (termasuk pending & rejected)
-	 */
 	static async getAllPlants(status?: ContributionStatus): Promise<Plant[]> {
 		if (isSupabaseConfigured()) {
 			try {
 				let query = supabase
 					.from('plants')
-					.select(
-						`
-						*,
-						photos:plant_photos(*),
-						videos:plant_videos(*)
-					`
-					)
+					.select(PLANT_RELATIONS)
 					.order('created_at', { ascending: false });
-
-				if (status) {
-					query = query.eq('status', status);
-				}
-
+				if (status) query = query.eq('status', status);
 				const { data, error } = await query;
-				if (!error && data) {
-					return data.map(mapDbRowToPlant);
-				}
+				if (!error && data) return data.map(mapDbRowToPlant);
 			} catch (err) {
 				console.warn('Koneksi Supabase getAllPlants gagal:', err);
 			}
 		}
 
 		const plants = loadLocalPlants();
-		if (status) {
-			return plants.filter((p) => p.status === status);
-		}
-		return [...plants].sort(
-			(a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-		);
+		const filtered = status ? plants.filter((p) => p.status === status) : [...plants];
+		return filtered.sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
 	}
 
-	/**
-	 * Menyimpan entitas tanaman baru (kontribusi siswa atau input guru)
-	 */
 	static async insertPlant(newPlant: Plant): Promise<Plant> {
 		if (isSupabaseConfigured()) {
 			try {
-				const plantRow = mapPlantToDbRow(newPlant);
 				const { data, error } = await supabase
 					.from('plants')
-					.insert([plantRow])
+					.insert([mapPlantToDbRow(newPlant)])
 					.select()
 					.single();
 
@@ -348,15 +242,10 @@ export class PlantRepository {
 			}
 		}
 
-		const current = loadLocalPlants();
-		const updated = [newPlant, ...current];
-		saveLocalPlants(updated);
+		saveLocalPlants([newPlant, ...loadLocalPlants()]);
 		return newPlant;
 	}
 
-	/**
-	 * Mengupdate status moderasi tanaman beserta video terkait (approve / reject)
-	 */
 	static async updatePlantStatus(
 		id: string,
 		status: ContributionStatus,
@@ -368,20 +257,13 @@ export class PlantRepository {
 			try {
 				const { error } = await supabase
 					.from('plants')
-					.update({
-						status,
-						rejection_reason: rejectionReason || null,
-						updated_at: now
-					})
+					.update({ status, rejection_reason: rejectionReason || null, updated_at: now })
 					.eq('id', id);
 
 				if (!error) {
 					await supabase
 						.from('plant_videos')
-						.update({
-							status,
-							rejection_reason: rejectionReason || null
-						})
+						.update({ status, rejection_reason: rejectionReason || null })
 						.eq('plant_id', id);
 					return true;
 				}
@@ -390,24 +272,23 @@ export class PlantRepository {
 			}
 		}
 
-		const current = loadLocalPlants();
-		const updated = current.map((p) => {
-			if (p.id === id) {
-				return {
-					...p,
-					status,
-					rejection_reason: rejectionReason || undefined,
-					videos: (p.videos || []).map((v) => ({
-						...v,
-						status,
-						rejection_reason: rejectionReason || undefined
-					})),
-					updated_at: now
-				};
-			}
-			return p;
-		});
-		saveLocalPlants(updated);
+		saveLocalPlants(
+			loadLocalPlants().map((p) =>
+				p.id === id
+					? {
+							...p,
+							status,
+							rejection_reason: rejectionReason || undefined,
+							videos: (p.videos || []).map((v) => ({
+								...v,
+								status,
+								rejection_reason: rejectionReason || undefined
+							})),
+							updated_at: now
+						}
+					: p
+			)
+		);
 		return true;
 	}
 }
