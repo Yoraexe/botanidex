@@ -365,4 +365,38 @@ SchoolMap
 
 ---
 
-*Dokumen ini dihasilkan oleh Astesia Product Layer dan menunggu persetujuan user sebelum dilanjutkan ke Design Layer.*
+## 10. Change Requests (CR)
+
+### CR-01: Kategori Tanaman Kustom Terkendali & Kuantitas/Populasi Tanaman
+**Status:** Approved (2026-10-27)  
+**Tipe:** Feature Enhancement & Data Model Extension
+
+#### 1. Kategori Tanaman Kustom (Opsi A — Hierarki Terkendali)
+- **Problem Statement:** Sekolah memerlukan fleksibilitas untuk menambahkan kategori botani baru (misalnya "Tanaman Pakan Ternak", "Kultur Jaringan", "Perdu") tanpa harus hardcode di kode program, namun tetap terkontrol agar tidak terjadi duplikasi semantik oleh siswa.
+- **Business Rules:**
+  - Kategori hanya dapat ditambahkan, diedit, atau dihapus oleh **Guru / Admin** melalui panel CMS Pengaturan (`/admin/pengaturan`).
+  - Kategori baru otomatis terdaftar ke dalam `ConfigService` dan menjadi opsi pilihan di dropdown formulir kontribusi siswa (`/kontribusi/tambah`).
+  - Kategori kustom otomatis memiliki filter chip aktif di halaman katalog (`/katalog`) dan beranda.
+  - Penghapusan kategori diproteksi jika terdapat tanaman yang sedang menggunakan kategori tersebut (atau diberikan peringatan/fallback ke 'lainnya').
+- **Acceptance Criteria:**
+  - [ ] AC-CR1.1: Admin dapat menambah kategori baru dengan ID slug unik, label nama, dan pilihan warna dot indikator.
+  - [ ] AC-CR1.2: Kategori baru yang ditambahkan admin langsung muncul dalam dropdown pilihan di halaman kontribusi tambah tanaman.
+  - [ ] AC-CR1.3: Halaman katalog menampilkan kategori baru secara dinamis pada bilah filter lengkap dengan hitungan jumlah tanaman.
+
+#### 2. Kuantitas / Populasi Tanaman (Opsi 1 — Agregat Populasi)
+- **Problem Statement:** Saat mendokumentasikan tanaman di kebun sekolah, seringkali satu spesies memiliki lebih dari 1 pohon (contoh: *Mangga Madu ada 3 pohon*). Sistem sebelumnya hanya mencatat keberadaan spesies tanpa mencatat total populasi pohon.
+- **Business Rules:**
+  - Setiap data tanaman wajib memiliki atribut `quantity` (bilangan bulat positif, minimal 1, default: 1).
+  - Setiap data tanaman memiliki satuan populasi `unit` (string, default: `'pohon'`, opsi pilihan: `'pohon'`, `'rumpun'`, `'polybag'`, `'pot'`, `'bedeng'`).
+  - Siswa/kontributor dapat mengisi jumlah dan satuan saat menambah tanaman baru.
+  - Kartu tanaman pada katalog menampilkan badge populasi jika tanaman > 1 (atau menampilkan tag kuantitas).
+  - Halaman detail tanaman menampilkan informasi populasi kebun secara eksplisit (contoh: *"Populasi Kebun: 3 Pohon"*).
+- **Acceptance Criteria:**
+  - [ ] AC-CR2.1: Model data `Plant` dan skema validasi Zod memuat field `quantity` (number, >= 1) dan `unit` (string non-empty).
+  - [ ] AC-CR2.2: Formulir penambahan tanaman menyediakan input angka untuk jumlah tanaman dan pilihan satuan.
+  - [ ] AC-CR2.3: Komponen `PlantCard` menampilkan indikator kuantitas spesimen dengan format yang jelas (misal: "3 Pohon").
+  - [ ] AC-CR2.4: Halaman detail tanaman (`/katalog/[slug]`) menampilkan kotak info populasi lengkap dengan jumlah dan satuan.
+
+---
+
+*Dokumen ini dihasilkan oleh Astesia Product Layer dan disetujui untuk implementasi pipeline.*

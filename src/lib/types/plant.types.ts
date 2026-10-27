@@ -54,6 +54,8 @@ export interface Plant {
 	category: PlantCategory;
 	taxonomy: PlantTaxonomy;
 	description: string;
+	quantity?: number;
+	unit?: string;
 	location_x?: number;
 	location_y?: number;
 	location_label?: string;

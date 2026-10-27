@@ -29,6 +29,7 @@
 	let form = $state({
 		name_local: '', name_latin: '', name_english: '', aliases_raw: '',
 		category: (initialCategories[0]?.id || 'obat') as PlantCategory,
+		quantity: 1, unit: 'pohon',
 		description: '', location_label: '', location_x: 50, location_y: 50,
 		taxonomy_kingdom: 'Plantae', taxonomy_divisio: '', taxonomy_classis: '',
 		taxonomy_ordo: '', taxonomy_familia: '', taxonomy_genus: '', taxonomy_species: '',
@@ -187,6 +188,26 @@
 							{#if !availableCategories.some((c) => c.id === 'lainnya')}<option value="lainnya">Lainnya</option>{/if}
 						</select>
 						{#if errors.category}<p class="text-xs font-black text-[#E07A5F]">{errors.category}</p>{/if}
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<div class="flex flex-col gap-1.5 w-full">
+						<label for="quantity-input" class="text-xs font-black text-[#0D0D0D] tracking-wider uppercase">Jumlah Populasi Tanaman *</label>
+						<input id="quantity-input" type="number" min="1" bind:value={form.quantity} placeholder="1" class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#0D0D0D] rounded-xl shadow-[2px_2px_0px_#0D0D0D] focus:shadow-[4px_4px_0px_#0D0D0D] outline-none font-bold text-[#0D0D0D]" required />
+						{#if errors.quantity}<p class="text-xs font-black text-[#E07A5F]">{errors.quantity}</p>{/if}
+					</div>
+					<div class="flex flex-col gap-1.5 w-full">
+						<label for="unit-select" class="text-xs font-black text-[#0D0D0D] tracking-wider uppercase">Satuan Populasi *</label>
+						<select id="unit-select" bind:value={form.unit} class="w-full px-3.5 py-2.5 text-sm bg-white border-2 border-[#0D0D0D] rounded-xl shadow-[2px_2px_0px_#0D0D0D] focus:shadow-[4px_4px_0px_#0D0D0D] outline-none font-bold text-[#0D0D0D]">
+							<option value="pohon">Pohon</option>
+							<option value="rumpun">Rumpun</option>
+							<option value="polybag">Polybag</option>
+							<option value="pot">Pot</option>
+							<option value="bedeng">Bedeng</option>
+							<option value="batang">Batang</option>
+						</select>
+						{#if errors.unit}<p class="text-xs font-black text-[#E07A5F]">{errors.unit}</p>{/if}
 					</div>
 				</div>
 

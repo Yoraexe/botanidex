@@ -26,11 +26,16 @@
 	<div class="relative aspect-4/3 w-full bg-stone-100 border-b-2 border-[#0D0D0D] overflow-hidden">
 		<img src={thumbnail} alt={plant.name_local} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
 
-		<div class="absolute top-2.5 left-2.5">
+		<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 flex-wrap max-w-[80%]">
 			<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] {colorClass.bg} text-[#0D0D0D]">
 				<span class="w-1.5 h-1.5 rounded-full bg-[#0D0D0D]"></span>
 				{categoryShortLabel}
 			</span>
+			{#if plant.quantity}
+				<span class="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-black tracking-wider border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] bg-white text-[#0D0D0D]" title="Populasi Tanaman">
+					{plant.quantity} {plant.unit || 'pohon'}
+				</span>
+			{/if}
 		</div>
 
 		<div class="absolute bottom-2.5 right-2.5 flex items-center gap-1.5">

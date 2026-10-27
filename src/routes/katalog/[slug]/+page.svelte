@@ -19,7 +19,7 @@
 	import QrGenerator from '#lib/components/qr/QrGenerator.svelte';
 	import Button from '#lib/components/ui/Button.svelte';
 	import { toast } from '#lib/stores/toast.store';
-	import { ArrowLeft, MapPin, Share2, QrCode, Calendar, UserCheck, FileText, X, Clock, AlertCircle, ShieldCheck } from '@lucide/svelte';
+	import { ArrowLeft, MapPin, Share2, QrCode, Calendar, UserCheck, FileText, X, Clock, AlertCircle, ShieldCheck, Trees } from '@lucide/svelte';
 
 	const slug = $derived(page.params.slug);
 	let plant = $state<Plant | null>(null);
@@ -124,6 +124,10 @@
 			<div class="flex flex-col gap-2.5 pb-5 border-b-2 border-[#0D0D0D]">
 				<div class="flex flex-wrap items-center gap-2">
 					<span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] {colors.bg} text-[#0D0D0D]">{getCategoryBadgeLabel(plant.category)}</span>
+					<span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] bg-[#D4F469] text-[#0D0D0D] flex items-center gap-1.5" title="Jumlah populasi tanaman di kebun sekolah">
+						<Trees class="w-3.5 h-3.5 stroke-[2.5]" />
+						<span>Populasi: {plant.quantity || 1} {plant.unit || 'pohon'}</span>
+					</span>
 					{#if plant.aliases?.length}
 						<span class="text-xs font-bold text-stone-600 bg-[#F3F6ED] px-2 py-0.5 rounded-md border border-[#0D0D0D]">Sinonim: {plant.aliases.join(', ')}</span>
 					{/if}

@@ -32,6 +32,8 @@ export const plantFormSchema = z.object({
 	name_english: z.string().max(100).optional().or(z.literal('')),
 	aliases_raw: z.string().max(250).optional().or(z.literal('')),
 	category: plantCategorySchema,
+	quantity: z.coerce.number().int({ message: 'Jumlah tanaman harus berupa bilangan bulat' }).min(1, { message: 'Jumlah tanaman minimal 1' }).default(1),
+	unit: z.string().min(1, { message: 'Satuan populasi wajib diisi' }).max(30).default('pohon'),
 	description: z.string().min(10, { message: 'Deskripsi minimal 10 karakter' }).max(5000, { message: 'Deskripsi maksimal 5000 karakter' }).trim(),
 	taxonomy_kingdom: z.string().max(60).default('Plantae'),
 	taxonomy_divisio: z.string().max(60).optional().or(z.literal('')),

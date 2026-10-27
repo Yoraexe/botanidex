@@ -1,7 +1,7 @@
 # DevOps Deployment & Infrastructure Plan — Flora SMK
 **Project Name:** Flora SMK (Botanidex)
 **Status:** Completed & Live Public
-**Current Active Live URL:** `https://forums-rebound-marc-bent.trycloudflare.com`
+**Current Active Live URL:** `https://thy-floating-pod-pharmacy.trycloudflare.com`
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### A. Active Cloudflare Edge Tunnel (Instant Public Access)
 - **Protocol:** Cloudflare Quick Tunnel (QUIC / HTTP2)
-- **Public URL:** `https://forums-rebound-marc-bent.trycloudflare.com`
+- **Public URL:** `https://thy-floating-pod-pharmacy.trycloudflare.com`
 - **Origin Server:** Vite Production Preview (Port 4173) with `allowedHosts: true`
 - **Capabilities:** Offline-first PWA, responsive mobile & desktop layout, QR Scanner, Interactive School Map, Plant Catalog, Teacher Moderation CMS, and Admin Portal.
 

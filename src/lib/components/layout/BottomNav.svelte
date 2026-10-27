@@ -1,6 +1,6 @@
 <!--
   Botanidex — Mobile Bottom Navigation Bar (Svelte 5 Runes)
-  Tujuan: Floating Neo-Brutalist bottom dock untuk navigasi HP yang ramah jempol
+  Tujuan: Floating Neo-Brutalist bottom dock untuk navigasi HP yang ramah jempol dengan proteksi peran akun
   Caller: src/routes/+layout.svelte
   Dependensi: $app/state, auth.store.ts, @lucide/svelte
   Main Functions: BottomNav component
@@ -9,7 +9,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { authUser } from '#lib/stores/auth.store';
-	import { Home, BookOpen, QrCode, Map, PlusCircle, ShieldCheck } from '@lucide/svelte';
+	import { Home, BookOpen, QrCode, Map, PlusCircle, ShieldCheck, LogIn } from '@lucide/svelte';
 
 	const currentPath = $derived(page.url.pathname);
 	const itemClass = (active: boolean, dark = false) =>
@@ -43,9 +43,13 @@
 			<a href="/admin/moderasi" class={itemClass(currentPath.startsWith('/admin'), true)}>
 				<ShieldCheck class="w-4 h-4 mb-0.5 stroke-[2.2]" /> <span>Moderasi</span>
 			</a>
-		{:else}
+		{:else if $authUser?.role === 'contributor'}
 			<a href="/kontribusi/tambah" class={itemClass(currentPath.startsWith('/kontribusi'))}>
 				<PlusCircle class="w-4 h-4 mb-0.5 stroke-[2.2]" /> <span>Tambah</span>
+			</a>
+		{:else}
+			<a href="/login" class={itemClass(currentPath.startsWith('/login'))}>
+				<LogIn class="w-4 h-4 mb-0.5 stroke-[2.2]" /> <span>Masuk</span>
 			</a>
 		{/if}
 	</nav>

@@ -17,11 +17,36 @@ describe('plantFormSchema', () => {
 	it('menerima payload tanaman yang valid dan lengkap beserta taksonomi species', () => {
 		const result = plantFormSchema.safeParse({
 			name_local: 'Kumis Kucing', name_latin: 'Orthosiphon aristatus', name_english: 'Cat Whiskers',
-			category: 'obat', description: 'Tanaman herbal untuk melancarkan saluran kemih dan anti inflamasi.',
+			category: 'obat', quantity: 5, unit: 'polybag',
+			description: 'Tanaman herbal untuk melancarkan saluran kemih dan anti inflamasi.',
 			taxonomy_kingdom: 'Plantae', taxonomy_familia: 'Lamiaceae', taxonomy_species: 'Orthosiphon aristatus',
 			location_label: 'Kebun TOGA Bedeng C-1', video_duration_seconds: 180
 		});
 		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.data.quantity).toBe(5);
+			expect(result.data.unit).toBe('polybag');
+		}
+	});
+
+	it('mengisi nilai default untuk quantity (1) dan unit ("pohon") jika tidak disediakan', () => {
+		const result = plantFormSchema.safeParse({
+			name_local: 'Kumis Kucing', name_latin: 'Orthosiphon aristatus',
+			category: 'obat', description: 'Tanaman herbal untuk melancarkan saluran kemih dan anti inflamasi.'
+		});
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.data.quantity).toBe(1);
+			expect(result.data.unit).toBe('pohon');
+		}
+	});
+
+	it('menolak jika quantity kurang dari 1', () => {
+		const result = plantFormSchema.safeParse({
+			name_local: 'Kumis Kucing', name_latin: 'Orthosiphon aristatus',
+			category: 'obat', quantity: 0, description: 'Tanaman herbal untuk melancarkan saluran kemih.'
+		});
+		expect(result.success).toBe(false);
 	});
 
 	it('menerima kategori kustom yang ditambahkan lewat CMS ConfigService (BUG-03 Regression)', () => {

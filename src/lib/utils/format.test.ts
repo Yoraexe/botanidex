@@ -8,11 +8,18 @@
 // ==============================================================================
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getCategoryBadgeLabel, getCategoryShortLabel, formatDuration, formatDateId } from './format';
+import { getCategoryBadgeLabel, getCategoryShortLabel, formatDuration, formatDateId, formatPlantQuantity } from './format';
 import { ConfigService } from '../services/config.service';
 
 describe('Format Utilities', () => {
 	beforeEach(() => ConfigService.resetToDefaults());
+
+	it('memformat kuantitas dan satuan populasi tanaman', () => {
+		expect(formatPlantQuantity(3, 'pohon')).toBe('3 pohon');
+		expect(formatPlantQuantity(12, 'polybag')).toBe('12 polybag');
+		expect(formatPlantQuantity(undefined, undefined)).toBe('1 pohon');
+		expect(formatPlantQuantity(0, 'rumpun')).toBe('1 rumpun');
+	});
 
 	it('memformat label kategori standar dan kategori kustom CMS dengan utuh (BUG-03 Regression)', () => {
 		expect(getCategoryBadgeLabel('obat')).toBe('Tanaman Obat / Herbal');

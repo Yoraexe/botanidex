@@ -72,10 +72,11 @@ describe('PlantService & Repository Mappers', () => {
 		expect(backToRow.taxonomy).toBeUndefined();
 	});
 
-	it('menyimpan tanaman baru beserta video pending lalu menyetujui status tanaman & videonya (BUG-05 Regression)', async () => {
+	it('menyimpan tanaman baru beserta kuantitas/populasi dan video pending lalu menyetujui statusnya (CR-01)', async () => {
 		const submitted = await PlantService.submitPlant(
 			{
 				name_local: 'Kunyit Putih', name_latin: 'Curcuma zedoaria', category: 'obat',
+				quantity: 3, unit: 'pohon',
 				description: 'Rimpang obat tradisional untuk praktikum fitofarmaka SMK.',
 				taxonomy_kingdom: 'Plantae', taxonomy_familia: 'Zingiberaceae', taxonomy_species: 'Curcuma zedoaria',
 				video_title: 'Penjelasan Kunyit Putih'
@@ -83,6 +84,8 @@ describe('PlantService & Repository Mappers', () => {
 			{ uploadedPhotos: ['https://example.com/kunyit.jpg'], uploadedVideoUrl: 'https://example.com/kunyit.mp4', videoDurationSeconds: 120, contributorName: 'Siswa Tester', isAdmin: false }
 		);
 		expect(submitted.status).toBe('pending');
+		expect(submitted.quantity).toBe(3);
+		expect(submitted.unit).toBe('pohon');
 		expect(submitted.taxonomy.species).toBe('Curcuma zedoaria');
 		expect(submitted.videos[0].status).toBe('pending');
 		expect(submitted.videos[0].duration_seconds).toBe(120);

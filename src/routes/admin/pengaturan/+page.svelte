@@ -11,6 +11,7 @@
 	import { authUser } from '#lib/stores/auth.store';
 	import { toast } from '#lib/stores/toast.store';
 	import { ConfigService } from '#lib/services/config.service';
+	import { PlantService } from '#lib/services/plant.service';
 	import type { AppConfig, GardenShowcasePhoto, SpecimenShowcaseItem, CategoryItemConfig } from '#lib/types/config.types';
 	import Button from '#lib/components/ui/Button.svelte';
 	import { ShieldCheck, RotateCcw, Save, Plus, Trash2, Image, Type, Tag, Download, Sliders, AlertTriangle, AlertCircle } from '@lucide/svelte';
@@ -78,6 +79,20 @@
 	function handleAddCategory() {
 		if (!newCategory.id || !newCategory.label) return toast.error('Data Belum Lengkap', 'Harap isi ID kategori dan label.');
 		runAction(() => { ConfigService.addCategory({ ...newCategory, id: newCategory.id.toLowerCase().trim() }); newCategory = { id: '', label: '', dotColor: 'bg-emerald-500' }; }, 'Kategori Ditambahkan!', 'Kategori baru berhasil ditambahkan.', 'Gagal Menambah Kategori');
+	}
+
+	async function handleDeleteCategory(catId: string) {
+		try {
+			const allPlants = await PlantService.getAllPlants();
+			const plantsUsingCat = allPlants.filter((p) => p.category === catId);
+			if (plantsUsingCat.length > 0) {
+				const confirmMsg = `Perhatian: Terdapat ${plantsUsingCat.length} tanaman yang menggunakan kategori "${catId}". Yakin ingin menghapus kategori ini?`;
+				if (!confirm(confirmMsg)) return;
+			}
+			runAction(() => ConfigService.removeCategory(catId), 'Kategori Dihapus', 'Kategori berhasil dihapus.', 'Gagal Menghapus Kategori');
+		} catch {
+			runAction(() => ConfigService.removeCategory(catId), 'Kategori Dihapus', 'Kategori berhasil dihapus.', 'Gagal Menghapus Kategori');
+		}
 	}
 
 	function handleResetDefaults() {
@@ -231,7 +246,7 @@
 								<div><h4 class="text-xs font-black text-[#0D0D0D]">{cat.label}</h4><span class="text-[10px] text-stone-500 font-mono">id: {cat.id}</span></div>
 							</div>
 							{#if cat.id !== 'semua'}
-								<button type="button" onclick={() => runAction(() => ConfigService.removeCategory(cat.id), 'Kategori Dihapus', 'Kategori berhasil dihapus.', 'Gagal Menghapus Kategori')} class="text-red-500 hover:text-red-700 p-1 cursor-pointer" title="Hapus kategori"><Trash2 class="w-4 h-4" /></button>
+								<button type="button" onclick={() => handleDeleteCategory(cat.id)} class="text-red-500 hover:text-red-700 p-1 cursor-pointer" title="Hapus kategori"><Trash2 class="w-4 h-4" /></button>
 							{/if}
 						</div>
 					{/each}

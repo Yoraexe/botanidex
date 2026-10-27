@@ -32,6 +32,8 @@ export function mapDbRowToPlant(row: Record<string, any>): Plant {
 		id: String(row.id), slug: String(row.slug), name_local: String(row.name_local), name_latin: String(row.name_latin),
 		name_english: row.name_english || undefined, aliases: Array.isArray(row.aliases) ? row.aliases : [],
 		category: row.category || 'lainnya', taxonomy, description: String(row.description || ''),
+		quantity: typeof row.quantity === 'number' && row.quantity > 0 ? row.quantity : 1,
+		unit: row.unit || 'pohon',
 		location_x: typeof row.location_x === 'number' ? row.location_x : undefined,
 		location_y: typeof row.location_y === 'number' ? row.location_y : undefined,
 		location_label: row.location_label || undefined, status: (row.status as ContributionStatus) || 'approved',
@@ -47,6 +49,7 @@ export function mapPlantToDbRow(plant: Plant): Record<string, any> {
 	return {
 		id: plant.id, slug: plant.slug, name_local: plant.name_local, name_latin: plant.name_latin,
 		name_english: plant.name_english ?? null, aliases: plant.aliases ?? [], category: plant.category,
+		quantity: plant.quantity ?? 1, unit: plant.unit ?? 'pohon',
 		taxonomy_kingdom: t?.kingdom || 'Plantae', taxonomy_divisio: t?.divisio ?? null,
 		taxonomy_classis: t?.classis ?? null, taxonomy_ordo: t?.ordo ?? null,
 		taxonomy_familia: t?.familia ?? null, taxonomy_genus: t?.genus ?? null, taxonomy_species: t?.species ?? null,

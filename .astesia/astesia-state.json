@@ -77,7 +77,8 @@
     "docker-compose.prod.yml",
     ".github/workflows/ci.yml",
     "src/routes/health/+server.ts",
-    ".astesia/deployment.md"
+    ".astesia/deployment.md",
+    "supabase/migrations/002_add_quantity_and_categories.sql"
   ],
   "active_skills": [
     "sveltekit-frontend",
@@ -172,6 +173,12 @@
       "layer": "devops",
       "action": "devops_live_deployment_and_infrastructure_completed",
       "agent_note": "DevOps Layer completed. Verified 46 Vitest unit tests pass and 0 svelte-check diagnostics. Implemented multi-stage non-root Alpine Dockerfile, docker-compose.dev.yml & docker-compose.prod.yml, .github/workflows/ci.yml with dual Vercel/Node build validation, and dedicated GET /health observability endpoint. Provisioned active live public Cloudflare edge tunnel at https://forums-rebound-marc-bent.trycloudflare.com with allowedHosts enabled in vite.config.ts. Astesia pipeline fully complete."
+    },
+    {
+      "timestamp": "2026-10-27T23:58:00+08:00",
+      "layer": "engineering",
+      "action": "cr_01_custom_categories_and_plant_quantity_implemented",
+      "agent_note": "CR-01 completed across all layers: 1) Controlled custom categories in Admin CMS (/admin/pengaturan) with plant-usage guard, dynamic dropdowns in /kontribusi/tambah, and dynamic filter chips in /katalog & landing page. 2) Plant quantity & population unit (quantity: number >= 1, unit: string) added to Plant domain type, plantFormSchema, PlantRepository, PlantService, PlantCard badge, and PlantDetail header. Added 'Mangga Madu' (quantity: 3, unit: 'pohon') to seed dataset. Created Supabase SQL migration 002. All 49 Vitest unit tests pass, 0 svelte-check diagnostics, production build clean."
     }
   ]
 }

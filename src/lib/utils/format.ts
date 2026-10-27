@@ -50,3 +50,9 @@ export function formatDuration(seconds?: number): string {
 	if (!seconds || seconds <= 0) return '0:00';
 	return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 }
+
+export function formatPlantQuantity(quantity?: number, unit?: string): string {
+	const qty = typeof quantity === 'number' && !isNaN(quantity) && quantity > 0 ? quantity : 1;
+	const u = unit?.trim() || 'pohon';
+	return `${qty} ${u}`;
+}

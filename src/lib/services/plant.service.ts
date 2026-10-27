@@ -69,6 +69,7 @@ export class PlantService {
 		return PlantRepository.insertPlant({
 			id, slug, name_local: formData.name_local, name_latin: formData.name_latin,
 			name_english: formData.name_english || undefined, aliases, category: formData.category,
+			quantity: formData.quantity, unit: formData.unit,
 			taxonomy: {
 				kingdom: formData.taxonomy_kingdom || 'Plantae', divisio: formData.taxonomy_divisio || undefined,
 				classis: formData.taxonomy_classis || undefined, ordo: formData.taxonomy_ordo || undefined,
