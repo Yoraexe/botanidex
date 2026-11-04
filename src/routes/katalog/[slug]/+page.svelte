@@ -7,26 +7,35 @@
   Side Effects: Mengambil data tanaman secara reaktif via PlantService saat slug berubah dan menyalin tautan/membuka Web Share API
 -->
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { authUser } from '#lib/stores/auth.store';
 	import { PlantService } from '#lib/services/plant.service';
 	import { INITIAL_PLANTS_DATA } from '#lib/data/seed-plants';
 	import type { Plant } from '#lib/types/plant.types';
 	import { getCategoryBadgeLabel, getCategoryColorClass, formatDateId } from '#lib/utils/format';
+	import { formatMarkdown } from '#lib/utils/markdown';
 	import PlantGallery from '#lib/components/plant/PlantGallery.svelte';
 	import PlantTaxonomy from '#lib/components/plant/PlantTaxonomy.svelte';
 	import PlantVideoSection from '#lib/components/plant/PlantVideoSection.svelte';
 	import QrGenerator from '#lib/components/qr/QrGenerator.svelte';
 	import Button from '#lib/components/ui/Button.svelte';
 	import { toast } from '#lib/stores/toast.store';
-	import { ArrowLeft, MapPin, Share2, QrCode, Calendar, UserCheck, FileText, X, Clock, AlertCircle, ShieldCheck, Trees } from '@lucide/svelte';
+	import { ArrowLeft, MapPin, Share2, QrCode, Calendar, UserCheck, FileText, X, Clock, AlertCircle, ShieldCheck, Trees, Edit3, Trash2 } from '@lucide/svelte';
 
 	const slug = $derived(page.params.slug);
 	let plant = $state<Plant | null>(null);
 	let showQrModal = $state(false);
+	let showDeleteModal = $state(false);
+	let isDeleting = $state(false);
 
 	const canViewPlant = $derived(
-		Boolean(plant && (plant.status === 'approved' || $authUser?.role === 'admin' || (plant.contributor_id && $authUser?.id === plant.contributor_id)))
+		Boolean(
+			plant &&
+				(plant.status === 'approved' ||
+					$authUser?.role === 'admin' ||
+					(plant.contributor_id && $authUser?.id === plant.contributor_id))
+		)
 	);
 
 	$effect(() => {
@@ -57,6 +66,20 @@
 			}
 		}
 	}
+
+	async function handleDelete() {
+		if (!plant) return;
+		isDeleting = true;
+		try {
+			await PlantService.deletePlant(plant.id);
+			toast.success('Tanaman Dihapus', `${plant.name_local} berhasil dihapus dari sistem.`);
+			goto('/katalog');
+		} catch (err: unknown) {
+			toast.error('Gagal Menghapus Tanaman', (err as Error)?.message || 'Terjadi kesalahan sistem.');
+			isDeleting = false;
+			showDeleteModal = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -74,7 +97,15 @@
 			<ArrowLeft class="w-4 h-4 stroke-[2.5]" /> <span>Kembali ke Katalog</span>
 		</a>
 		{#if plant && canViewPlant}
-			<div class="flex items-center gap-2.5">
+			<div class="flex items-center gap-2">
+				{#if $authUser?.role === 'admin'}
+					<a href="/admin/tanaman/{plant.id}/edit" class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-[#D4F469] text-[#0D0D0D] border-2 border-[#0D0D0D] rounded-xl shadow-[2.5px_2.5px_0px_#0D0D0D] hover:bg-[#c5e855] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all" title="Edit Data Tanaman">
+						<Edit3 class="w-4 h-4 stroke-[2.5]" /> <span>Edit</span>
+					</a>
+					<button onclick={() => (showDeleteModal = true)} class="inline-flex items-center gap-1.5 text-xs font-black px-3 py-2.5 bg-red-100 text-red-700 border-2 border-[#0D0D0D] rounded-xl shadow-[2.5px_2.5px_0px_#0D0D0D] hover:bg-red-200 active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all cursor-pointer" title="Hapus Tanaman">
+						<Trash2 class="w-4 h-4 stroke-[2.5]" /> <span class="hidden sm:inline">Hapus</span>
+					</button>
+				{/if}
 				<button onclick={() => (showQrModal = true)} class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-2.5 bg-white text-[#0D0D0D] border-2 border-[#0D0D0D] rounded-xl shadow-[2.5px_2.5px_0px_#0D0D0D] hover:bg-[#D4F469] active:translate-y-0.5 active:shadow-[1px_1px_0px_#0D0D0D] transition-all cursor-pointer" title="Lihat Label QR Tanaman">
 					<QrCode class="w-4 h-4 stroke-[2.5]" /> <span class="hidden sm:inline">Cetak QR</span>
 				</button>
@@ -155,8 +186,10 @@
 			{/if}
 
 			<div class="flex flex-col gap-2.5">
-				<div class="flex items-center gap-2 text-[#0D0D0D] font-black text-sm uppercase tracking-wide"><FileText class="w-4 h-4 stroke-[2.5]" /> <h3>Deskripsi</h3></div>
-				<p class="text-sm sm:text-base text-stone-800 font-medium leading-relaxed whitespace-pre-line bg-[#F3F6ED] p-5 rounded-2xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">{plant.description}</p>
+				<div class="flex items-center gap-2 text-[#0D0D0D] font-black text-sm uppercase tracking-wide"><FileText class="w-4 h-4 stroke-[2.5]" /> <h3>Deskripsi &amp; Informasi Botani</h3></div>
+				<div class="text-sm sm:text-base text-stone-800 leading-relaxed bg-[#F3F6ED] p-5 sm:p-6 rounded-2xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
+					{@html formatMarkdown(plant.description)}
+				</div>
 			</div>
 
 			<PlantTaxonomy taxonomy={plant.taxonomy} />
@@ -186,6 +219,27 @@
 		<div class="relative w-full max-w-sm">
 			<button onclick={() => (showQrModal = false)} class="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-xl bg-[#D4F469] text-[#0D0D0D] hover:bg-[#c5e855] border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center justify-center cursor-pointer active:translate-y-0.5" aria-label="Tutup Modal"><X class="w-5 h-5 stroke-[2.5]" /></button>
 			<QrGenerator {plant} />
+		</div>
+	</div>
+{/if}
+
+{#if showDeleteModal && plant}
+	<div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+		<div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-[6px_6px_0px_#0D0D0D] border-2 border-[#0D0D0D] flex flex-col gap-4">
+			<div class="flex items-center gap-3 text-red-600">
+				<div class="w-10 h-10 rounded-xl bg-red-100 border-2 border-[#0D0D0D] flex items-center justify-center shrink-0"><Trash2 class="w-5 h-5 stroke-[2.5]" /></div>
+				<div>
+					<h3 class="text-base font-black text-[#0D0D0D]">Hapus Data Tanaman?</h3>
+					<p class="text-xs text-stone-600 font-semibold">Tindakan ini permanen dan tidak dapat dibatalkan.</p>
+				</div>
+			</div>
+			<p class="text-xs text-stone-700 font-medium">Apakah Anda yakin ingin menghapus <strong>{plant.name_local}</strong> ({plant.name_latin}) dari katalog?</p>
+			<div class="flex items-center justify-end gap-2.5 pt-3 border-t-2 border-[#0D0D0D]">
+				<Button variant="outline" size="sm" onclick={() => (showDeleteModal = false)} disabled={isDeleting}>Batal</Button>
+				<Button variant="danger" size="sm" onclick={handleDelete} disabled={isDeleting}>
+					<span>{isDeleting ? 'Menghapus...' : 'Ya, Hapus'}</span>
+				</Button>
+			</div>
 		</div>
 	</div>
 {/if}

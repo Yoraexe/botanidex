@@ -58,6 +58,8 @@ self.addEventListener('fetch', (event) => {
 	if (
 		(url.protocol !== 'http:' && url.protocol !== 'https:') ||
 		event.request.method !== 'GET' ||
+		url.pathname.startsWith('/admin') ||
+		url.pathname.startsWith('/kontribusi') ||
 		url.pathname.includes('/auth/v1/') ||
 		url.pathname.includes('/storage/v1/') ||
 		url.pathname.startsWith('/@') ||

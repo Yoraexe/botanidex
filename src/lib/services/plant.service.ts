@@ -3,12 +3,13 @@
 // Tujuan: Business logic untuk katalog botani, pencarian, peta sekolah, QR code generation, dan moderasi
 // Caller: Route pages (/katalog, /peta, /kontribusi/tambah, /admin/moderasi), QrGenerator
 // Dependensi: plant.repository.ts, plant.schema.ts, slug.ts, qrcode
-// Main Functions: getCatalog, getPlantBySlug, getSchoolMapData, generateQrDataUrl, submitPlant, moderatePlant, getAllPlants
+// Main Functions: getCatalog, getPlantBySlug, getPlantById, getSchoolMapData, generateQrDataUrl, submitPlant, updatePlant, deletePlant, moderatePlant, getAllPlants
 // Side Effects: Panggil repository tanaman, validasi moderasi, generate QR data URL
 // ==============================================================================
 
 import QRCode from 'qrcode';
 import { PlantRepository } from '../repositories/plant.repository';
+import { StorageService } from './storage.service';
 import { moderationReviewSchema, type PlantFormValues } from '../schemas/plant.schema';
 import { createPlantSlug } from '../utils/slug';
 import type { Plant, PlantFilterOptions, ContributionStatus } from '../types/plant.types';
@@ -17,6 +18,7 @@ import type { SchoolMapInfo } from '../types/map.types';
 export class PlantService {
 	static async getCatalog(filters?: PlantFilterOptions): Promise<Plant[]> { return PlantRepository.getApprovedPlants(filters); }
 	static async getPlantBySlug(slug: string): Promise<Plant | null> { return slug ? PlantRepository.getPlantBySlug(slug) : null; }
+	static async getPlantById(id: string): Promise<Plant | null> { return id ? PlantRepository.getPlantById(id) : null; }
 	static async getAllPlants(): Promise<Plant[]> { return PlantRepository.getAllPlants(); }
 
 	static async getSchoolMapData(): Promise<SchoolMapInfo> {
@@ -81,6 +83,108 @@ export class PlantService {
 			contributor_id: options.contributorId, contributor_name: options.contributorName || 'Kontributor Siswa',
 			photos, videos, created_at: now, updated_at: now
 		});
+	}
+
+	static async updatePlant(
+		plantId: string,
+		formData: PlantFormValues,
+		options?: {
+			uploadedPhotos?: string[];
+			uploadedVideoUrl?: string;
+			videoDurationSeconds?: number;
+			status?: ContributionStatus;
+		}
+	): Promise<Plant> {
+		const existing = await PlantRepository.getPlantById(plantId);
+		if (!existing) throw new Error(`Tanaman dengan ID "${plantId}" tidak ditemukan.`);
+
+		const now = new Date().toISOString();
+		const aliases = (formData.aliases_raw || '').split(',').map((a) => a.trim()).filter(Boolean);
+
+		let photos = existing.photos;
+		if (options?.uploadedPhotos && options.uploadedPhotos.length > 0) {
+			const removed = existing.photos
+				.map((p) => p.storage_path)
+				.filter((oldPath) => !options.uploadedPhotos!.includes(oldPath));
+			if (removed.length > 0) {
+				StorageService.deleteMediaFiles(removed).catch(() => {});
+			}
+			photos = options.uploadedPhotos.map((storage_path, sort_order) => ({
+				id: crypto.randomUUID(),
+				plant_id: plantId,
+				storage_path,
+				label: sort_order === 0 ? 'Habitus / Foto Utama' : `Dokumentasi ${sort_order + 1}`,
+				sort_order,
+				created_at: now
+			}));
+		}
+
+		let videos = existing.videos;
+		if (options?.uploadedVideoUrl) {
+			videos = [
+				{
+					id: crypto.randomUUID(),
+					plant_id: plantId,
+					storage_path: options.uploadedVideoUrl,
+					thumbnail_path: photos[0]?.storage_path,
+					title: formData.video_title || `Penjelasan Edukasi: ${formData.name_local}`,
+					duration_seconds: options.videoDurationSeconds ?? formData.video_duration_seconds,
+					uploaded_by_name: existing.contributor_name || 'Admin SMK PPN Gorontalo',
+					uploaded_by: existing.contributor_id,
+					status: options?.status || existing.status,
+					created_at: now
+				}
+			];
+		}
+
+		const status = options?.status || existing.status;
+		const rejection_reason = status === 'pending' ? undefined : existing.rejection_reason;
+
+		const updatedPlant: Plant = {
+			...existing,
+			name_local: formData.name_local,
+			name_latin: formData.name_latin,
+			name_english: formData.name_english || undefined,
+			aliases,
+			category: formData.category,
+			quantity: formData.quantity,
+			unit: formData.unit,
+			taxonomy: {
+				kingdom: formData.taxonomy_kingdom || 'Plantae',
+				divisio: formData.taxonomy_divisio || undefined,
+				classis: formData.taxonomy_classis || undefined,
+				ordo: formData.taxonomy_ordo || undefined,
+				familia: formData.taxonomy_familia || undefined,
+				genus: formData.taxonomy_genus || undefined,
+				species: formData.taxonomy_species || undefined
+			},
+			description: formData.description,
+			location_x: formData.location_x,
+			location_y: formData.location_y,
+			location_label: formData.location_label || undefined,
+			status,
+			rejection_reason,
+			photos,
+			videos,
+			updated_at: now
+		};
+
+		return PlantRepository.updatePlant(updatedPlant);
+	}
+
+	static async deletePlant(plantId: string): Promise<boolean> {
+		if (!plantId) return false;
+		const plant = await PlantRepository.getPlantById(plantId);
+		if (plant) {
+			const mediaUrls = [
+				...plant.photos.map((p) => p.storage_path),
+				...plant.videos.map((v) => v.storage_path)
+			];
+			if (mediaUrls.length > 0) {
+				StorageService.deleteMediaFiles(mediaUrls).catch(() => {});
+			}
+		}
+		return PlantRepository.deletePlant(plantId);
 	}
 
 	static async moderatePlant(plantId: string, action: 'approve' | 'reject', rejectionReason?: string): Promise<boolean> {

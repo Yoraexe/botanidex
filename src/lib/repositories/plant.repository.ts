@@ -3,7 +3,7 @@
 // Tujuan: Data access layer untuk entitas tanaman (Supabase query dengan mapper & offline fallback)
 // Caller: src/lib/services/plant.service.ts
 // Dependensi: src/lib/supabase.ts, src/lib/data/seed-plants.ts, src/lib/types/plant.types.ts
-// Main Functions: mapDbRowToPlant, mapPlantToDbRow, getApprovedPlants, getPlantBySlug, getAllPlants, insertPlant, updatePlantStatus
+// Main Functions: mapDbRowToPlant, mapPlantToDbRow, getApprovedPlants, getPlantBySlug, getPlantById, getAllPlants, insertPlant, updatePlant, deletePlant, updatePlantStatus
 // Side Effects: Read/write ke Supabase PostgreSQL atau browser localStorage fallback
 // ==============================================================================
 
@@ -89,7 +89,8 @@ export class PlantRepository {
 			try {
 				let query = supabase.from('plants').select(PLANT_RELATIONS).eq('status', 'approved').order('name_local', { ascending: true });
 				if (filters?.category && filters.category !== 'semua') query = query.eq('category', filters.category);
-				const s = filters?.query?.replace(/[,()%*\\]/g, ' ').trim();
+				// ADV-05 Hardening: Sanitasi PostgREST query filter dari simbol berbahaya (. , : ( ) % * " \)
+				const s = filters?.query?.replace(/[^a-zA-Z0-9\s\-_']/g, ' ').replace(/\s+/g, ' ').trim();
 				if (s) query = query.or(`name_local.ilike.%${s}%,name_latin.ilike.%${s}%,name_english.ilike.%${s}%,taxonomy_familia.ilike.%${s}%`);
 				const { data, error } = await query;
 				if (!error && data) return data.map(mapDbRowToPlant);
@@ -117,6 +118,18 @@ export class PlantRepository {
 			}
 		}
 		return loadLocalPlants().find((p) => p.slug === slug) || null;
+	}
+
+	static async getPlantById(id: string): Promise<Plant | null> {
+		if (isSupabaseConfigured()) {
+			try {
+				const { data, error } = await supabase.from('plants').select(PLANT_RELATIONS).eq('id', id).single();
+				if (!error && data) return mapDbRowToPlant(data);
+			} catch (err) {
+				console.warn('Koneksi Supabase getPlantById gagal:', err);
+			}
+		}
+		return loadLocalPlants().find((p) => p.id === id) || null;
 	}
 
 	static async getAllPlants(status?: ContributionStatus): Promise<Plant[]> {
@@ -155,17 +168,98 @@ export class PlantRepository {
 		return newPlant;
 	}
 
+	static async updatePlant(updatedPlant: Plant): Promise<Plant> {
+		const now = new Date().toISOString();
+		const finalPlant: Plant = { ...updatedPlant, updated_at: now };
+
+		if (isSupabaseConfigured()) {
+			try {
+				const dbRow = mapPlantToDbRow(finalPlant);
+				const { error } = await supabase.from('plants').update(dbRow).eq('id', finalPlant.id);
+				if (!error) {
+					await supabase.from('plant_photos').delete().eq('plant_id', finalPlant.id);
+					if (finalPlant.photos.length > 0) {
+						await supabase.from('plant_photos').insert(
+							finalPlant.photos.map((p) => ({
+								id: p.id,
+								plant_id: finalPlant.id,
+								storage_path: p.storage_path,
+								label: p.label ?? null,
+								sort_order: p.sort_order,
+								created_at: p.created_at || now
+							}))
+						);
+					}
+					if (finalPlant.videos.length > 0) {
+						await supabase.from('plant_videos').delete().eq('plant_id', finalPlant.id);
+						await supabase.from('plant_videos').insert(
+							finalPlant.videos.map((v) => ({
+								id: v.id,
+								plant_id: finalPlant.id,
+								storage_path: v.storage_path,
+								thumbnail_path: v.thumbnail_path ?? null,
+								title: v.title,
+								duration_seconds: v.duration_seconds ?? null,
+								uploaded_by: v.uploaded_by ?? null,
+								uploaded_by_name: v.uploaded_by_name ?? null,
+								status: v.status,
+								created_at: v.created_at || now
+							}))
+						);
+					}
+				} else {
+					console.warn('Gagal update plant di Supabase:', error.message);
+					// SEC-08 & Anti-Silent Failure: Lempar error jika koneksi Supabase live gagal menyimpan
+					throw new Error(`Gagal memperbarui data tanaman di server: ${error.message}`);
+				}
+			} catch (err) {
+				console.warn('Supabase updatePlant exception:', err);
+				throw err;
+			}
+		}
+
+		const localList = loadLocalPlants();
+		const idx = localList.findIndex((p) => p.id === finalPlant.id);
+		if (idx !== -1) {
+			localList[idx] = finalPlant;
+			saveLocalPlants([...localList]);
+		} else {
+			saveLocalPlants([finalPlant, ...localList]);
+		}
+		return finalPlant;
+	}
+
+	static async deletePlant(id: string): Promise<boolean> {
+		if (isSupabaseConfigured()) {
+			try {
+				const { error } = await supabase.from('plants').delete().eq('id', id);
+				if (error) {
+					console.warn('Gagal delete plant dari Supabase:', error.message);
+					throw new Error(`Gagal menghapus tanaman dari server: ${error.message}`);
+				}
+			} catch (err) {
+				console.warn('Supabase deletePlant exception:', err);
+				throw err;
+			}
+		}
+		saveLocalPlants(loadLocalPlants().filter((p) => p.id !== id));
+		return true;
+	}
+
 	static async updatePlantStatus(id: string, status: ContributionStatus, rejectionReason?: string): Promise<boolean> {
 		const now = new Date().toISOString();
 		if (isSupabaseConfigured()) {
 			try {
 				const { error } = await supabase.from('plants').update({ status, rejection_reason: rejectionReason || null, updated_at: now }).eq('id', id);
-				if (!error) {
-					await supabase.from('plant_videos').update({ status, rejection_reason: rejectionReason || null }).eq('plant_id', id);
-					return true;
+				if (error) {
+					console.warn('Gagal update status di Supabase:', error.message);
+					throw new Error(`Gagal memperbarui status tanaman di server: ${error.message}`);
 				}
+				await supabase.from('plant_videos').update({ status, rejection_reason: rejectionReason || null }).eq('plant_id', id);
+				return true;
 			} catch (err) {
 				console.warn('Gagal update status di Supabase:', err);
+				throw err;
 			}
 		}
 		const reason = rejectionReason || undefined;

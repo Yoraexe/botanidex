@@ -91,6 +91,18 @@ describe('Auth Validation Schemas', () => {
 			const res = registerSchema.safeParse(shortName);
 			expect(res.success).toBe(false);
 		});
+
+		it('menolak upaya eskalasi privilege registrasi peran admin (SEC-01 Regression)', () => {
+			const malicious = {
+				displayName: 'Hacker Siswa',
+				email: 'hacker@siswa.id',
+				password: 'Password123',
+				confirmPassword: 'Password123',
+				role: 'admin'
+			};
+			const res = registerSchema.safeParse(malicious);
+			expect(res.success).toBe(false);
+		});
 	});
 
 	describe('resetPasswordSchema', () => {

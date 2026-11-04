@@ -11,7 +11,7 @@
 	import { page } from '$app/state';
 	import { authUser } from '#lib/stores/auth.store';
 	import { ConfigService } from '#lib/services/config.service';
-	import { QrCode, Map, BookOpen, PlusCircle, ShieldCheck, LogOut, ChevronDown, Sliders, LogIn } from '@lucide/svelte';
+	import { QrCode, Map, BookOpen, PlusCircle, ShieldCheck, LogOut, ChevronDown, Sliders, LogIn, Sparkles } from '@lucide/svelte';
 	import Button from '../ui/Button.svelte';
 
 	let isDropdownOpen = $state(false);
@@ -44,8 +44,9 @@
 	}
 
 	onMount(() => {
-		const syncIdentity = (e?: any) => {
-			identity = e?.detail?.identity ?? ConfigService.getConfig().identity;
+		const syncIdentity = (e?: Event) => {
+			const detail = (e as CustomEvent<{ identity?: typeof identity }>)?.detail;
+			identity = detail?.identity ?? ConfigService.getConfig().identity;
 		};
 		window.addEventListener('flora:config-updated', syncIdentity);
 		window.addEventListener('storage', syncIdentity);
@@ -116,6 +117,13 @@
 				</a>
 			{/if}
 
+			{#if $authUser?.role === 'contributor'}
+				<a href="/kontribusi/saya" class={navClass('/kontribusi/saya')}>
+					<Sparkles class="w-4 h-4 stroke-[2.2] shrink-0" />
+					<span><span class="hidden xl:inline">Kontribusi Saya</span><span class="xl:hidden">Draf Saya</span></span>
+				</a>
+			{/if}
+
 			{#if $authUser?.role === 'contributor' || $authUser?.role === 'admin'}
 				{#if $authUser?.role === 'contributor'}
 					<div class="h-5 w-[1.5px] bg-stone-300 rounded-full mx-0.5 shrink-0" aria-hidden="true"></div>
@@ -168,6 +176,15 @@
 								</span>
 							</div>
 							<p class="px-2 py-1 text-[10px] font-black text-stone-500 uppercase tracking-wider">Aksi Akun</p>
+							{#if $authUser.role === 'contributor' || $authUser.role === 'admin'}
+								<a
+									href="/kontribusi/saya"
+									class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-[#F3F6ED] flex items-center gap-2.5 font-bold cursor-pointer transition-colors"
+								>
+									<BookOpen class="w-4 h-4 text-[#0D0D0D]" />
+									<span>Riwayat Kontribusi Saya</span>
+								</a>
+							{/if}
 							<a
 								href="/login"
 								class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-[#F3F6ED] flex items-center gap-2.5 font-bold cursor-pointer transition-colors"

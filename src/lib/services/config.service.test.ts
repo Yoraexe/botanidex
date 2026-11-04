@@ -88,4 +88,11 @@ describe('ConfigService', () => {
 		const afterSpecimen = ConfigService.addSpecimen({ commonName: 'Spesimen Ikon Lokal', latinName: 'Flora localis', url: '/icons/icon-512.svg' });
 		expect(afterSpecimen.hero.specimens.some((s) => s.url === '/icons/icon-512.svg')).toBe(true);
 	});
+
+	it('mengambil konfigurasi remote atau fallback dengan fetchRemoteConfig (Wave 1)', async () => {
+		const config = await ConfigService.fetchRemoteConfig();
+		expect(config).toBeDefined();
+		expect(config.identity.appName).toBeDefined();
+		expect(Array.isArray(config.categories)).toBe(true);
+	});
 });

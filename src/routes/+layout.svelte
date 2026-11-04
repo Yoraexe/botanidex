@@ -19,8 +19,10 @@
 	let identity = $state(ConfigService.getConfig().identity);
 
 	onMount(() => {
-		const syncIdentity = (e?: any) => {
-			identity = e?.detail?.identity ?? ConfigService.getConfig().identity;
+		ConfigService.fetchRemoteConfig().catch(() => {});
+		const syncIdentity = (e?: Event) => {
+			const detail = (e as CustomEvent<{ identity?: typeof identity }>)?.detail;
+			identity = detail?.identity ?? ConfigService.getConfig().identity;
 		};
 		window.addEventListener('flora:config-updated', syncIdentity);
 		window.addEventListener('storage', syncIdentity);

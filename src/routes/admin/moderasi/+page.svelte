@@ -13,19 +13,41 @@
 	import { PlantService } from '#lib/services/plant.service';
 	import type { Plant, ContributionStatus } from '#lib/types/plant.types';
 	import { formatDateId, getCategoryBadgeLabel } from '#lib/utils/format';
+	import { exportPlantsToCsv } from '#lib/utils/csv-export';
 	import Button from '#lib/components/ui/Button.svelte';
-	import { ShieldCheck, Check, X, Eye, Video, User, Clock, AlertCircle, CheckCircle2 } from '@lucide/svelte';
+	import { ShieldCheck, Check, X, Eye, Video, User, Clock, AlertCircle, CheckCircle2, Edit3, Download, CheckSquare, Square, BookOpen } from '@lucide/svelte';
 
 	let plants = $state<Plant[]>([]);
 	let isLoading = $state(true);
 	let activeTab = $state<ContributionStatus>('pending');
 	let rejectingPlant = $state<Plant | null>(null);
 	let rejectionReason = $state('');
+	let selectedIds = $state<string[]>([]);
+	let isBulkProcessing = $state(false);
 
-	onMount(() => loadModerationList());
+	onMount(() => {
+		if ($authUser?.role === 'admin') {
+			loadModerationList();
+		} else {
+			isLoading = false;
+		}
+	});
+
+	$effect(() => {
+		if ($authUser?.role === 'admin' && plants.length === 0 && !isLoading) {
+			loadModerationList();
+		}
+	});
 
 	async function loadModerationList() {
+		// SEC-03 Hardening: Cegah pemuatan data moderasi guru jika bukan admin
+		if (!$authUser || $authUser.role !== 'admin') {
+			plants = [];
+			isLoading = false;
+			return;
+		}
 		isLoading = true;
+		selectedIds = [];
 		try {
 			plants = await PlantService.getAllPlants();
 		} catch (err) {
@@ -36,6 +58,46 @@
 	}
 
 	const filteredList = $derived(plants.filter((p) => p.status === activeTab));
+	const isAllSelected = $derived(
+		filteredList.length > 0 && filteredList.every((p) => selectedIds.includes(p.id))
+	);
+
+	function setTab(tab: ContributionStatus) {
+		activeTab = tab;
+		selectedIds = [];
+	}
+
+	function toggleSelectAll() {
+		if (isAllSelected) selectedIds = [];
+		else selectedIds = filteredList.map((p) => p.id);
+	}
+
+	function toggleSelect(id: string) {
+		if (selectedIds.includes(id)) selectedIds = selectedIds.filter((i) => i !== id);
+		else selectedIds = [...selectedIds, id];
+	}
+
+	async function handleBulkApprove() {
+		if (selectedIds.length === 0) return;
+		if (!confirm(`Setujui ${selectedIds.length} pengajuan tanaman terpilih sekaligus?`)) return;
+
+		isBulkProcessing = true;
+		try {
+			await Promise.all(selectedIds.map((id) => PlantService.moderatePlant(id, 'approve')));
+			toast.success('Persetujuan Massal Berhasil!', `${selectedIds.length} tanaman kini resmi tayang.`);
+			selectedIds = [];
+			await loadModerationList();
+		} catch (err: unknown) {
+			toast.error('Gagal Memproses Approval Massal', (err as Error)?.message || 'Terjadi kesalahan sistem.');
+		} finally {
+			isBulkProcessing = false;
+		}
+	}
+
+	function handleExportCsv() {
+		exportPlantsToCsv(plants);
+		toast.success('Ekspor CSV Berhasil', 'Data inventaris botani sekolah telah diunduh.');
+	}
 	const statusTabs = $derived<{ id: ContributionStatus; label: string; count: number; activeBtn: string; activeBadge: string }[]>([
 		{ id: 'pending', label: 'Menunggu', count: plants.filter((p) => p.status === 'pending').length, activeBtn: 'bg-[#FBBF24] text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] -translate-y-0.5', activeBadge: 'bg-[#0D0D0D] text-[#FBBF24]' },
 		{ id: 'approved', label: 'Disetujui', count: plants.filter((p) => p.status === 'approved').length, activeBtn: 'bg-[#D4F469] text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] -translate-y-0.5', activeBadge: 'bg-[#0D0D0D] text-[#D4F469]' },
@@ -47,8 +109,8 @@
 			await PlantService.moderatePlant(plant.id, 'approve');
 			toast.success('Pengajuan Disetujui!', `${plant.name_local} kini resmi tayang di katalog.`);
 			await loadModerationList();
-		} catch (err: any) {
-			toast.error('Gagal memproses approval', err?.message);
+		} catch (err: unknown) {
+			toast.error('Gagal memproses approval', (err as Error)?.message || 'Terjadi kesalahan sistem.');
 		}
 	}
 
@@ -65,8 +127,8 @@
 			toast.info('Pengajuan Ditolak', `Catatan perbaikan telah disimpan untuk ${rejectingPlant.name_local}.`);
 			rejectingPlant = null;
 			await loadModerationList();
-		} catch (err: any) {
-			toast.error('Gagal menolak submission', err?.message);
+		} catch (err: unknown) {
+			toast.error('Gagal menolak submission', (err as Error)?.message || 'Terjadi kesalahan sistem.');
 		}
 	}
 </script>
@@ -95,12 +157,30 @@
 			</div>
 		</div>
 	{:else}
-		<div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D]">
+		<div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D]">
 			<div class="flex items-center gap-2">
 				<span class="px-3.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-[#0D0D0D] text-[#D4F469] text-xs font-black shadow-[2px_2px_0px_#0D0D0D] select-none">Moderasi Siswa</span>
 				<a href="/admin/pengaturan" class="px-3.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] text-xs font-bold text-stone-700 hover:bg-stone-100 transition-all select-none">⚙️ Pengaturan CMS &amp; Tampilan</a>
 			</div>
-			<span class="text-[10px] font-black uppercase tracking-wider text-stone-500 hidden sm:inline">Portal Administrator</span>
+			<div class="flex items-center gap-2">
+				<a
+					href="/katalog/buku"
+					class="px-3 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-white hover:bg-stone-100 text-xs font-black text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center gap-1.5 cursor-pointer active:translate-y-0.5 transition-all"
+					title="Buka Buku Katalog Ensiklopedia A4 PDF Siap Cetak"
+				>
+					<BookOpen class="w-3.5 h-3.5 stroke-[2.5]" />
+					<span>Buku Katalog</span>
+				</a>
+				<button
+					type="button"
+					onclick={handleExportCsv}
+					class="px-3 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-[#D4F469] hover:bg-[#c5e855] text-xs font-black text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center gap-1.5 cursor-pointer active:translate-y-0.5 transition-all"
+					title="Ekspor seluruh data inventaris botani ke CSV (kompatibel Excel)"
+				>
+					<Download class="w-3.5 h-3.5 stroke-[2.5]" />
+					<span>Ekspor CSV</span>
+				</button>
+			</div>
 		</div>
 
 		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-[#0D0D0D]">
@@ -114,7 +194,7 @@
 
 			<div class="flex items-center gap-2">
 				{#each statusTabs as tab (tab.id)}
-					<button type="button" onclick={() => (activeTab = tab.id)} class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all border-2 border-[#0D0D0D] cursor-pointer {activeTab === tab.id ? tab.activeBtn : 'bg-white text-stone-700 hover:bg-stone-100 shadow-[1px_1px_0px_#0D0D0D]'}">
+					<button type="button" onclick={() => setTab(tab.id)} class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all border-2 border-[#0D0D0D] cursor-pointer {activeTab === tab.id ? tab.activeBtn : 'bg-white text-stone-700 hover:bg-stone-100 shadow-[1px_1px_0px_#0D0D0D]'}">
 						<span>{tab.label}</span>
 						<span class="px-1.5 py-0.2 rounded-md text-[10px] border border-[#0D0D0D] {activeTab === tab.id ? tab.activeBadge : 'bg-stone-200 text-[#0D0D0D]'}">{tab.count}</span>
 					</button>
@@ -127,10 +207,51 @@
 				{#each [1, 2, 3] as _}<div class="p-5 bg-white rounded-2xl border-2 border-[#0D0D0D] shadow-[3px_3px_0px_#0D0D0D] animate-pulse h-28"></div>{/each}
 			</div>
 		{:else if filteredList.length > 0}
+			{#if activeTab === 'pending'}
+				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D]">
+					<button
+						type="button"
+						onclick={toggleSelectAll}
+						class="flex items-center gap-2 text-xs font-black text-[#0D0D0D] cursor-pointer select-none"
+					>
+						{#if isAllSelected}
+							<CheckSquare class="w-4 h-4 text-emerald-700 stroke-[2.5]" />
+						{:else}
+							<Square class="w-4 h-4 text-stone-500 stroke-[2.5]" />
+						{/if}
+						<span>Pilih Semua Antrean Pending ({filteredList.length})</span>
+					</button>
+
+					{#if selectedIds.length > 0}
+						<div class="flex items-center gap-2">
+							<span class="text-xs font-black text-stone-700">{selectedIds.length} terpilih</span>
+							<Button size="sm" variant="primary" onclick={handleBulkApprove} disabled={isBulkProcessing}>
+								<Check class="w-3.5 h-3.5 stroke-[2.5]" />
+								<span>{isBulkProcessing ? 'Memproses...' : `Setujui Terpilih (${selectedIds.length})`}</span>
+							</Button>
+						</div>
+					{/if}
+				</div>
+			{/if}
+
 			<div class="flex flex-col gap-4">
 				{#each filteredList as item (item.id)}
 					<div class="bg-white rounded-2xl border-2 border-[#0D0D0D] p-4 sm:p-5 shadow-[4px_4px_0px_#0D0D0D] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-						<div class="flex items-start gap-4">
+						<div class="flex items-start gap-3 sm:gap-4">
+							{#if activeTab === 'pending'}
+								<button
+									type="button"
+									onclick={() => toggleSelect(item.id)}
+									class="p-1 cursor-pointer self-center sm:self-start mt-1.5"
+									title="Pilih item ini"
+								>
+									{#if selectedIds.includes(item.id)}
+										<CheckSquare class="w-5 h-5 text-emerald-700 stroke-[2.5]" />
+									{:else}
+										<Square class="w-5 h-5 text-stone-400 stroke-[2.5]" />
+									{/if}
+								</button>
+							{/if}
 							<img src={item.photos[0]?.storage_path || '/icons/icon-192.svg'} alt={item.name_local} class="w-18 h-18 sm:w-22 sm:h-22 rounded-xl object-cover border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] shrink-0" />
 							<div class="flex-1 min-w-0">
 								<div class="flex items-center gap-2">
@@ -152,7 +273,10 @@
 						</div>
 
 						<div class="flex sm:flex-col items-center sm:items-end gap-2 shrink-0 border-t-2 border-[#0D0D0D]/20 sm:border-t-0 pt-3 sm:pt-0">
-							<a href="/katalog/{item.slug}" class="px-3 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-white text-[#0D0D0D] hover:bg-[#D4F469] text-xs font-black flex items-center gap-1.5 shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all"><Eye class="w-3.5 h-3.5 stroke-[2.5]" /> <span>Lihat Detail</span></a>
+							<div class="flex items-center gap-1.5">
+								<a href="/katalog/{item.slug}" class="px-2.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-white text-[#0D0D0D] hover:bg-stone-100 text-xs font-black flex items-center gap-1.5 shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all"><Eye class="w-3.5 h-3.5 stroke-[2.5]" /> <span>Detail</span></a>
+								<a href="/admin/tanaman/{item.id}/edit" class="px-2.5 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-[#D4F469] text-[#0D0D0D] hover:bg-[#c5e855] text-xs font-black flex items-center gap-1.5 shadow-[2px_2px_0px_#0D0D0D] active:translate-y-0.5 transition-all" title="Edit dan perbaiki data"><Edit3 class="w-3.5 h-3.5 stroke-[2.5]" /> <span>Edit</span></a>
+							</div>
 							{#if item.status === 'pending'}
 								<div class="flex items-center gap-2">
 									<Button size="sm" variant="danger" onclick={() => openRejectModal(item)}><X class="w-3.5 h-3.5 stroke-[2.5]" /> Tolak</Button>

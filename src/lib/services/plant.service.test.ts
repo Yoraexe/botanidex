@@ -9,6 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { PlantService } from './plant.service';
+import { extractStoragePath } from './storage.service';
 import { mapDbRowToPlant, mapPlantToDbRow } from '../repositories/plant.repository';
 import { createPlantSlug } from '../utils/slug';
 
@@ -95,6 +96,40 @@ describe('PlantService & Repository Mappers', () => {
 		const approved = await PlantService.getPlantBySlug(submitted.slug);
 		expect(approved?.status).toBe('approved');
 		expect(approved?.videos[0]?.status).toBe('approved');
+
+		// Test Wave 1: updatePlant
+		const updated = await PlantService.updatePlant(
+			submitted.id,
+			{
+				name_local: 'Kunyit Putih Super',
+				name_latin: 'Curcuma zedoaria var. super',
+				category: 'obat',
+				quantity: 12,
+				unit: 'rumpun',
+				description: 'Rimpang obat tradisional varietas unggul hasil kultur jaringan.',
+				taxonomy_kingdom: 'Plantae',
+				taxonomy_familia: 'Zingiberaceae',
+				taxonomy_species: 'Curcuma zedoaria'
+			},
+			{
+				uploadedPhotos: ['https://example.com/kunyit-super.jpg']
+			}
+		);
+		expect(updated.name_local).toBe('Kunyit Putih Super');
+		expect(updated.name_latin).toBe('Curcuma zedoaria var. super');
+		expect(updated.quantity).toBe(12);
+		expect(updated.unit).toBe('rumpun');
+		expect(updated.photos[0]?.storage_path).toBe('https://example.com/kunyit-super.jpg');
+
+		const fetchedUpdated = await PlantService.getPlantById(submitted.id);
+		expect(fetchedUpdated?.name_local).toBe('Kunyit Putih Super');
+		expect(fetchedUpdated?.quantity).toBe(12);
+
+		// Test Wave 1: deletePlant
+		const deleteSuccess = await PlantService.deletePlant(submitted.id);
+		expect(deleteSuccess).toBe(true);
+		const afterDelete = await PlantService.getPlantById(submitted.id);
+		expect(afterDelete).toBeNull();
 	});
 
 	it('mengambil data peta kebun sekolah melalui PlantService (BUG-07 Regression)', async () => {
@@ -106,5 +141,55 @@ describe('PlantService & Repository Mappers', () => {
 	it('menghasilkan fallback slug aman saat input hanya berupa simbol/non-ASCII (Pass #2 Regression)', () => {
 		expect(createPlantSlug('??? !!!', '')).toBe('tanaman');
 		expect(createPlantSlug('🌱🌿', 'Zingiber officinale')).toBe('zingiber-officinale');
+	});
+
+	it('mereset status penolakan ke pending dan menghapus rejection_reason saat siswa mengajukan revisi draf (Wave 2)', async () => {
+		const submitted = await PlantService.submitPlant(
+			{
+				name_local: 'Temulawak Praktikum',
+				name_latin: 'Curcuma xanthorrhiza',
+				category: 'obat',
+				quantity: 5,
+				unit: 'rumpun',
+				description: 'Rimpang bahan jamu tradisional.',
+				taxonomy_kingdom: 'Plantae',
+				taxonomy_species: 'Curcuma xanthorrhiza'
+			},
+			{ uploadedPhotos: ['https://example.com/temulawak.jpg'], contributorName: 'Siswa Agroteknologi' }
+		);
+
+		await PlantService.moderatePlant(submitted.id, 'reject', 'Foto rimpang belum disertakan.');
+		const rejected = await PlantService.getPlantById(submitted.id);
+		expect(rejected?.status).toBe('rejected');
+		expect(rejected?.rejection_reason).toBe('Foto rimpang belum disertakan.');
+
+		const resubmitted = await PlantService.updatePlant(
+			submitted.id,
+			{
+				name_local: 'Temulawak Praktikum Unggul',
+				name_latin: 'Curcuma xanthorrhiza',
+				category: 'obat',
+				quantity: 5,
+				unit: 'rumpun',
+				description: 'Rimpang bahan jamu tradisional lengkap dengan dokumentasi rimpang bersih.',
+				taxonomy_kingdom: 'Plantae',
+				taxonomy_species: 'Curcuma xanthorrhiza'
+			},
+			{
+				uploadedPhotos: ['https://example.com/temulawak.jpg', 'https://example.com/rimpang.jpg'],
+				status: 'pending'
+			}
+		);
+		expect(resubmitted.status).toBe('pending');
+		expect(resubmitted.rejection_reason).toBeUndefined();
+	});
+
+	it('mengekstrak path relatif Supabase Storage dari URL publik (Wave 2)', () => {
+		expect(
+			extractStoragePath('https://xyz.supabase.co/storage/v1/object/public/plant-media/photos/photo-123.jpg')
+		).toBe('photos/photo-123.jpg');
+		expect(extractStoragePath('videos/vid-456.mp4')).toBe('videos/vid-456.mp4');
+		expect(extractStoragePath('data:image/jpeg;base64,abc12345')).toBeNull();
+		expect(extractStoragePath('')).toBeNull();
 	});
 });

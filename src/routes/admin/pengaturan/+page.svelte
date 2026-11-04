@@ -12,9 +12,10 @@
 	import { toast } from '#lib/stores/toast.store';
 	import { ConfigService } from '#lib/services/config.service';
 	import { PlantService } from '#lib/services/plant.service';
+	import { exportPlantsToCsv } from '#lib/utils/csv-export';
 	import type { AppConfig, GardenShowcasePhoto, SpecimenShowcaseItem, CategoryItemConfig } from '#lib/types/config.types';
 	import Button from '#lib/components/ui/Button.svelte';
-	import { ShieldCheck, RotateCcw, Save, Plus, Trash2, Image, Type, Tag, Download, Sliders, AlertTriangle, AlertCircle } from '@lucide/svelte';
+	import { ShieldCheck, RotateCcw, Save, Plus, Trash2, Image, Type, Tag, Download, Sliders, AlertTriangle, AlertCircle, BookOpen, Printer } from '@lucide/svelte';
 
 	type TabId = 'identity' | 'garden' | 'specimen' | 'categories' | 'download';
 
@@ -57,8 +58,13 @@
 	onMount(reloadConfig);
 
 	function runAction(fn: () => void, okTitle: string, okMsg: string, errTitle = 'Gagal Menyimpan') {
+		// SEC-03 Hardening: Tolak aksi mutasi CMS jika bukan admin
+		if (!$authUser || $authUser.role !== 'admin') {
+			toast.error('Akses Ditolak', 'Aksi konfigurasi hanya dapat dilakukan oleh akun Administrator.');
+			return;
+		}
 		try { fn(); reloadConfig(); toast.success(okTitle, okMsg); }
-		catch (err: any) { toast.error(errTitle, err?.message || 'Terjadi kesalahan validasi.'); }
+		catch (err: unknown) { toast.error(errTitle, (err as Error)?.message || 'Terjadi kesalahan validasi.'); }
 	}
 
 	const handleSaveIdentity = () => runAction(() => {
@@ -98,6 +104,16 @@
 	function handleResetDefaults() {
 		if (confirm('Apakah Anda yakin ingin mengembalikan seluruh pengaturan ke preset awal pabrik? Perubahan kustom Anda akan direset.')) {
 			runAction(() => ConfigService.resetToDefaults(), 'Pengaturan Direset!', 'Seluruh konfigurasi kembali ke preset bawaan resmi.');
+		}
+	}
+
+	async function handleExportCsv() {
+		try {
+			const all = await PlantService.getAllPlants();
+			exportPlantsToCsv(all);
+			toast.success('Ekspor CSV Selesai', `${all.length} koleksi tanaman botani berhasil diekspor.`);
+		} catch (err: unknown) {
+			toast.error('Gagal Ekspor CSV', (err as Error)?.message || 'Terjadi kesalahan sistem.');
 		}
 	}
 </script>
@@ -276,7 +292,38 @@
 				<div class="flex justify-end pt-3 border-t border-stone-200">
 					<Button variant="primary" onclick={() => runAction(() => ConfigService.updateAppDownload(config.hero.appDownload), 'Pengaturan Disimpan!', 'Informasi unduh aplikasi berhasil diperbarui.')}><Save class="w-4 h-4 mr-1.5" /> Simpan Info Unduh</Button>
 				</div>
-				<div class="mt-4 p-4 rounded-xl border-2 border-amber-600 bg-amber-50 flex flex-col sm:flex-row items-center justify-between gap-4">
+				<div class="mt-2 p-4 rounded-xl border-2 border-[#0D0D0D] bg-[#0D0D0D] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-[3px_3px_0px_#D4F469]">
+					<div class="flex items-center gap-3">
+						<div class="w-10 h-10 rounded-xl bg-[#D4F469] border-2 border-white flex items-center justify-center text-[#0D0D0D] shrink-0">
+							<BookOpen class="w-5 h-5 stroke-[2.5]" />
+						</div>
+						<div>
+							<h4 class="text-xs font-black uppercase text-[#D4F469]">Buku Ensiklopedia Botani Siap Cetak (A4 PDF)</h4>
+							<p class="text-[11px] text-stone-300 font-medium">Buka pratinjau dan unduh buku katalog resmi berstandar penerbitan lengkap dengan sampul, denah kebun, taksonomi, dan QR code.</p>
+						</div>
+					</div>
+					<a href="/katalog/buku" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] font-black text-xs border-2 border-white shadow-[2px_2px_0px_#ffffff] cursor-pointer shrink-0 transition-all active:translate-y-0.5">
+						<Printer class="w-3.5 h-3.5 stroke-[2.5]" />
+						<span>Buka Buku Katalog (PDF)</span>
+					</a>
+				</div>
+
+				<div class="mt-2 p-4 rounded-xl border-2 border-[#0D0D0D] bg-[#F3F6ED] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-[2px_2px_0px_#0D0D0D]">
+					<div class="flex items-center gap-3">
+						<div class="w-10 h-10 rounded-xl bg-[#D4F469] border-2 border-[#0D0D0D] flex items-center justify-center shrink-0">
+							<Download class="w-5 h-5 text-[#0D0D0D] stroke-[2.5]" />
+						</div>
+						<div>
+							<h4 class="text-xs font-black uppercase text-[#0D0D0D]">Ekspor Seluruh Inventaris Botani (CSV / Excel)</h4>
+							<p class="text-[11px] text-stone-600 font-medium">Unduh berkas spreadsheet seluruh koleksi botani untuk instrumen akreditasi vokasi &amp; kurikulum sekolah.</p>
+						</div>
+					</div>
+					<button type="button" onclick={handleExportCsv} class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D4F469] hover:bg-[#c5e855] text-[#0D0D0D] font-black text-xs border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] cursor-pointer shrink-0 transition-all active:translate-y-0.5">
+						<Download class="w-3.5 h-3.5" />
+						<span>Unduh Berkas CSV</span>
+					</button>
+				</div>
+				<div class="mt-2 p-4 rounded-xl border-2 border-amber-600 bg-amber-50 flex flex-col sm:flex-row items-center justify-between gap-4">
 					<div class="flex items-center gap-3">
 						<AlertTriangle class="w-6 h-6 text-amber-700 shrink-0" />
 						<div><h4 class="text-xs font-black uppercase text-amber-900">Pulihkan Seluruh Pengaturan Bawaan</h4><p class="text-[11px] text-amber-800 font-medium">Mengembalikan teks, galeri kebun, spesimen, dan kategori ke preset resmi SMK PPN Gorontalo.</p></div>

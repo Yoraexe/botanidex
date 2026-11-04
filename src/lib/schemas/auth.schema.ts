@@ -19,6 +19,7 @@ export const loginSchema = z.object({
 	password: z
 		.string()
 		.min(6, 'Kata sandi minimal 6 karakter')
+		.max(72, 'Kata sandi terlalu panjang')
 });
 
 export const registerSchema = z
@@ -41,8 +42,9 @@ export const registerSchema = z
 		confirmPassword: z
 			.string()
 			.min(1, 'Konfirmasi kata sandi wajib diisi'),
+		// SEC-01 Hardening: Registrasi publik dikunci hanya untuk peran 'contributor'
 		role: z
-			.enum(['contributor', 'admin', 'viewer'])
+			.literal('contributor')
 			.default('contributor')
 	})
 	.refine((data) => data.password === data.confirmPassword, {

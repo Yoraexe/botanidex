@@ -58,10 +58,10 @@
 			await html5QrCode.start({ facingMode: 'environment' }, { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 }, (decoded) => handleScanSuccess(decoded), () => {});
 			if (!isMounted) { await html5QrCode.stop().catch(() => {}); return; }
 			isScanning = true;
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.warn('Gagal memulai kamera:', err);
 			isScanning = false;
-			errorMessage = err?.message || 'Izin akses kamera ditolak atau kamera sedang digunakan aplikasi lain.';
+			errorMessage = (err as Error)?.message || 'Izin akses kamera ditolak atau kamera sedang digunakan aplikasi lain.';
 		}
 	}
 

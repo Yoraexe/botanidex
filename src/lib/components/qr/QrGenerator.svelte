@@ -20,7 +20,10 @@
 	let schoolName = $state(ConfigService.getConfig().identity.schoolName);
 
 	onMount(() => {
-		const syncConfig = (e?: any) => { schoolName = e?.detail?.identity?.schoolName ?? ConfigService.getConfig().identity.schoolName; };
+		const syncConfig = (e?: Event) => {
+			const detail = (e as CustomEvent<{ identity?: { schoolName?: string } }>)?.detail;
+			schoolName = detail?.identity?.schoolName ?? ConfigService.getConfig().identity.schoolName;
+		};
 		window.addEventListener('flora:config-updated', syncConfig);
 		return () => window.removeEventListener('flora:config-updated', syncConfig);
 	});

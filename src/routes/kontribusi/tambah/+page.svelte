@@ -17,12 +17,15 @@
 	import { plantFormSchema } from '#lib/schemas/plant.schema';
 	import { formatDuration } from '#lib/utils/format';
 	import type { PlantCategory } from '#lib/types/plant.types';
+	import type { CategoryItemConfig } from '#lib/types/config.types';
 	import Button from '#lib/components/ui/Button.svelte';
 	import Input from '#lib/components/ui/Input.svelte';
-	import { PlusCircle, Image as ImageIcon, Video, UploadCloud, AlertCircle, Dna, CheckCircle2, ShieldCheck, X } from '@lucide/svelte';
+	import MapPinPickerModal from '#lib/components/map/MapPinPickerModal.svelte';
+	import { PlusCircle, Image as ImageIcon, Video, UploadCloud, AlertCircle, Dna, CheckCircle2, ShieldCheck, X, BookOpen, MapPin, Crosshair } from '@lucide/svelte';
 
 	const initialCategories = ConfigService.getCategories().filter((c) => c.id !== 'semua');
 	let isSubmitting = $state(false);
+	let showMapPicker = $state(false);
 	let errors = $state<Record<string, string>>({});
 	let availableCategories = $state(initialCategories);
 
@@ -50,8 +53,9 @@
 	let videoDurationSeconds = $state<number | undefined>(undefined);
 
 	onMount(() => {
-		const handleConfigChange = (e: any) => {
-			if (e.detail?.categories) availableCategories = e.detail.categories.filter((c: any) => c.id !== 'semua');
+		const handleConfigChange = (e: Event) => {
+			const detail = (e as CustomEvent<{ categories?: CategoryItemConfig[] }>)?.detail;
+			if (detail?.categories) availableCategories = detail.categories.filter((c) => c.id !== 'semua');
 		};
 		window.addEventListener('flora:config-updated', handleConfigChange);
 		return () => window.removeEventListener('flora:config-updated', handleConfigChange);
@@ -83,8 +87,8 @@
 			videoFile = file;
 			videoDurationSeconds = durationSeconds > 0 ? durationSeconds : undefined;
 			if (!form.video_title) form.video_title = `Video Penjelasan: ${form.name_local || 'Tanaman'}`;
-		} catch (err: any) {
-			toast.error('Video Tidak Memenuhi Syarat', err?.message || 'Maksimal ukuran 50MB dan durasi maksimal 5 menit (MP4/WebM).');
+		} catch (err: unknown) {
+			toast.error('Video Tidak Memenuhi Syarat', (err as Error)?.message || 'Maksimal ukuran 50MB dan durasi maksimal 5 menit (MP4/WebM).');
 			videoFile = null;
 			videoDurationSeconds = undefined;
 			target.value = '';
@@ -118,9 +122,9 @@
 				isAdmin ? 'Tanaman Berhasil Diterbitkan!' : 'Pengajuan Berhasil Disubmit!',
 				isAdmin ? 'Data langsung tayang di katalog publik.' : 'Data tanaman telah masuk ke antrean moderasi guru untuk diperiksa.'
 			);
-			goto(isAdmin ? `/katalog/${created.slug}` : '/katalog');
-		} catch (err: any) {
-			toast.error('Gagal Menyimpan Data', err?.message || 'Terjadi kesalahan sistem.');
+			goto(isAdmin ? `/katalog/${created.slug}` : '/kontribusi/saya');
+		} catch (err: unknown) {
+			toast.error('Gagal Menyimpan Data', (err as Error)?.message || 'Terjadi kesalahan sistem.');
 		} finally {
 			isSubmitting = false;
 		}
@@ -160,9 +164,14 @@
 				</div>
 			</div>
 			{#if $authUser.role !== 'admin'}
-				<div class="mt-4 p-3.5 bg-[#FBBF24] rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] text-xs text-[#0D0D0D] font-black flex items-center gap-2.5">
-					<AlertCircle class="w-4 h-4 text-[#0D0D0D] stroke-[2.5] shrink-0" />
-					<span>Pengajuan oleh siswa akan dimoderasi oleh guru pembimbing sebelum muncul di katalog publik.</span>
+				<div class="mt-4 p-3.5 bg-[#FBBF24] rounded-xl border-2 border-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] text-xs text-[#0D0D0D] font-black flex items-center justify-between gap-2.5">
+					<div class="flex items-center gap-2">
+						<AlertCircle class="w-4 h-4 text-[#0D0D0D] stroke-[2.5] shrink-0" />
+						<span>Pengajuan oleh siswa akan dimoderasi oleh guru pembimbing sebelum muncul di katalog publik.</span>
+					</div>
+					<a href="/kontribusi/saya" class="px-3 py-1.5 rounded-lg border border-[#0D0D0D] bg-white text-[#0D0D0D] text-[11px] font-black hover:bg-[#D4F469] shadow-[1px_1px_0px_#0D0D0D] shrink-0 transition-all">
+						Draf &amp; Status Saya →
+					</a>
 				</div>
 			{/if}
 		</div>
@@ -276,11 +285,20 @@
 			</div>
 
 			<div class="bg-white rounded-2xl border-2 border-[#0D0D0D] p-5 sm:p-6 shadow-[4px_4px_0px_#0D0D0D] flex flex-col gap-4">
-				<h2 class="text-sm font-black text-[#0D0D0D] uppercase tracking-wider pb-2 border-b-2 border-[#0D0D0D]">4. Lokasi Kebun Sekolah</h2>
+				<div class="flex items-center justify-between pb-2 border-b-2 border-[#0D0D0D]">
+					<h2 class="text-sm font-black text-[#0D0D0D] uppercase tracking-wider">4. Lokasi Kebun Sekolah</h2>
+					<button type="button" onclick={() => (showMapPicker = true)} class="px-3 py-1.5 rounded-xl border-2 border-[#0D0D0D] bg-[#D4F469] hover:bg-[#c5e855] text-xs font-black text-[#0D0D0D] shadow-[2px_2px_0px_#0D0D0D] flex items-center gap-1.5 cursor-pointer">
+						<Crosshair class="w-3.5 h-3.5 stroke-[2.5]" />
+						<span>Pilih Titik di Denah Visual</span>
+					</button>
+				</div>
 				<Input label="Keterangan Lokasi Fisik" placeholder="Contoh: Kebun Percobaan TOGA Blok A-2, Dekat Kolam Ikan" bind:value={form.location_label} />
-				<div class="grid grid-cols-2 gap-4">
-					<div><label for="pos-x-range" class="text-xs font-black text-[#0D0D0D]">Posisi Peta X: {form.location_x}%</label><input id="pos-x-range" type="range" min="5" max="95" bind:value={form.location_x} class="w-full accent-stone-900 mt-1 cursor-pointer" /></div>
-					<div><label for="pos-y-range" class="text-xs font-black text-[#0D0D0D]">Posisi Peta Y: {form.location_y}%</label><input id="pos-y-range" type="range" min="5" max="95" bind:value={form.location_y} class="w-full accent-stone-900 mt-1 cursor-pointer" /></div>
+				<div class="p-3 bg-[#F3F6ED] rounded-xl border-2 border-[#0D0D0D] flex items-center justify-between text-xs font-bold text-stone-700">
+					<div class="flex items-center gap-2">
+						<MapPin class="w-4 h-4 text-[#0D0D0D] stroke-[2.5]" />
+						<span>Koordinat Peta: <strong>X: {form.location_x}%, Y: {form.location_y}%</strong></span>
+					</div>
+					<button type="button" onclick={() => (showMapPicker = true)} class="text-xs font-black text-stone-900 underline hover:text-emerald-700 cursor-pointer">Ubah Titik</button>
 				</div>
 			</div>
 
@@ -290,3 +308,15 @@
 		</form>
 	{/if}
 </div>
+
+<MapPinPickerModal
+	show={showMapPicker}
+	initialX={form.location_x}
+	initialY={form.location_y}
+	locationLabel={form.location_label || form.name_local}
+	onConfirm={(coords) => {
+		form.location_x = coords.x;
+		form.location_y = coords.y;
+	}}
+	onClose={() => (showMapPicker = false)}
+/>

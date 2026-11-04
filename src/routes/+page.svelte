@@ -37,9 +37,10 @@
 	const filteredFeatured = $derived(plants.filter((p) => selectedCategory === 'semua' || p.category === selectedCategory).slice(0, 4));
 
 	onMount(() => {
-		const handleConfigChange = (e: any) => {
-			if (!e.detail) return;
-			appConfig = e.detail;
+		const handleConfigChange = (e: Event) => {
+			const detail = (e as CustomEvent<AppConfig>)?.detail;
+			if (!detail) return;
+			appConfig = detail;
 			if (currentGardenIndex >= appConfig.hero.gardenPhotos.length) currentGardenIndex = 0;
 			if (currentSpecimenIndex >= appConfig.hero.specimens.length) currentSpecimenIndex = 0;
 		};

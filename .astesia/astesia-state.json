@@ -78,7 +78,21 @@
     ".github/workflows/ci.yml",
     "src/routes/health/+server.ts",
     ".astesia/deployment.md",
-    "supabase/migrations/002_add_quantity_and_categories.sql"
+    "supabase/migrations/002_add_quantity_and_categories.sql",
+    "supabase/migrations/003_app_config.sql",
+    "src/routes/admin/tanaman/[id]/edit/+page.svelte",
+    "src/lib/utils/markdown.ts",
+    "src/lib/utils/markdown.test.ts",
+    "src/routes/kontribusi/saya/+page.svelte",
+    "src/routes/kontribusi/[id]/edit/+page.svelte",
+    "src/lib/components/map/MapPinPickerModal.svelte",
+    "src/lib/utils/csv-export.ts",
+    "src/lib/utils/csv-export.test.ts",
+    "src/lib/utils/catalog-book.ts",
+    "src/lib/utils/catalog-book.test.ts",
+    "src/routes/katalog/buku/+page.svelte",
+    "supabase/migrations/004_security_hardening.sql",
+    "src/lib/services/security-hardening.test.ts"
   ],
   "active_skills": [
     "sveltekit-frontend",
@@ -179,6 +193,54 @@
       "layer": "engineering",
       "action": "cr_01_custom_categories_and_plant_quantity_implemented",
       "agent_note": "CR-01 completed across all layers: 1) Controlled custom categories in Admin CMS (/admin/pengaturan) with plant-usage guard, dynamic dropdowns in /kontribusi/tambah, and dynamic filter chips in /katalog & landing page. 2) Plant quantity & population unit (quantity: number >= 1, unit: string) added to Plant domain type, plantFormSchema, PlantRepository, PlantService, PlantCard badge, and PlantDetail header. Added 'Mangga Madu' (quantity: 3, unit: 'pohon') to seed dataset. Created Supabase SQL migration 002. All 49 Vitest unit tests pass, 0 svelte-check diagnostics, production build clean."
+    },
+    {
+      "timestamp": "2026-11-04T11:47:00+08:00",
+      "layer": "engineering",
+      "action": "wave_1_content_management_remediation_completed",
+      "agent_note": "Wave 1 remediation completed: 1) Centralized Supabase CMS dynamic config sync (public.app_config with RLS and ConfigRepository/ConfigService remote fetch & upsert with offline fallback). 2) Full Plant CRUD implementation: added getPlantById, updatePlant, and deletePlant to PlantRepository and PlantService. 3) Dedicated Admin Edit page at /admin/tanaman/[id]/edit with full prefilled botanical taxonomy, photo management, quantity & status controls. 4) Admin Edit and Delete action buttons added to /katalog/[slug] with permanent deletion confirmation modal. 5) Inline Edit & Perbaiki navigation button added to Teacher Moderation Dashboard at /admin/moderasi. All 50 Vitest unit tests pass 100%."
+    },
+    {
+      "timestamp": "2026-11-04T12:00:00+08:00",
+      "layer": "engineering",
+      "action": "wave_2_contributor_workflow_and_storage_optimization_completed",
+      "agent_note": "Wave 2 completed: 1) Physical media cleanup in Supabase Storage (StorageService.deleteMediaFiles and extractStoragePath) integrated with PlantService.updatePlant and deletePlant to prevent storage leaks. 2) Student Contributor Portal (/kontribusi/saya) with status filtering and prominent teacher rejection notes. 3) Student revision & resubmission form (/kontribusi/[id]/edit) allowing rejected drafts to be updated and resubmitted back to pending moderation queue. 4) Lightweight XSS-sanitized botanical markdown parser (src/lib/utils/markdown.ts) rendering rich headings, lists, bold and italic content in /katalog/[slug]. All 58 Vitest unit tests pass 100%."
+    },
+    {
+      "timestamp": "2026-11-04T12:05:00+08:00",
+      "layer": "engineering",
+      "action": "wave_3_interactive_tooling_and_bulk_moderation_completed",
+      "agent_note": "Wave 3 completed: 1) Interactive Visual Map Pin-Picker Modal (src/lib/components/map/MapPinPickerModal.svelte) enabling point-and-click coordinate placement on SVG garden map, seamlessly integrated into /kontribusi/tambah, /kontribusi/[id]/edit, and /admin/tanaman/[id]/edit. 2) Bulk Moderation Actions in Teacher Dashboard (/admin/moderasi) with multi-select checkboxes, select-all toggle, and single-click 'Setujui Terpilih' batch processing. 3) CSV Catalog Exporter (src/lib/utils/csv-export.ts) with UTF-8 BOM (\\uFEFF) and Excel-safe escaping, wired into /admin/moderasi and /admin/pengaturan (Tab 5) for school accreditation reporting. All 62 unit tests pass 100%."
+    },
+    {
+      "timestamp": "2026-11-04T12:16:00+08:00",
+      "layer": "quality",
+      "action": "post_wave_3_comprehensive_content_management_re_audit_passed",
+      "agent_note": "Quality Layer comprehensive re-audit completed across all 3 Waves of CMS remediation: 1) Verified 0 layered breaches, 0 direct DB imports in UI controllers, and 0 console.log debug artifacts. 2) Validated strict XSS sanitization in markdown.ts and CSV UTF-8 BOM injection. 3) Enhanced MapPinPickerModal with a11y keyboard arrow navigation and NaN click protection. 4) Fortified bulk moderation selection synchronization against cross-tab leaks. 62/62 tests passing, 0 defects, sign-off approved."
+    },
+    {
+      "timestamp": "2026-11-04T12:53:00+08:00",
+      "layer": "engineering",
+      "action": "print_ready_botanical_catalog_book_generator_completed",
+      "agent_note": "Print-Ready Botanical Catalog Book Generator implemented: 1) Created src/lib/utils/catalog-book.ts & catalog-book.test.ts (6/6 tests passing) for book statistics, category grouping, family index, and page number calculation. 2) Created src/routes/katalog/buku/+page.svelte with Neo-Brutalist Agronomy A4 book layout: Front Cover, Garden Intro & Spatial Map, Table of Contents, Specimen Factsheets with dynamic QR codes & 7-level taxonomy, Family Index, and Back Cover. 3) Supported on-screen density toggle (Encyclopedia vs Compact) & category filtering with native vector @media print engine. 4) Wired navigation entry points in /katalog, /admin/pengaturan (Tab 5), and /admin/moderasi. All 68 unit tests pass 100%."
+    },
+    {
+      "timestamp": "2026-11-04T13:01:00+08:00",
+      "layer": "quality",
+      "action": "ponytail_clean_code_and_type_hardening_pass_passed",
+      "agent_note": "Clean Code and Ponytail Anti-Bloat Refactoring executed: 1) Compacted src/routes/katalog/buku/+page.svelte by 60 lines (deduplicated compact-mode card markup and looped taxonomy rank grids, purged 8 unused imports). 2) Tightened type safety across Navbar.svelte, QrGenerator.svelte, +layout.svelte, +page.svelte, katalog/+page.svelte, kontribusi/tambah/+page.svelte, kontribusi/[id]/edit/+page.svelte, and admin/tanaman/[id]/edit/+page.svelte by eliminating loose 'any' event types in favor of typed CustomEvent and Event interfaces. 3) Typed Plant in csv-export.test.ts. 68/68 unit tests passing."
+    },
+    {
+      "timestamp": "2026-11-04T17:40:00+08:00",
+      "layer": "quality",
+      "action": "security_vulnerability_hardening_and_audit_passed",
+      "agent_note": "Security hardening and remediation pass completed: 1) Closed SEC-01 (Privilege Escalation): Restricted registerSchema with z.literal('contributor') and hardcoded contributor role in AuthRepository.signUp. Created SQL Migration 004 adding strict WITH CHECK policy on public.profiles preventing users from updating their own role column. 2) Closed SEC-02 (Moderation Bypass): Restricted public.plants INSERT RLS policy forcing status='pending' for non-admin contributors. 3) Closed SEC-03 (Admin Data Leakage): Guarded loadModerationList, loadPlantData, and runAction in admin pages against non-admin invocations. 4) Closed SEC-04 (IDOR / Name-Spoofing): Eliminated display_name fallback comparisons in kontribusi/[id]/edit, katalog/[slug], and kontribusi/saya in favor of strict UUID contributor_id checking. 5) Closed SEC-05 (User Enumeration): Restricted public.profiles SELECT policy to authenticated users. 6) Closed SEC-06 (Open Redirect): Implemented strict internal path sanitization in login page. 7) Closed SEC-07 (SVG / File Upload Stored XSS): Enforced strict image MIME whitelist ('image/jpeg', 'image/png', 'image/webp') rejecting SVG and deriving extensions strictly from verified MIME. 8) Closed SEC-08 (Missing DELETE Policies & Silent Failure): Added DELETE RLS policies for plant_photos and plant_videos, and converted silent console.warn to thrown errors on Supabase live failures. 9) Added src/lib/services/security-hardening.test.ts (8/8 pass). Total test suite: 77/77 tests passing 100%."
+    },
+    {
+      "timestamp": "2026-11-04T17:47:00+08:00",
+      "layer": "quality",
+      "action": "comprehensive_re_audit_and_advanced_hardening_passed",
+      "agent_note": "Re-Audit Pass #6 completed: 1) Neutralized ADV-01 CSV Formula/DDE Injection (CWE-1236) in csv-export.ts with single-quote escaping on formula prefixes (=, +, -, @, \\t, \\r). 2) Excluded /admin and /kontribusi routes from PWA CacheStorage in service-worker.js (ADV-02). 3) Removed fuzzy password backdoor .includes('guru') in auth.repository.ts offline mode (ADV-03). 4) Added max(72) password bound in loginSchema (ADV-04). 5) Hardened PostgREST query punctuation sanitization in plant.repository.ts (ADV-05). All 78 tests pass across 10 test files."
     }
   ]
 }

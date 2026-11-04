@@ -26,7 +26,17 @@
 		X
 	} from '@lucide/svelte';
 
-	const redirectTo = $derived(page.url.searchParams.get('redirectTo') || '/');
+	function sanitizeRedirectUrl(target: string | null): string {
+		if (!target) return '/';
+		const trimmed = target.trim();
+		// SEC-06 Hardening: Hanya izinkan path relatif internal, tolak protocol-relative //, backslash \, dan scheme eksternal
+		if (trimmed.startsWith('/') && !trimmed.startsWith('//') && !trimmed.includes('\\') && !trimmed.includes(':')) {
+			return trimmed;
+		}
+		return '/';
+	}
+
+	const redirectTo = $derived(sanitizeRedirectUrl(page.url.searchParams.get('redirectTo')));
 	const queryMessage = $derived(page.url.searchParams.get('message'));
 
 	let email = $state('');
@@ -69,8 +79,8 @@
 				if (res.error.field === 'email') fieldErrors = { email: res.error.message };
 				if (res.error.field === 'password') fieldErrors = { password: res.error.message };
 			}
-		} catch (err: any) {
-			formError = err?.message || 'Terjadi kesalahan sistem saat proses masuk.';
+		} catch (err: unknown) {
+			formError = (err as Error)?.message || 'Terjadi kesalahan sistem saat proses masuk.';
 		} finally {
 			isSubmitting = false;
 		}
@@ -95,8 +105,8 @@
 			} else if (res.error) {
 				resetError = res.error.message;
 			}
-		} catch (err: any) {
-			resetError = err?.message || 'Gagal mengirim email pemulihan.';
+		} catch (err: unknown) {
+			resetError = (err as Error)?.message || 'Gagal mengirim email pemulihan.';
 		} finally {
 			isResetting = false;
 		}

@@ -75,23 +75,16 @@ export class AuthRepository {
 	static async signIn(credentials: AuthCredentials): Promise<AuthResult<UserProfile>> {
 		const email = credentials.email.trim().toLowerCase();
 
-		// Mode Offline / Demo Fallback
+		// Mode Offline / Demo Fallback (Hanya untuk keperluan demonstrasi lokal)
 		if (!this.isLive()) {
 			const matched = Object.values(DEMO_USERS).find((u) => u.email.toLowerCase() === email);
 			if (matched) {
-				this.persistLocalSession(matched);
-				return { success: true, data: matched };
-			}
-
-			// Jika kata sandi demo umum digunakan
-			if (credentials.password === 'Guru123456!' || credentials.password.toLowerCase().includes('guru')) {
-				this.persistLocalSession(DEMO_USERS.admin);
-				return { success: true, data: DEMO_USERS.admin };
-			}
-
-			if (credentials.password === 'Siswa123456!' || credentials.password.toLowerCase().includes('siswa')) {
-				this.persistLocalSession(DEMO_USERS.contributor);
-				return { success: true, data: DEMO_USERS.contributor };
+				// ADV-03 Hardening: Verifikasi password tepat, hapus fuzzy backdoor .includes('guru')
+				const expectedPassword = matched.role === 'admin' ? 'Guru123456!' : 'Siswa123456!';
+				if (credentials.password === expectedPassword) {
+					this.persistLocalSession(matched);
+					return { success: true, data: matched };
+				}
 			}
 
 			return {
@@ -142,12 +135,12 @@ export class AuthRepository {
 
 			this.persistLocalSession(profile);
 			return { success: true, data: profile };
-		} catch (err: any) {
+		} catch (err: unknown) {
 			return {
 				success: false,
 				error: {
 					code: 'network_error',
-					message: err?.message || 'Terjadi gangguan jaringan saat menghubungi server autentikasi.'
+					message: (err as Error)?.message || 'Terjadi gangguan jaringan saat menghubungi server autentikasi.'
 				}
 			};
 		}
@@ -158,7 +151,8 @@ export class AuthRepository {
 	 */
 	static async signUp(payload: RegisterPayload): Promise<AuthResult<UserProfile>> {
 		const email = payload.email.trim().toLowerCase();
-		const role: UserRole = payload.role || 'contributor';
+		// SEC-01 Hardening: Seluruh pendaftaran mandiri dikunci ke role 'contributor'
+		const role: UserRole = 'contributor';
 		const displayName = payload.displayName.trim();
 
 		// Mode Offline / Demo Fallback
@@ -212,12 +206,12 @@ export class AuthRepository {
 
 			this.persistLocalSession(createdProfile);
 			return { success: true, data: createdProfile };
-		} catch (err: any) {
+		} catch (err: unknown) {
 			return {
 				success: false,
 				error: {
 					code: 'network_error',
-					message: err?.message || 'Terjadi gangguan jaringan saat mendaftarkan akun.'
+					message: (err as Error)?.message || 'Terjadi gangguan jaringan saat mendaftarkan akun.'
 				}
 			};
 		}
@@ -294,12 +288,12 @@ export class AuthRepository {
 			}
 
 			return { success: true };
-		} catch (err: any) {
+		} catch (err: unknown) {
 			return {
 				success: false,
 				error: {
 					code: 'network_error',
-					message: err?.message || 'Gagal mengirim email reset kata sandi.'
+					message: (err as Error)?.message || 'Gagal mengirim email reset kata sandi.'
 				}
 			};
 		}
